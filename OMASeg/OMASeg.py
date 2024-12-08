@@ -10,28 +10,28 @@ from slicer.util import VTKObservationMixin
 
 
 #
-# TotalSegmentator
+# OMASeg
 #
 #
 
-class TotalSegmentator(ScriptedLoadableModule):
+class OMASeg(ScriptedLoadableModule):
     """Uses ScriptedLoadableModule base class, available at:
     https://github.com/Slicer/Slicer/blob/master/Base/Python/slicer/ScriptedLoadableModule.py
     """
 
     def __init__(self, parent):
         ScriptedLoadableModule.__init__(self, parent)
-        self.parent.title = "Total Segmentator"
+        self.parent.title = "OMASeg"
         self.parent.categories = ["Segmentation"]
         self.parent.dependencies = []
-        self.parent.contributors = ["Andras Lasso (PerkLab, Queen's University)"]
+        self.parent.contributors = ["Murong"]
         self.parent.helpText = """
-3D Slicer extension for fully automatic whole body CT segmentation using "TotalSegmentator" AI model.
+3D Slicer extension for fully automatic whole body CT segmentation using "OMASeg" AI model.
 See more information in the <a href="https://github.com/lassoan/SlicerTotalSegmentator">extension documentation</a>.
 """
         self.parent.acknowledgementText = """
 This file was originally developed by Andras Lasso (PerkLab, Queen's University).
-The module uses <a href="https://github.com/wasserth/TotalSegmentator">TotalSegmentator</a>.
+The module uses <a href="https://github.com/wasserth/OMASeg">TotalSegmentator</a>.
 If you use the TotalSegmentator nn-Unet function from this software in your research, please cite:
 Wasserthal J., Meyer M., , Hanns-Christian Breit H.C., Cyriac J., Shan Y., Segeroth, M.:
 TotalSegmentator: robust segmentation of 104 anatomical structures in CT images.
@@ -41,15 +41,15 @@ https://arxiv.org/abs/2208.05868
 
     def configureDefaultTerminology(self):
         moduleDir = os.path.dirname(self.parent.path)
-        totalSegmentatorTerminologyFilePath = os.path.join(moduleDir, 'Resources', 'SegmentationCategoryTypeModifier-TotalSegmentator.term.json')
+        omaSegTerminologyFilePath = os.path.join(moduleDir, 'Resources', 'SegmentationCategoryTypeModifier-OMASeg.term.json')
         tlogic = slicer.modules.terminologies.logic()
-        self.terminologyName = tlogic.LoadTerminologyFromFile(totalSegmentatorTerminologyFilePath)
+        self.terminologyName = tlogic.LoadTerminologyFromFile(omaSegTerminologyFilePath)
 
 #
-# TotalSegmentatorWidget
+# OMASegWidget
 #
 
-class TotalSegmentatorWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
+class OMASegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
     """Uses ScriptedLoadableModuleWidget base class, available at:
     https://github.com/Slicer/Slicer/blob/master/Base/Python/slicer/ScriptedLoadableModule.py
     """
@@ -72,7 +72,7 @@ class TotalSegmentatorWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
 
         # Load widget from .ui file (created by Qt Designer).
         # Additional widgets can be instantiated manually and added to self.layout.
-        uiWidget = slicer.util.loadUI(self.resourcePath('UI/TotalSegmentator.ui'))
+        uiWidget = slicer.util.loadUI(self.resourcePath('UI/OMASeg.ui'))
         self.layout.addWidget(uiWidget)
         self.ui = slicer.util.childWidgetVariables(uiWidget)
 
@@ -83,7 +83,7 @@ class TotalSegmentatorWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
 
         # Create logic class. Logic implements all computations that should be possible to run
         # in batch mode, without a graphical user interface.
-        self.logic = TotalSegmentatorLogic()
+        self.logic = OMASegLogic()
         self.logic.logCallback = self.addLog
 
         for task in self.logic.tasks:
@@ -101,7 +101,6 @@ class TotalSegmentatorWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
         # These connections ensure that whenever user changes some settings on the GUI, that is saved in the MRML scene
         # (in the selected parameter node).
         self.ui.inputVolumeSelector.connect("currentNodeChanged(vtkMRMLNode*)", self.updateParameterNodeFromGUI)
-        self.ui.fastCheckBox.connect('toggled(bool)', self.updateParameterNodeFromGUI)
         self.ui.cpuCheckBox.connect('toggled(bool)', self.updateParameterNodeFromGUI)
         self.ui.useStandardSegmentNamesCheckBox.connect('toggled(bool)', self.updateParameterNodeFromGUI)
 
@@ -206,7 +205,6 @@ class TotalSegmentatorWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
         self.ui.inputVolumeSelector.setCurrentNode(self._parameterNode.GetNodeReference("InputVolume"))
         task = self._parameterNode.GetParameter("Task")
         self.ui.taskComboBox.setCurrentIndex(self.ui.taskComboBox.findData(task))
-        self.ui.fastCheckBox.checked = self._parameterNode.GetParameter("Fast") == "true"
         self.ui.cpuCheckBox.checked = self._parameterNode.GetParameter("CPU") == "true"
         self.ui.useStandardSegmentNamesCheckBox.checked = self._parameterNode.GetParameter("UseStandardSegmentNames") == "true"
         self.ui.outputSegmentationSelector.setCurrentNode(self._parameterNode.GetNodeReference("OutputSegmentation"))
@@ -222,10 +220,6 @@ class TotalSegmentatorWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
 
         if inputVolume:
             self.ui.outputSegmentationSelector.baseName = inputVolume.GetName() + " segmentation"
-
-        fastModeSupported = self.logic.isFastModeSupportedForTask(task)
-        self.ui.fastCheckBox.visible = fastModeSupported
-        self.ui.fastNotAvailableLabel.visible = not fastModeSupported
 
         # All the GUI updates are done
         self._updatingGUIFromParameterNode = False
@@ -243,7 +237,6 @@ class TotalSegmentatorWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
 
         self._parameterNode.SetNodeReferenceID("InputVolume", self.ui.inputVolumeSelector.currentNodeID)
         self._parameterNode.SetParameter("Task", self.ui.taskComboBox.currentData)
-        self._parameterNode.SetParameter("Fast", "true" if self.ui.fastCheckBox.checked else "false")
         self._parameterNode.SetParameter("CPU", "true" if self.ui.cpuCheckBox.checked else "false")
         self._parameterNode.SetParameter("UseStandardSegmentNames", "true" if self.ui.useStandardSegmentNamesCheckBox.checked else "false")
         self._parameterNode.SetNodeReferenceID("OutputSegmentation", self.ui.outputSegmentationSelector.currentNodeID)
@@ -277,13 +270,22 @@ class TotalSegmentatorWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
             slicer.app.restoreOverrideCursor()
             import traceback
             traceback.print_exc()
-            self.ui.statusLabel.appendPlainText("\nApplication restart required.")
-            if slicer.util.confirmOkCancelDisplay(
-                "Application is required to complete installation of required Python packages.\nPress OK to restart.",
-                "Confirm application restart"
-                ):
-                slicer.util.restart()
+            self.ui.statusLabel.appendPlainText(f"Failed to install Python dependencies:\n{e}\n")
+            restartRequired = False
+            if isinstance(e, InstallError):
+                restartRequired = e.restartRequired
+            if restartRequired:
+                self.ui.statusLabel.appendPlainText("\nApplication restart required.")
+                if slicer.util.confirmOkCancelDisplay(
+                    "Application is required to complete installation of required Python packages.\nPress OK to restart.",
+                    "Confirm application restart",
+                    detailedText=str(e)
+                    ):
+                    slicer.util.restart()
+                else:
+                    return
             else:
+                slicer.util.errorDisplay(f"Failed to install required packages.\n\n{e}")
                 return
 
         with slicer.util.tryWithErrorDisplay("Failed to compute results.", waitCursor=True):
@@ -296,30 +298,30 @@ class TotalSegmentatorWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
 
             # Compute output
             self.logic.process(self.ui.inputVolumeSelector.currentNode(), self.ui.outputSegmentationSelector.currentNode(),
-                self.ui.fastCheckBox.checked, self.ui.cpuCheckBox.checked, self.ui.taskComboBox.currentData, interactive = True, sequenceBrowserNode = sequenceBrowserNode)
+                self.ui.cpuCheckBox.checked, self.ui.taskComboBox.currentData, interactive = True, sequenceBrowserNode = sequenceBrowserNode)
 
         self.ui.statusLabel.appendPlainText("\nProcessing finished.")
 
     def onPackageInfoUpdate(self):
         self.ui.packageInfoTextBrowser.plainText = ''
-        with slicer.util.tryWithErrorDisplay("Failed to get TotalSegmentator package version information", waitCursor=True):
-            self.ui.packageInfoTextBrowser.plainText = self.logic.installedTotalSegmentatorPythonPackageInfo().rstrip()
+        with slicer.util.tryWithErrorDisplay("Failed to get OMASeg package version information", waitCursor=True):
+            self.ui.packageInfoTextBrowser.plainText = self.logic.installedOMASegPythonPackageInfo().rstrip()
 
     def onPackageUpgrade(self):
-        with slicer.util.tryWithErrorDisplay("Failed to upgrade TotalSegmentator", waitCursor=True):
+        with slicer.util.tryWithErrorDisplay("Failed to upgrade OMASeg", waitCursor=True):
             self.logic.setupPythonRequirements(upgrade=True)
         self.onPackageInfoUpdate()
-        if not slicer.util.confirmOkCancelDisplay(f"This TotalSegmentator update requires a 3D Slicer restart.","Press OK to restart."):
+        if not slicer.util.confirmOkCancelDisplay(f"This OMASeg update requires a 3D Slicer restart.","Press OK to restart."):
             raise ValueError('Restart was cancelled.')
         else:
             slicer.util.restart()
 
     def onSetLicense(self):
         import qt
-        licenseText = qt.QInputDialog.getText(slicer.util.mainWindow(), "Set TotalSegmentator license key", "License key:")
+        licenseText = qt.QInputDialog.getText(slicer.util.mainWindow(), "Set OMASeg license key", "License key:")
 
         success = False
-        with slicer.util.tryWithErrorDisplay("Failed to set TotalSegmentator license.", waitCursor=True):
+        with slicer.util.tryWithErrorDisplay("Failed to set OMASeg license.", waitCursor=True):
             if not licenseText:
                 raise ValueError("License is not specified.")
             self.logic.setupPythonRequirements()
@@ -327,14 +329,23 @@ class TotalSegmentatorWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
             success = True
 
         if success:
-            slicer.util.infoDisplay("License key is set. You can now use TotalSegmentator tasks that require a license.")
+            slicer.util.infoDisplay("License key is set. You can now use OMASeg tasks that require a license.")
 
 
 #
-# TotalSegmentatorLogic
+# OMASegLogic
 #
 
-class TotalSegmentatorLogic(ScriptedLoadableModuleLogic):
+class InstallError(Exception):
+    def __init__(self, message, restartRequired=False):
+        # Call the base class constructor with the parameters it needs
+        super().__init__(message)
+        self.message = message
+        self.restartRequired = restartRequired
+    def __str__(self):
+        return self.message
+
+class OMASegLogic(ScriptedLoadableModuleLogic):
     """This class should implement all the actual
     computation done by your module.  The interface
     should be such that other python code can import
@@ -352,103 +363,90 @@ class TotalSegmentatorLogic(ScriptedLoadableModuleLogic):
 
         ScriptedLoadableModuleLogic.__init__(self)
 
-        self.totalSegmentatorPythonPackageDownloadUrl = "https://github.com/wasserth/TotalSegmentator/archive/65d0859c893badaeedaf39600613b73bb0865efe.zip"  # tag: 2.2.1
+        self.omaSegPythonPackageDownloadUrl = "https://github.com/murong-xu/OMASeg/releases/download/dev/OMASeg_SSH.zip"  # latest master as of 2024-09-03 #TODO:
 
         # Custom applications can set custom location for weights.
         # For example, it could be set to `sysconfig.get_path('scripts')` to have an independent copy of
         # the weights for each Slicer installation. However, setting such custom path would result in extra downloads and
         # storage space usage if there were multiple Slicer installations on the same computer.
-        self.totalSegmentatorWeightsPath = None
+        self.omaSegWeightsPath = None
 
         self.logCallback = None
         self.clearOutputFolder = True
         self.useStandardSegmentNames = True
         self.pullMaster = False
 
-        # List of property type codes that are specified by in the TotalSegmentator terminology.
+        # List of property type codes that are specified by in the OMASeg terminology.
         #
         # # Codes are stored as a list of strings containing coding scheme designator and code value of the property type,
         # separated by "^" character. For example "SCT^123456".
         #
-        # If property the code is found in this list then the TotalSegmentator terminology will be used,
+        # If property the code is found in this list then the OMASeg terminology will be used,
         # otherwise the DICOM terminology will be used. This is necessary because the DICOM terminology
         # does not contain all the necessary items and some items are incomplete (e.g., don't have color or 3D Slicer label).
         #
-        self.totalSegmentatorTerminologyPropertyTypes = []
+        self.omaSegTerminologyPropertyTypes = []
 
-        # Map from TotalSegmentator structure name to terminology string.
+        # Map from OMASeg structure name to terminology string.
         # Terminology string uses Slicer terminology entry format - see specification at
         # https://slicer.readthedocs.io/en/latest/developer_guide/modules/segmentations.html#terminologyentry-tag
-        self.totalSegmentatorLabelTerminology = {}
+        self.omaSegLabelTerminology = {}
 
-        # Segmentation tasks specified by TotalSegmentator
-        # Ideally, this information should be provided by TotalSegmentator itself.
+        # Segmentation tasks specified by OMASeg
+        # Ideally, this information should be provided by OMASeg itself.
         self.tasks = OrderedDict()
 
         # Main
-        self.tasks['total'] = {'title': 'total', 'supportsFast': True, 'supportsMultiLabel': True}
-        self.tasks['total_mr'] = {'title': 'total_mr', 'supportsFast': True, 'supportsMultiLabel': True}
+        self.tasks['551'] = {'title': '551', 'supportsMultiLabel': True}
+        self.tasks['552'] = {'title': '552', 'supportsMultiLabel': True}
+        self.tasks['553'] = {'title': '553', 'supportsMultiLabel': True}
+        self.tasks['554'] = {'title': '554', 'supportsMultiLabel': True}
+        self.tasks['555'] = {'title': '555', 'supportsMultiLabel': True}
+        self.tasks['556'] = {'title': '556', 'supportsMultiLabel': True}
+        self.tasks['557'] = {'title': '557', 'supportsMultiLabel': True}
+        self.tasks['558'] = {'title': '558', 'supportsMultiLabel': True}
+        self.tasks['559'] = {'title': '559', 'supportsMultiLabel': True}
+        # self.tasks['all'] = {'title': 'all', 'supportsMultiLabel': True}
 
-        self.tasks['body'] = {'title': 'body', 'supportsFast': True}
-        self.tasks['vertebrae_body'] = {'title': 'vertebrae body'}
-        self.tasks['lung_vessels'] = {'title': 'lung vessels', 'requiresPreSegmentation': True}
+        self.loadOMASegLabelTerminology()
 
-        # Trained on reduced data set
-        self.tasks['cerebral_bleed'] = {'title': 'cerebral bleed', 'requiresPreSegmentation': True, 'supportsMultiLabel': True}
-        self.tasks['hip_implant'] = {'title': 'hip implant', 'requiresPreSegmentation': True, 'supportsMultiLabel': True}
-        self.tasks['coronary_arteries'] = {'title': 'coronary arteries', 'requiresPreSegmentation': True, 'supportsMultiLabel': True}
-        self.tasks['pleural_pericard_effusion'] = {'title': 'pleural and pericardial effusion', 'requiresPreSegmentation': True, 'supportsMultiLabel': True}
-
-        # Requires license
-        self.tasks['appendicular_bones'] = {'title': 'appendicular bones', 'requiresPreSegmentation': True, 'supportsMultiLabel': True, 'requiresLicense': True}
-        self.tasks['tissue_types'] = {'title': 'tissue types', 'requiresPreSegmentation': True, 'supportsMultiLabel': True, 'requiresLicense': True}
-        self.tasks['heartchambers_highres'] = {'title': 'heartchambers highres' , 'requiresPreSegmentation': True, 'supportsMultiLabel': True, 'requiresLicense': True}
-        self.tasks['face'] = {'title': 'face', 'requiresPreSegmentation': True, 'supportsMultiLabel': True, 'requiresLicense': True}
-        self.tasks['tissue_types_mr'] = {'title': 'tissue_types_mr', 'supportsMultiLabel': True, 'requiresLicense': True}
-        self.tasks['face_mr'] = {'title': 'face_mr', 'supportsFast': False, 'supportsMultiLabel': True, 'requiresLicense': True}
-
-        # Experimental
-        # self.tasks['liver_vessels'] = {'title': 'liver vessels', 'requiresPreSegmentation': True, 'supportsMultiLabel': True}
-        # self.tasks['aortic_branches'] = {'title': 'aortic branches', 'requiresPreSegmentation': True, 'supportsMultiLabel': True}
-        # self.tasks['head'] = {'title': 'head', 'requiresPreSegmentation': True, 'supportsMultiLabel': True}
-        # self.tasks['covid'] = {'title': 'covid', 'requiresPreSegmentation': True, 'supportsMultiLabel': True}
-
-        # Testing
-        # self.tasks['heartchambers_test'] = {'title': 'heartchambers test', 'requiresPreSegmentation': True, 'supportsMultiLabel': True}
-        # self.tasks['aortic_branches_test'] = {'title': 'aortic branches test', 'requiresPreSegmentation': True, 'supportsMultiLabel': True}
-        # self.tasks['bones_tissue_test'] = {'title': 'bones tissue test', 'requiresPreSegmentation': True, 'supportsMultiLabel': True}
-        # self.tasks['test'] = {'title': 'test', 'requiresPreSegmentation': True, 'supportsMultiLabel': True}
-
-        # self.tasks['covid'] = {'title': 'pleural and pericardial effusion'}
-
-        self.loadTotalSegmentatorLabelTerminology()
-
-    def loadTotalSegmentatorLabelTerminology(self):
-        """Load label terminology from totalsegmentator_snomed_mapping.csv file.
-        Terminology entries are either in DICOM or TotalSegmentator "Segmentation category and type".
+    def loadOMASegLabelTerminology(self):
+        """Load label terminology from OMASeg_snomed_mapping.csv file.
+        Terminology entries are either in DICOM or OMASeg "Segmentation category and type".
         """
 
-        moduleDir = os.path.dirname(slicer.util.getModule('TotalSegmentator').path)
-        totalSegmentatorTerminologyMappingFilePath = os.path.join(moduleDir, 'Resources', 'totalsegmentator_snomed_mapping.csv')
+        moduleDir = os.path.dirname(slicer.util.getModule('OMASeg').path)
+        omaSegTerminologyMappingFilePath = os.path.join(moduleDir, 'Resources', 'OMASeg_snomed_mapping.csv')  # TODO:
 
         terminologiesLogic = slicer.util.getModuleLogic('Terminologies')
-        totalSegmentatorTerminologyName = "Segmentation category and type - Total Segmentator"
+        omaSegTerminologyName = "Segmentation category and type - OMASeg"
 
         anatomicalStructureCategory = slicer.vtkSlicerTerminologyCategory()
-        numberOfCategories = terminologiesLogic.GetNumberOfCategoriesInTerminology(totalSegmentatorTerminologyName)
+        numberOfCategories = terminologiesLogic.GetNumberOfCategoriesInTerminology(omaSegTerminologyName)
         for i in range(numberOfCategories):
-            terminologiesLogic.GetNthCategoryInTerminology(totalSegmentatorTerminologyName, i, anatomicalStructureCategory)
+            terminologiesLogic.GetNthCategoryInTerminology(omaSegTerminologyName, i, anatomicalStructureCategory)
             if anatomicalStructureCategory.GetCodingSchemeDesignator() == 'SCT' and anatomicalStructureCategory.GetCodeValue() == '123037004':
                 # Found the (123037004, SCT, "Anatomical Structure") category within DICOM master list
                 break
 
-        # Retrieve all property type codes from the TotalSegmentator terminology
-        self.totalSegmentatorTerminologyPropertyTypes = []
+        alteredStructureCategory = slicer.vtkSlicerTerminologyCategory()
+        for i in range(numberOfCategories):
+            terminologiesLogic.GetNthCategoryInTerminology(omaSegTerminologyName, i, alteredStructureCategory)
+            if alteredStructureCategory.GetCodingSchemeDesignator() == 'SCT' and alteredStructureCategory.GetCodeValue() == '49755003':
+                # Found the (49755003, SCT, "Morphologically Altered Structure") category within DICOM master list
+                break
+
+        # Retrieve all property type codes from the OMASeg terminology
+        self.omaSegTerminologyPropertyTypes = []
         terminologyType = slicer.vtkSlicerTerminologyType()
-        numberOfTypes = terminologiesLogic.GetNumberOfTypesInTerminologyCategory(totalSegmentatorTerminologyName, anatomicalStructureCategory)
+        numberOfTypes = terminologiesLogic.GetNumberOfTypesInTerminologyCategory(omaSegTerminologyName, anatomicalStructureCategory)
         for i in range(numberOfTypes):
-            if terminologiesLogic.GetNthTypeInTerminologyCategory(totalSegmentatorTerminologyName, anatomicalStructureCategory, i, terminologyType):
-                self.totalSegmentatorTerminologyPropertyTypes.append(terminologyType.GetCodingSchemeDesignator() + "^" + terminologyType.GetCodeValue())
+            if terminologiesLogic.GetNthTypeInTerminologyCategory(omaSegTerminologyName, anatomicalStructureCategory, i, terminologyType):
+                self.omaSegTerminologyPropertyTypes.append(terminologyType.GetCodingSchemeDesignator() + "^" + terminologyType.GetCodeValue())
+        numberOfTypes = terminologiesLogic.GetNumberOfTypesInTerminologyCategory(omaSegTerminologyName, alteredStructureCategory)
+        for i in range(numberOfTypes):
+            if terminologiesLogic.GetNthTypeInTerminologyCategory(omaSegTerminologyName, alteredStructureCategory, i, terminologyType):
+                self.omaSegTerminologyPropertyTypes.append(terminologyType.GetCodingSchemeDesignator() + "^" + terminologyType.GetCodeValue())
 
         # Helper function to get code string from CSV file row
         def getCodeString(field, columnNames, row):
@@ -464,14 +462,14 @@ class TotalSegmentatorLogic(ScriptedLoadableModuleLogic):
             return columnValues
 
         import csv
-        with open(totalSegmentatorTerminologyMappingFilePath, "r") as f:
+        with open(omaSegTerminologyMappingFilePath, "r") as f:
             reader = csv.reader(f)
             columnNames = next(reader)
             data = {}
             # Loop through the rows of the csv file
             for row in reader:
 
-                # Determine segmentation category (DICOM or TotalSegmentator)
+                # Determine segmentation category (DICOM or OMASeg)
                 terminologyEntryStrWithoutCategoryName = (
                     "~"
                     # Property category: "SCT^123037004^Anatomical Structure" or "SCT^49755003^Morphologically Altered Structure"
@@ -494,18 +492,15 @@ class TotalSegmentatorLogic(ScriptedLoadableModuleLogic):
                 terminologyPropertyTypeStr = (  # Example: SCT^23451007
                     row[columnNames.index("SegmentedPropertyTypeCodeSequence.CodingSchemeDesignator")]
                     + "^" + row[columnNames.index("SegmentedPropertyTypeCodeSequence.CodeValue")])
-                if terminologyPropertyTypeStr in self.totalSegmentatorTerminologyPropertyTypes:
-                    terminologyEntryStr = "Segmentation category and type - Total Segmentator" + terminologyEntryStrWithoutCategoryName
+                if terminologyPropertyTypeStr in self.omaSegTerminologyPropertyTypes:
+                    terminologyEntryStr = "Segmentation category and type - OMASeg" + terminologyEntryStrWithoutCategoryName
                 else:
                     terminologyEntryStr = "Segmentation category and type - DICOM master list" + terminologyEntryStrWithoutCategoryName
 
                 # Store the terminology string for this structure
-                totalSegmentatorStructureName = row[columnNames.index("Structure")]  # TotalSegmentator structure name, such as "adrenal_gland_left"
-                self.totalSegmentatorLabelTerminology[totalSegmentatorStructureName] = terminologyEntryStr
+                omaSegStructureName = row[columnNames.index("Structure")]  # OMASeg structure name, such as "adrenal_gland_left"
+                self.omaSegLabelTerminology[omaSegStructureName] = terminologyEntryStr
 
-
-    def isFastModeSupportedForTask(self, task):
-        return (task in self.tasks) and ('supportsFast' in self.tasks[task]) and self.tasks[task]['supportsFast']
 
     def isMultiLabelSupportedForTask(self, task):
         return (task in self.tasks) and ('supportsMultiLabel' in self.tasks[task]) and self.tasks[task]['supportsMultiLabel']
@@ -561,12 +556,12 @@ class TotalSegmentatorLogic(ScriptedLoadableModuleLogic):
         if self.logCallback:
             self.logCallback(text)
 
-    def installedTotalSegmentatorPythonPackageDownloadUrl(self):
-        """Get package download URL of the installed TotalSegmentator Python package"""
+    def installedOMASegPythonPackageDownloadUrl(self):
+        """Get package download URL of the installed OMASeg Python package"""
         import importlib.metadata
         import json
         try:
-            metadataPath = [p for p in importlib.metadata.files('TotalSegmentator') if 'direct_url.json' in str(p)][0]
+            metadataPath = [p for p in importlib.metadata.files('OMASeg') if 'direct_url.json' in str(p)][0]
             with open(metadataPath.locate()) as json_file:
                 data = json.load(json_file)
             return data['url']
@@ -574,13 +569,13 @@ class TotalSegmentatorLogic(ScriptedLoadableModuleLogic):
             # Failed to get version information, probably not installed from download URL
             return None
 
-    def installedTotalSegmentatorPythonPackageInfo(self):
+    def installedOMASegPythonPackageInfo(self):
         import shutil
         import subprocess
-        versionInfo = subprocess.check_output([shutil.which('PythonSlicer'), "-m", "pip", "show", "TotalSegmentator"]).decode()
+        versionInfo = subprocess.check_output([shutil.which('PythonSlicer'), "-m", "pip", "show", "OMASeg"]).decode()
 
         # Get download URL, as the version information does not contain the github hash
-        downloadUrl = self.installedTotalSegmentatorPythonPackageDownloadUrl()
+        downloadUrl = self.installedOMASegPythonPackageDownloadUrl()
         if downloadUrl:
             versionInfo += "Download URL: " + downloadUrl
 
@@ -607,14 +602,53 @@ class TotalSegmentatorLogic(ScriptedLoadableModuleLogic):
         version = versionInfo.split('\n')[1].split(' ')[1].strip()
         return version
 
-    def pipInstallSelective(self, packageToInstall, installCommand, packagesToSkip):
+    def pipInstallSelectiveFromLocal(self, packageToInstall, installURL, packagesToSkip):
         """Installs a Python package, skipping a list of packages.
         Return the list of skipped requirements (package name with version requirement).
         """
-        slicer.util.pip_install(f"{installCommand} --no-deps")
+        # TODO: 
+        import os
+        import zipfile
+        import tempfile
+        import urllib.request
+
+        temp_dir = tempfile.mkdtemp()        
+        # Check if installURL is a URL or local path
+        if installURL.startswith(('http://', 'https://')):
+            # Download the zip file if it's a URL
+            zip_path = os.path.join(temp_dir, "package.zip")
+            urllib.request.urlretrieve(installURL, zip_path)
+        else:
+            # Use the local path directly
+            zip_path = installURL
+
+        # 检查zip文件结构
+        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+            # 获取所有文件列表
+            file_list = zip_ref.namelist()
+            
+            # 解压到临时目录
+            zip_ref.extractall(temp_dir)
+            
+            # 查找setup.py或pyproject.toml
+            setup_files = []
+            for root, dirs, files in os.walk(temp_dir):
+                if 'setup.py' in files or 'pyproject.toml' in files:
+                    # 找到包含setup文件的目录
+                    package_dir = root
+                    setup_files.extend([os.path.join(root, f) for f in files 
+                                    if f in ['setup.py', 'pyproject.toml']])
+                    break
+            
+            if not setup_files:
+                raise ValueError(f"No setup.py or pyproject.toml found in {installURL}")
+            
+            # 使用找到的包目录进行安装
+            slicer.util.pip_install(f"{package_dir} --no-deps")
+        # slicer.util.pip_install(f"{installCommand} --no-deps")
         skippedRequirements = []  # list of all missed packages and their version
 
-        # Get path to site-packages\nnunetv2-2.2.dist-info\METADATA
+        # Get path to site-packages\nnunetv2-5.1.dist-info\METADATA
         import importlib.metadata
         metadataPath = [p for p in importlib.metadata.files(packageToInstall) if 'METADATA' in str(p)][0]
         metadataPath.locate()
@@ -671,20 +705,91 @@ class TotalSegmentatorLogic(ScriptedLoadableModuleLogic):
                 slicer.util.pip_install(requirement)
 
         return skippedRequirements
+    
+    def pipInstallSelective(self, packageToInstall, installCommand, packagesToSkip):
+        """Installs a Python package, skipping a list of packages.
+        Return the list of skipped requirements (package name with version requirement).
+        """
+        slicer.util.pip_install(f"{installCommand} --no-deps")
+        skippedRequirements = []  # list of all missed packages and their version
+
+        # Get path to site-packages\nnunetv2-2.2.dist-info\METADATA
+        import importlib.metadata
+        metadataPath = [p for p in importlib.metadata.files(packageToInstall) if 'METADATA' in str(p)][0]
+        metadataPath.locate()
+
+        # Remove line: `Requires-Dist: SimpleITK (==2.0.2)`
+        # User Latin-1 encoding to read the file, as it may contain non-ASCII characters and not necessarily in UTF-8 encoding.
+        filteredMetadata = ""
+        with open(metadataPath.locate(), "r+", encoding="latin1") as file:
+            for line in file:
+                skipThisPackage = False
+                requirementPrefix = 'Requires-Dist: '
+                if line.startswith(requirementPrefix):
+                    # Skip dev dependencies  TODO:
+                    if '; extra == "dev"' in line:
+                        continue
+                    for packageToSkip in packagesToSkip:
+                        if packageToSkip in line:
+                            skipThisPackage = True
+                            break
+                if skipThisPackage:
+                    # skip SimpleITK requirement
+                    skippedRequirements.append(line.removeprefix(requirementPrefix))
+                    continue
+                filteredMetadata += line
+            # Update file content with filtered result
+            file.seek(0)
+            file.write(filteredMetadata)
+            file.truncate()
+
+        # Install all dependencies but the ones listed in packagesToSkip
+        import importlib.metadata
+        requirements = importlib.metadata.requires(packageToInstall)
+        for requirement in requirements:
+            # Skip dev dependencies  TODO:
+            if '; extra == "dev"' in requirement:
+                continue
+            skipThisPackage = False
+            for packageToSkip in packagesToSkip:
+                if requirement.startswith(packageToSkip):
+                    # Do not install
+                    skipThisPackage = True
+                    break
+
+            match = False
+            if not match:
+                # ruff ; extra == 'dev' -> rewrite to: ruff[extra]
+                match = re.match(r"([\S]+)[\s]*; extra == '([^']+)'", requirement)
+                if match:
+                    requirement = f"{match.group(1)}[{match.group(2)}]"
+            if not match:
+                # nibabel >=2.3.0 -> rewrite to: nibabel>=2.3.0
+                match = re.match("([\S]+)[\s](.+)", requirement)
+                if match:
+                    requirement = f"{match.group(1)}{match.group(2)}"
+
+            if skipThisPackage:
+                self.log(f'- Skip {requirement}')
+            else:
+                self.log(f'- Installing {requirement}...')
+                slicer.util.pip_install(requirement)
+
+        return skippedRequirements
 
     def setupPythonRequirements(self, upgrade=False):
         import importlib.metadata
         import importlib.util
         import packaging
 
-        # TotalSegmentator requires this, yet it is not listed among its dependencies
+        # OMASeg requires this, yet it is not listed among its dependencies
         try:
             import pandas
         except ModuleNotFoundError as e:
             slicer.util.pip_install("pandas")
 
         # pillow version that is installed in Slicer (10.1.0) is too new,
-        # it is incompatible with several TotalSegmentator dependencies.
+        # it is incompatible with several OMASeg dependencies.
         # Attempt to uninstall and install an older version before any of the packages import  it.
         needToInstallPillow = True
         try:
@@ -700,14 +805,30 @@ class TotalSegmentatorLogic(ScriptedLoadableModuleLogic):
         packagesToSkip = [
             'SimpleITK',  # Slicer's SimpleITK uses a special IO class, which should not be replaced
             'torch',  # needs special installation using SlicerPyTorch
-            'requests',  # TotalSegmentator would want to force a specific version of requests, which would require a restart of Slicer and it is unnecessary
+            'requests',  # OMASeg would want to force a specific version of requests, which would require a restart of Slicer and it is unnecessary
+            'rt_utils',  # Only needed for RTSTRUCT export, which is not needed in Slicer; rt_utils depends on opencv-python which is hard to build
             ]
+
+        # acvl_utils workaround - start
+        # Recent versions of acvl_utils are broken (https://github.com/MIC-DKFZ/acvl_utils/issues/2).
+        # As a workaround, we install an older version manually. This workaround can be removed after acvl_utils is fixed.
+        packagesToSkip.append("acvl_utils")
+        needToInstallAcvlUtils = True
+        try:
+            if packaging.version.parse(importlib.metadata.version("acvl_utils")) == packaging.version.parse("0.2"):
+                # A suitable version is already installed
+                needToInstallAcvlUtils = False
+        except Exception as e:
+            pass
+        if needToInstallAcvlUtils:
+            slicer.util.pip_install("acvl_utils==0.2")
+        # acvl_utils workaround - end
 
         # Install PyTorch
         try:
           import PyTorchUtils
         except ModuleNotFoundError as e:
-          raise RuntimeError("This module requires PyTorch extension. Install it from the Extensions Manager.")
+          raise InstallError("This module requires PyTorch extension. Install it from the Extensions Manager.")
 
         minimumTorchVersion = "1.12"
         torchLogic = PyTorchUtils.PyTorchUtilsLogic()
@@ -715,44 +836,44 @@ class TotalSegmentatorLogic(ScriptedLoadableModuleLogic):
             self.log('PyTorch Python package is required. Installing... (it may take several minutes)')
             torch = torchLogic.installTorch(askConfirmation=True, torchVersionRequirement = f">={minimumTorchVersion}")
             if torch is None:
-                raise ValueError('PyTorch extension needs to be installed to use this module.')
+                raise InstallError("This module requires PyTorch extension. Install it from the Extensions Manager.")
         else:
             # torch is installed, check version
             from packaging import version
             if version.parse(torchLogic.torch.__version__) < version.parse(minimumTorchVersion):
-                raise ValueError(f'PyTorch version {torchLogic.torch.__version__} is not compatible with this module.'
+                raise InstallError(f'PyTorch version {torchLogic.torch.__version__} is not compatible with this module.'
                                  + f' Minimum required version is {minimumTorchVersion}. You can use "PyTorch Util" module to install PyTorch'
                                  + f' with version requirement set to: >={minimumTorchVersion}')
 
-        # Install TotalSegmentator with selected dependencies only
+        # Install OMASeg with selected dependencies only
         # (it would replace Slicer's "requests")
         needToInstallSegmenter = False
         try:
-            import totalsegmentator
+            import omaseg  #TODO:
             if not upgrade:
-                # Check if we need to update TotalSegmentator Python package version
-                downloadUrl = self.installedTotalSegmentatorPythonPackageDownloadUrl()
-                if downloadUrl and (downloadUrl != self.totalSegmentatorPythonPackageDownloadUrl):
-                    # TotalSegmentator have been already installed from GitHub, from a different URL that this module needs
+                # Check if we need to update OMASeg Python package version
+                downloadUrl = self.installedOMASegPythonPackageDownloadUrl()
+                if downloadUrl and (downloadUrl != self.omaSegPythonPackageDownloadUrl):
+                    # OMASeg have been already installed from GitHub, from a different URL that this module needs
                     if not slicer.util.confirmOkCancelDisplay(
-                        f"This module requires TotalSegmentator Python package update.",
-                        detailedText=f"Currently installed: {downloadUrl}\n\nRequired: {self.totalSegmentatorPythonPackageDownloadUrl}"):
-                      raise ValueError('TotalSegmentator update was cancelled.')
+                        f"This module requires OMASeg Python package update.",
+                        detailedText=f"Currently installed: {downloadUrl}\n\nRequired: {self.omaSegPythonPackageDownloadUrl}"):  # TODO: 
+                      raise ValueError('OMASeg update was cancelled.')
                     upgrade = True
         except ModuleNotFoundError as e:
             needToInstallSegmenter = True
-
-        if needToInstallSegmenter or upgrade:
-            self.log(f'TotalSegmentator Python package is required. Installing it from {self.totalSegmentatorPythonPackageDownloadUrl}... (it may take several minutes)')
+        # upgrade = False
+        if needToInstallSegmenter or upgrade:  # TODO:
+            self.log(f'OMASeg Python package is required. Installing it from {self.omaSegPythonPackageDownloadUrl}... (it may take several minutes)')
 
             if upgrade:
-                # TotalSegmentator version information is usually not updated with each git revision, therefore we must uninstall it to force the upgrade
-                slicer.util.pip_uninstall("TotalSegmentator")
+                # OMASeg version information is usually not updated with each git revision, therefore we must uninstall it to force the upgrade
+                slicer.util.pip_uninstall("OMASeg")
 
-            # Update TotalSegmentator and all its dependencies
-            skippedRequirements = self.pipInstallSelective(
-                "TotalSegmentator",
-                self.totalSegmentatorPythonPackageDownloadUrl + (" --upgrade" if upgrade else ""),
+            # Update OMASeg and all its dependencies
+            skippedRequirements = self.pipInstallSelectiveFromLocal(  #TODO:
+                "OMASeg",
+                self.omaSegPythonPackageDownloadUrl,
                 packagesToSkip + ["nnunetv2"])
 
             # Install nnunetv2 with selected dependencies only
@@ -760,8 +881,8 @@ class TotalSegmentatorLogic(ScriptedLoadableModuleLogic):
             try:
                 nnunetRequirement = next(requirement for requirement in skippedRequirements if requirement.startswith('nnunetv2'))
             except StopIteration:
-                # nnunetv2 requirement was not found in TotalSegmentator - this must be an error, so let's report it
-                raise ValueError("nnunetv2 requirement was not found in TotalSegmentator")
+                # nnunetv2 requirement was not found in OMASeg - this must be an error, so let's report it
+                raise ValueError("nnunetv2 requirement was not found in OMASeg")
             # Remove spaces and parentheses from version requirement (convert from "nnunetv2 (==2.1)" to "nnunetv2==2.1")
             nnunetRequirement = re.sub('[ \(\)]', '', nnunetRequirement)
             self.log(f'nnunetv2 Python package is required. Installing {nnunetRequirement} ...')
@@ -774,17 +895,15 @@ class TotalSegmentatorLogic(ScriptedLoadableModuleLogic):
                 self.log(f'dynamic_network_architectures package version is incompatible. Installing working version...')
                 slicer.util.pip_install("dynamic_network_architectures==0.2.0")
 
-            self.log('TotalSegmentator installation completed successfully.')
+            self.log('OMASeg installation completed successfully.')
 
 
     def setDefaultParameters(self, parameterNode):
         """
         Initialize parameter node with default settings.
         """
-        if not parameterNode.GetParameter("Fast"):
-            parameterNode.SetParameter("Fast", "True")
         if not parameterNode.GetParameter("Task"):
-            parameterNode.SetParameter("Task", "total")
+            parameterNode.SetParameter("Task", "551")  # TODO:
         if not parameterNode.GetParameter("UseStandardSegmentNames"):
             parameterNode.SetParameter("UseStandardSegmentNames", "true")
 
@@ -847,11 +966,11 @@ class TotalSegmentatorLogic(ScriptedLoadableModuleLogic):
 
         # Get arguments
         import sysconfig
-        totalSegmentatorLicenseToolExecutablePath = os.path.join(sysconfig.get_path('scripts'), TotalSegmentatorLogic.executableName("totalseg_set_license"))
-        cmd = [pythonSlicerExecutablePath, totalSegmentatorLicenseToolExecutablePath, "-l", licenseStr]
+        omaSegLicenseToolExecutablePath = os.path.join(sysconfig.get_path('scripts'), OMASegLogic.executableName("totalseg_set_license"))
+        cmd = [pythonSlicerExecutablePath, omaSegLicenseToolExecutablePath, "-l", licenseStr]
 
         # Launch command
-        logging.debug(f"Launch TotalSegmentator license tool: {cmd}")
+        logging.debug(f"Launch OMASeg license tool: {cmd}")
         proc = slicer.util.launchConsoleProcess(cmd)
         licenseToolOutput = self.logProcessOutput(proc, returnOutput=True)
         if "ERROR: Invalid license number" in licenseToolOutput:
@@ -865,15 +984,14 @@ class TotalSegmentatorLogic(ScriptedLoadableModuleLogic):
             raise ValueError('Restart was cancelled.')
 
 
-    def process(self, inputVolume, outputSegmentation, fast=True, cpu=False, task=None, subset=None, interactive=False, sequenceBrowserNode=None):
+    def process(self, inputVolume, outputSegmentation, cpu=False, task=None, subset=None, interactive=False, sequenceBrowserNode=None):
         """
         Run the processing algorithm on a volume or a sequence of volumes.
         Can be used without GUI widget.
         :param inputVolume: volume to be thresholded
         :param outputVolume: thresholding result
-        :param fast: faster and less accurate output
         :param task: one of self.tasks, default is "total"
-        :param subset: a list of structures (TotalSegmentator classe names https://github.com/wasserth/TotalSegmentator#class-detailsTotalSegmentator) to segment.
+        :param subset: a list of structures (OMASeg classe names https://github.com/wasserth/TotalSegmentator#class-detailsTotalSegmentator) to segment.
           Default is None, which means that all available structures will be segmented."
         :param interactive: set to True to enable warning popups to be shown to users
         :param sequenceBrowserNode: if specified then all frames of the inputVolume sequence will be segmented
@@ -883,19 +1001,19 @@ class TotalSegmentatorLogic(ScriptedLoadableModuleLogic):
             raise ValueError("Input or output volume is invalid")
 
         if task == None and not subset:
-            task = "total"
+            task = "551"  #TODO: 
 
         import time
         startTime = time.time()
         self.log('Processing started')
 
-        if self.totalSegmentatorWeightsPath:
-            os.environ["TOTALSEG_WEIGHTS_PATH"] = self.totalSegmentatorWeightsPath
+        if self.omaSegWeightsPath:
+            os.environ["OMASEG_WEIGHTS_PATH"] = self.omaSegWeightsPath
 
         # Create new empty folder
         tempFolder = slicer.util.tempDirectory()
 
-        inputFile = tempFolder+"/total-segmentator-input.nii"
+        inputFile = tempFolder+"/omaseg-input.nii"
         outputSegmentationFolder = tempFolder + "/segmentation"
         # print (outputSegmentationFolder)
         outputSegmentationFile = tempFolder + "/segmentation.nii"
@@ -905,34 +1023,27 @@ class TotalSegmentatorLogic(ScriptedLoadableModuleLogic):
 
         cuda = torch.cuda if torch.backends.cuda.is_built() and torch.cuda.is_available() else None
 
-        if not fast and not cuda and interactive:
+        if not cuda and interactive:
 
             import ctk
             import qt
             mbox = ctk.ctkMessageBox(slicer.util.mainWindow())
-            mbox.text = "No GPU is detected. Switch to 'fast' mode to get low-resolution result in a few minutes or compute full-resolution result which may take 5 to 50 minutes (depending on computer configuration)?"
-            mbox.addButton("Fast (~2 minutes)", qt.QMessageBox.AcceptRole)
             mbox.addButton("Full-resolution (~5 to 50 minutes)", qt.QMessageBox.RejectRole)
             # Windows 10 peek feature in taskbar shows all hidden but not destroyed windows
             # (after creating and closing a messagebox, hovering over the mouse on Slicer icon, moving up the
             # mouse to the peek thumbnail would show it again).
             mbox.deleteLater()
-            fast = (mbox.exec_() == qt.QMessageBox.AcceptRole)
 
-        if not fast and cuda and cuda.get_device_properties(cuda.current_device()).total_memory < 7e9 and interactive:
-            if slicer.util.confirmYesNoDisplay("You have less than 7 GB of GPU memory available. Enable 'fast' mode to ensure segmentation can be completed successfully?"):
-                fast = True
-
-        # Get TotalSegmentator launcher command
-        # TotalSegmentator (.py file, without extension) is installed in Python Scripts folder
+        # Get OMASeg launcher command
+        # OMASeg (.py file, without extension) is installed in Python Scripts folder
         import sysconfig
-        totalSegmentatorExecutablePath = os.path.join(sysconfig.get_path('scripts'), TotalSegmentatorLogic.executableName("TotalSegmentator"))
+        omaSegExecutablePath = os.path.join(sysconfig.get_path('scripts'), OMASegLogic.executableName("OMASegDummy"))  #TODO: DummySeg is written in setup.py (zip)
         # Get Python executable path
         import shutil
         pythonSlicerExecutablePath = shutil.which('PythonSlicer')
         if not pythonSlicerExecutablePath:
             raise RuntimeError("Python was not found")
-        totalSegmentatorCommand = [ pythonSlicerExecutablePath, totalSegmentatorExecutablePath]
+        omaSegCommand = [ pythonSlicerExecutablePath, omaSegExecutablePath]
 
         inputVolumeSequence = None
         if sequenceBrowserNode:
@@ -957,7 +1068,7 @@ class TotalSegmentatorLogic(ScriptedLoadableModuleLogic):
                 self.log(f"Segmenting item {i+1}/{numberOfItems} of sequence")
                 self.processVolume(inputFile, inputVolume,
                                    outputSegmentationFolder, outputSegmentation, outputSegmentationFile,
-                                   task, subset, cpu, totalSegmentatorCommand, fast)
+                                   task, subset, cpu, omaSegCommand)
                 sequenceBrowserNode.SelectNextItem()
             sequenceBrowserNode.SetSelectedItemNumber(selectedItemNumber)
 
@@ -965,7 +1076,7 @@ class TotalSegmentatorLogic(ScriptedLoadableModuleLogic):
             # Segment a single volume
             self.processVolume(inputFile, inputVolume,
                                outputSegmentationFolder, outputSegmentation, outputSegmentationFile,
-                               task, subset, cpu, totalSegmentatorCommand, fast)
+                               task, subset, cpu, omaSegCommand)
 
         stopTime = time.time()
         self.log(f"Processing completed in {stopTime-startTime:.2f} seconds")
@@ -977,12 +1088,12 @@ class TotalSegmentatorLogic(ScriptedLoadableModuleLogic):
         else:
             self.log(f"Not cleaning up temporary folder: {tempFolder}")
 
-    def processVolume(self, inputFile, inputVolume, outputSegmentationFolder, outputSegmentation, outputSegmentationFile, task, subset, cpu, totalSegmentatorCommand, fast):
+    def processVolume(self, inputFile, inputVolume, outputSegmentationFolder, outputSegmentation, outputSegmentationFile, task, subset, cpu, omaSegCommand):
         """Segment a single volume
         """
 
         # Write input volume to file
-        # TotalSegmentator requires NIFTI
+        # OMASeg requires NIFTI
         self.log(f"Writing input file to {inputFile}")
         volumeStorageNode = slicer.mrmlScene.CreateNodeByClass("vtkMRMLVolumeArchetypeStorageNode")
         volumeStorageNode.SetFileName(inputFile)
@@ -991,53 +1102,52 @@ class TotalSegmentatorLogic(ScriptedLoadableModuleLogic):
         volumeStorageNode.UnRegister(None)
 
         # Get options
-        options = ["-i", inputFile, "-o", outputSegmentationFolder]
+        if cpu:     
+            options = ["-i", inputFile, "-o", outputSegmentationFolder, "--cpu"]
+        else:
+            options = ["-i", inputFile, "-o", outputSegmentationFolder]
 
-        # Launch TotalSegmentator in fast mode to get initial segmentation, if needed
+        # Launch OMASeg in fast mode to get initial segmentation, if needed
 
         #options.extend(["--nr_thr_saving", "1"])
         #options.append("--force_split")
 
         if self.isPreSegmentationRequiredForTask(task):
-            preOptions = options + ["--fast"]
-            self.log('Creating segmentations with TotalSegmentator AI (pre-run)...')
+            preOptions = options
+            self.log('Creating segmentations with OMASeg AI (pre-run)...')
             self.log(f"Total Segmentator arguments: {preOptions}")
-            proc = slicer.util.launchConsoleProcess(totalSegmentatorCommand + preOptions)
+            proc = slicer.util.launchConsoleProcess(omaSegCommand + preOptions)
             self.logProcessOutput(proc)
 
-        # Launch TotalSegmentator
+        # Launch OMASeg
 
         # When there are many segments then reading each segment from a separate file would be too slow,
         # but we need to do it for some specialized models.
         multilabel = self.isMultiLabelSupportedForTask(task)
 
-        # some tasks do not support fast mode
-        if not self.isFastModeSupportedForTask(task):
-            fast = False
+        # if multilabel:
+        #     options.append("--ml")
+        # if task:
+        #     options.extend(["--task", task])
+        # if fast:
+        #     options.append("--fast")
+        # if cpu:
+        #     options.extend(["--device", "cpu"])
+        # if subset:
+        #     options.append("--roi_subset")
+        #     # append each item of the subset
+        #     for item in subset:
+        #         try:
+        #             if self.omaSegLabelTerminology[item]:
+        #                 options.append(item)
+        #         except:
+        #             # Failed to get terminology info, item probably misspelled
+        #             raise ValueError("'" + item + "' is not a valid OMASeg label terminology.")
 
-        if multilabel:
-            options.append("--ml")
-        if task:
-            options.extend(["--task", task])
-        if fast:
-            options.append("--fast")
-        if cpu:
-            options.extend(["--device", "cpu"])
-        if subset:
-            options.append("--roi_subset")
-            # append each item of the subset
-            for item in subset:
-                try:
-                    if self.totalSegmentatorLabelTerminology[item]:
-                        options.append(item)
-                except:
-                    # Failed to get terminology info, item probably misspelled
-                    raise ValueError("'" + item + "' is not a valid TotalSegmentator label terminology.")
-
-        self.log('Creating segmentations with TotalSegmentator AI...')
-        self.log(f"Total Segmentator arguments: {options}")
-        proc = slicer.util.launchConsoleProcess(totalSegmentatorCommand + options)
-        self.logProcessOutput(proc)
+        self.log('Creating segmentations with OMASeg AI...')
+        self.log(f"OMASeg arguments: {options}")
+        # proc = slicer.util.launchConsoleProcess(omaSegCommand + options)  # TODO: 
+        # self.logProcessOutput(proc)
 
         # Load result
         self.log('Importing segmentation results...')
@@ -1072,7 +1182,7 @@ class TotalSegmentatorLogic(ScriptedLoadableModuleLogic):
         # Get label descriptions
 
         # Get label descriptions if task is provided
-        from totalsegmentator.map_to_binary import class_map
+        from totalsegmentator.map_to_binary import class_map  #TODO:
         labelValueToSegmentName = class_map[task] if task else {}
 
         def import_labelmap_to_segmentation(labelmapVolumeNode, segmentName, segmentId):
@@ -1109,8 +1219,8 @@ class TotalSegmentatorLogic(ScriptedLoadableModuleLogic):
     def readSegmentation(self, outputSegmentation, outputSegmentationFile, task):
 
         # Get label descriptions
-        from totalsegmentator.map_to_binary import class_map
-        labelValueToSegmentName = class_map[task]
+        from omaseg.dataset_utils.bodyparts_labelmaps import map_taskid_to_labelmaps  #TODO:
+        labelValueToSegmentName = map_taskid_to_labelmaps[task]
         maxLabelValue = max(labelValueToSegmentName.keys())
         if min(labelValueToSegmentName.keys()) < 0:
             raise RuntimeError("Label values in class_map must be positive")
@@ -1123,7 +1233,7 @@ class TotalSegmentatorLogic(ScriptedLoadableModuleLogic):
         colorTableNode = slicer.vtkMRMLColorTableNode()
         colorTableNode.SetTypeToUser()
         colorTableNode.SetNumberOfColors(maxLabelValue+1)
-        colorTableNode.SetName(task)
+        colorTableNode.SetName(str(task))  # TODO:
         for labelValue in labelValueToSegmentName:
             randomColorsNode.GetColor(labelValue,rgba)
             colorTableNode.SetColor(labelValue, rgba[0], rgba[1], rgba[2], rgba[3])
@@ -1146,12 +1256,12 @@ class TotalSegmentatorLogic(ScriptedLoadableModuleLogic):
             self.setTerminology(outputSegmentation, segmentName, segmentId)
 
     def setTerminology(self, segmentation, segmentName, segmentId):
-        segment = segmentation.GetSegmentation().GetSegment(segmentId)
+        segment = segmentation.GetSegmentation().GetSegment(segmentId)  # check whether file contains segmentId
         if not segment:
             # Segment is not present in this segmentation
             return
-        if segmentName in self.totalSegmentatorLabelTerminology:
-            terminologyEntryStr = self.totalSegmentatorLabelTerminology[segmentName]
+        if segmentName in self.omaSegLabelTerminology:
+            terminologyEntryStr = self.omaSegLabelTerminology[segmentName]
             segment.SetTag(segment.GetTerminologyEntryTagName(), terminologyEntryStr)
             try:
                 label, color = self.getSegmentLabelColor(terminologyEntryStr)
@@ -1162,10 +1272,10 @@ class TotalSegmentatorLogic(ScriptedLoadableModuleLogic):
                 self.log(str(e))
 
 #
-# TotalSegmentatorTest
+# OMASegTest
 #
 
-class TotalSegmentatorTest(ScriptedLoadableModuleTest):
+class OMASegTest(ScriptedLoadableModuleTest):
     """
     This is the test case for your scripted module.
     Uses ScriptedLoadableModuleTest base class, available at:
@@ -1181,11 +1291,11 @@ class TotalSegmentatorTest(ScriptedLoadableModuleTest):
         """Run as few or as many tests as needed here.
         """
         self.setUp()
-        self.test_TotalSegmentator1()
+        self.test_OMASeg1()
         self.setUp()
-        self.test_TotalSegmentatorSubset()
+        self.test_OMASegSubset()
 
-    def test_TotalSegmentator1(self):
+    def test_OMASeg1(self):
         """ Ideally you should have several levels of tests.  At the lowest level
         tests should exercise the functionality of the logic with different inputs
         (both valid and invalid).  At higher levels your tests should emulate the
@@ -1214,24 +1324,24 @@ class TotalSegmentatorTest(ScriptedLoadableModuleTest):
         testLogic = False
 
         if testLogic:
-            logic = TotalSegmentatorLogic()
+            logic = OMASegLogic()
             logic.logCallback = self._mylog
 
             self.delayDisplay('Set up required Python packages')
             logic.setupPythonRequirements()
 
             self.delayDisplay('Compute output')
-            logic.process(inputVolume, outputSegmentation, fast=False)
+            logic.process(inputVolume, outputSegmentation)
 
         else:
-            logging.warning("test_TotalSegmentator1 logic testing was skipped")
+            logging.warning("test_OMASeg1 logic testing was skipped")
 
         self.delayDisplay('Test passed')
 
     def _mylog(self,text):
         print(text)
 
-    def test_TotalSegmentatorSubset(self):
+    def test_OMASegSubset(self):
         """ Ideally you should have several levels of tests.  At the lowest level
         tests should exercise the functionality of the logic with different inputs
         (both valid and invalid).  At higher levels your tests should emulate the
@@ -1260,7 +1370,7 @@ class TotalSegmentatorTest(ScriptedLoadableModuleTest):
         testLogic = False
 
         if testLogic:
-            logic = TotalSegmentatorLogic()
+            logic = OMASegLogic()
             logic.logCallback = self._mylog
 
             self.delayDisplay('Set up required Python packages')
@@ -1268,9 +1378,9 @@ class TotalSegmentatorTest(ScriptedLoadableModuleTest):
 
             self.delayDisplay('Compute output')
             _subset = ["lung_upper_lobe_left","lung_lower_lobe_right","trachea"]
-            logic.process(inputVolume, outputSegmentation, fast = False, subset = _subset)
+            logic.process(inputVolume, outputSegmentation, subset = _subset)
 
         else:
-            logging.warning("test_TotalSegmentator1 logic testing was skipped")
+            logging.warning("test_OMASeg1 logic testing was skipped")
 
         self.delayDisplay('Test passed')
