@@ -1,0 +1,50 @@
+{
+  "SegmentationCategoryTypeContextName": "Segmentation category and type - OMASeg",
+  "@schema": "https://raw.githubusercontent.com/qiicr/dcmqi/master/doc/segment-context-schema.json#",
+  "SegmentationCodes": {
+    "Category": [
+      {
+        "CodeMeaning": "Anatomical Structure",
+        "CodingSchemeDesignator": "SCT",
+        "showAnatomy": false,
+        "cid": "7150",
+        "CodeValue": "123037004",
+        "contextGroupName": "SegmentationPropertyCategories",
+        "Type": [
+          {
+            "recommendedDisplayRGBValue": [
+              0,
+              151,
+              206
+            ],
+            "CodeMeaning": "Inferior vena cava",
+            "CodingSchemeDesignator": "SCT",
+            "3dSlicerLabel": "inferior vena cava",
+            "cid": "3010,6117,7154",
+            "UMLSConceptUID": "C0042458",
+            "CodeValue": "64131007",
+            "contextGroupName": "CardiovascularAnatomicLocations,VascularAnatomy,AbdominalSegmentationTypes",
+            "SNOMEDCTConceptID": "64131007",
+            "paired": "U"
+          },
+          {
+            "recommendedDisplayRGBValue": [
+              204,
+              102,
+              0
+            ],
+            "CodeMeaning": "Spleen",
+            "CodingSchemeDesignator": "SCT",
+            "3dSlicerLabel": "spleen_kk",
+            "cid": "3010,6117,7154",
+            "UMLSConceptUID": "C0042458",
+            "CodeValue": "78961009",
+            "contextGroupName": "CardiovascularAnatomicLocations,VascularAnatomy,AbdominalSegmentationTypes",
+            "SNOMEDCTConceptID": "78961009",
+            "paired": "U"
+          }
+        ]
+      }
+    ]
+  }
+}
