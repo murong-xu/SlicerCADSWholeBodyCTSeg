@@ -106,16 +106,16 @@
 105,spinal_canal,SCT,123037004,Anatomical Structure,SCT,61853006,Spinal canal,,,,,,,,,
 106,larynx,SCT,123037004,Anatomical Structure,SCT,4596009,Larynx,,,,,,,,,
 107,heart,SCT,123037004,Anatomical Structure,SCT,80891009,Heart,,,,,,,,,
-108,bowel_bag,SCT,123037004,Anatomical Structure,SCT,80891009,Heart,,,,,,,,,  #TODO
-109,sigmoid,SCT,123037004,Anatomical Structure,SCT,80891009,Heart,,,,,,,,, #TODO
+108,bowel_bag,SCT,123037004,Anatomical Structure,SCT,0000,Bowel bag,,,,,,,,,  #TODO
+109,sigmoid,SCT,123037004,Anatomical Structure,SCT,0001,Sigmoid,,,,,,,,, #TODO
 110,rectum,SCT,123037004,Anatomical Structure,SCT,34402009,Rectum,,,,,,,,,
 111,prostate,SCT,123037004,Anatomical Structure,SCT,41216001,Prostate,,,,,,,,,
 112,seminal_vesicle,SCT,123037004,Anatomical Structure,SCT,64739004,Seminal vesicle,,,,,,,,,
 113,left_mammary_gland,SCT,123037004,Anatomical Structure,SCT,279009002,Mammary gland,SCT,7771000,Left,,,,,,
 114,right_mammary_gland,SCT,123037004,Anatomical Structure,SCT,279009002,Mammary gland,SCT,24028007,Right,,,,,,
 115,sternum,SCT,123037004,Anatomical Structure,SCT,56873002,Sternum,,,,,,,,,
-116,right psoas major,SCT,123037004,Anatomical Structure,SCT,41216001,Prostate,,,,,,,,,  #TODO
-117,left psoas major,SCT,123037004,Anatomical Structure,SCT,41216001,Prostate,,,,,,,,,  #TODO
+116,right psoas major,SCT,123037004,Anatomical Structure,SCT,0002,Psoas major,SCT,24028007,Right,,,,,, #TODO
+117,left psoas major,SCT,123037004,Anatomical Structure,SCT,0002,Psoas major,SCT,7771000,Left,,,,,,  #TODO
 118,right rectus abdominis,SCT,123037004,Anatomical Structure,SCT,31243008,Rectus abdominis muscle,SCT,24028007,Right,,,,,,
 119,left rectus abdominis,SCT,123037004,Anatomical Structure,SCT,31243008,Rectus abdominis muscle,SCT,7771000,Left,,,,,,
 120,white matter,SCT,123037004,Anatomical Structure,SCT,389080008,White matter,,,,,,,,,
@@ -127,42 +127,42 @@
 126,spongy bone,SCT,123037004,Anatomical Structure,SCT,20870005,Spongy bone,,,,,,,,,
 127,blood,SCT,123037004,Anatomical Structure,SCT,87612001,Blood,,,,,,,,,
 128,head muscles,SCT,123037004,Anatomical Structure,SCT,22688005,Muscle of head,,,,,,,,,
-129,OAR_A_Carotid_L,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO common_carotid_artery_right + internal_carotid_artery_right
-130,OAR_A_Carotid_R,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO
-131,OAR_Arytenoid,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO
-132,OAR_Bone_Mandible,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO
-133,OAR_Brainstem,SCT,123037004,Anatomical Structure,SCT,836432005,Parenchyma of brain,,,,,,,,,brainstem + brain_parenchyma
-134,OAR_BuccalMucosa,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO
-135,OAR_Cavity_Oral,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO
-136,OAR_Cochlea_L,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO
-137,OAR_Cochlea_R,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO
-138,OAR_Cricopharyngeus,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO
-139,OAR_Esophagus_S,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO
-140,OAR_Eye_AL,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO
-141,OAR_Eye_AR,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO
-142,OAR_Eye_PL,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO
-143,OAR_Eye_PR,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO
-144,OAR_Glnd_Lacrimal_L,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO
-145,OAR_Glnd_Lacrimal_R,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO
-146,OAR_Glnd_Submand_L,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO
-147,OAR_Glnd_Submand_R,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO
-148,OAR_Glnd_Thyroid,SCT,123037004,Anatomical Structure,SCT,69748006,Thyroid gland,,,,,,,,,
-149,OAR_Glottis,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO
-150,OAR_Larynx_SG,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO
-151,OAR_Lips,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO
-152,OAR_OpticChiasm,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO
-153,OAR_OpticNrv_L,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO
-154,OAR_OpticNrv_R,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO
-155,OAR_Parotid_L,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO
-156,OAR_Parotid_R,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO
-157,OAR_Pituitary,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO
-158,subcutaneous_tissue,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO
+129,OAR_A_Carotid_L,SCT,123037004,Anatomical Structure,SCT,0004,Carotid artery,SCT,7771000,Left,,,,,, # TODO common_carotid_artery_right + internal_carotid_artery_right
+130,OAR_A_Carotid_R,SCT,123037004,Anatomical Structure,SCT,0004,Carotid artery,SCT,24028007,Right,,,,,, # TODO
+131,OAR_Arytenoid,SCT,123037004,Anatomical Structure,SCT,0005,Arytenoids,,,,,,,,, # TODO
+132,OAR_Bone_Mandible,SCT,123037004,Anatomical Structure,SCT,0006,Mandible,,,,,,,,, # TODO
+133,OAR_Brainstem,SCT,123037004,Anatomical Structure,SCT,0007,Brainstem,,,,,,,,, #TODO brainstem + brain_parenchyma
+134,OAR_BuccalMucosa,SCT,123037004,Anatomical Structure,SCT,0008,Buccal mucosa,,,,,,,,, # TODO
+135,OAR_Cavity_Oral,SCT,123037004,Anatomical Structure,SCT,0009,Oral cavity,,,,,,,,, # TODO
+136,OAR_Cochlea_L,SCT,123037004,Anatomical Structure,SCT,0010,Cochlea,SCT,7771000,Left,,,,,,  #TODO
+137,OAR_Cochlea_R,SCT,123037004,Anatomical Structure,SCT,0010,Cochlea,SCT,24028007,Right,,,,,, #TODO
+138,OAR_Cricopharyngeus,SCT,123037004,Anatomical Structure,SCT,0012,Cricopharyngeal inlet,,,,,,,,, # TODO
+139,OAR_Esophagus_S,SCT,123037004,Anatomical Structure,SCT,0013,Cervical esophagus,,,,,,,,, # TODO
+140,OAR_Eye_AL,SCT,123037004,Anatomical Structure,SCT,0014,Anterior eyeball,SCT,7771000,Left,,,,,,  #TODO
+141,OAR_Eye_AR,SCT,123037004,Anatomical Structure,SCT,0014,Anterior eyeball,SCT,24028007,Right,,,,,, #TODO
+142,OAR_Eye_PL,SCT,123037004,Anatomical Structure,SCT,0016,Posterior eyeball,SCT,7771000,Left,,,,,,  #TODO
+143,OAR_Eye_PR,SCT,123037004,Anatomical Structure,SCT,0016,Posterior eyeball,SCT,24028007,Right,,,,,, #TODO
+144,OAR_Glnd_Lacrimal_L,SCT,123037004,Anatomical Structure,SCT,0018,Lacrimal gland,SCT,7771000,Left,,,,,,  #TODO
+145,OAR_Glnd_Lacrimal_R,SCT,123037004,Anatomical Structure,SCT,0018,Lacrimal gland,SCT,24028007,Right,,,,,, #TODO
+146,OAR_Glnd_Submand_L,SCT,123037004,Anatomical Structure,SCT,0020,Submandibular gland,SCT,7771000,Left,,,,,,  #TODO
+147,OAR_Glnd_Submand_R,SCT,123037004,Anatomical Structure,SCT,0020,Submandibular gland,SCT,24028007,Right,,,,,, #TODO
+148,OAR_Glnd_Thyroid,SCT,123037004,Anatomical Structure,SCT,0022,Thyroid gland,,,,,,,,,
+149,OAR_Glottis,SCT,123037004,Anatomical Structure,SCT,0023,Larynx-glottis,,,,,,,,, # TODO
+150,OAR_Larynx_SG,SCT,123037004,Anatomical Structure,SCT,0024,Larynx-supraglottic,,,,,,,,, # TODO
+151,OAR_Lips,SCT,123037004,Anatomical Structure,SCT,0025,Lips,,,,,,,,, # TODO
+152,OAR_OpticChiasm,SCT,123037004,Anatomical Structure,SCT,0026,Optic chiasm,,,,,,,,, # TODO
+153,OAR_OpticNrv_L,SCT,123037004,Anatomical Structure,SCT,0027,Optic nerve,SCT,7771000,Left,,,,,,  #TODO
+154,OAR_OpticNrv_R,SCT,123037004,Anatomical Structure,SCT,0027,Optic nerve,SCT,24028007,Right,,,,,, #TODO
+155,OAR_Parotid_L,SCT,123037004,Anatomical Structure,SCT,0029,Parotid gland,SCT,7771000,Left,,,,,,  #TODO
+156,OAR_Parotid_R,SCT,123037004,Anatomical Structure,SCT,0029,Parotid gland,SCT,24028007,Right,,,,,, #TODO
+157,OAR_Pituitary,SCT,123037004,Anatomical Structure,SCT,0031,Pituitary gland,,,,,,,,, # TODO
+158,subcutaneous_tissue,SCT,123037004,Anatomical Structure,SCT,0032,Subcutaneous tissue,,,,,,,,, # TODO
 159,muscle,SCT,85756007,Tissue,SCT,71616004,Muscle,,,,,,,,,
-160,abdominal_cavity,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO
-161,thoracic_cavity,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO
+160,abdominal_cavity,SCT,123037004,Anatomical Structure,SCT,0034,Abdominal cavity,,,,,,,,, # TODO
+161,thoracic_cavity,SCT,123037004,Anatomical Structure,SCT,0035,Thoracic cavity,,,,,,,,, # TODO
 162,bones,SCT,85756007,Tissue,SCT,272673000,Bone,,,,,,,,,
-163,glands,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO
+163,glands,SCT,123037004,Anatomical Structure,SCT,0036,Glands,,,,,,,,, # TODO
 164,pericardium,SCT,123037004,Anatomical Structure,SCT,76848001,Pericardium,,,,,,,,,
-165,breast_implant,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO  need to check with DAC if this should be code for breast implant, or implant with breast as anatomic location
+165,breast_implant,SCT,123037004,Anatomical Structure,SCT,0037,Breast implant,,,,,,,,, # TODO  need to check with DAC if this should be code for breast implant, or implant with breast as anatomic location
 166,mediastinum,SCT,123037004,Anatomical Structure,SCT,72410000,Mediastinum,,,,,,,,,
 167,spinal_cord,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,,
