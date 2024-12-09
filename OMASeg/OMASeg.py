@@ -362,7 +362,6 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         from collections import OrderedDict
 
         ScriptedLoadableModuleLogic.__init__(self)
-
         self.omaSegPythonPackageDownloadUrl = "https://github.com/murong-xu/OMASeg/releases/download/dev/OMASeg_SSH.zip"  # latest master as of 2024-09-03 #TODO:
 
         # Custom applications can set custom location for weights.
@@ -416,7 +415,7 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         """
 
         moduleDir = os.path.dirname(slicer.util.getModule('OMASeg').path)
-        omaSegTerminologyMappingFilePath = os.path.join(moduleDir, 'Resources', 'OMASeg_snomed_mapping.csv')  # TODO:
+        omaSegTerminologyMappingFilePath = os.path.join(moduleDir, 'Resources', 'omaseg_snomed_mapping.csv')
 
         terminologiesLogic = slicer.util.getModuleLogic('Terminologies')
         omaSegTerminologyName = "Segmentation category and type - OMASeg"
@@ -1015,8 +1014,6 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
 
         inputFile = tempFolder+"/omaseg-input.nii"
         outputSegmentationFolder = tempFolder + "/segmentation"
-        # print (outputSegmentationFolder)
-        outputSegmentationFile = tempFolder + "/segmentation.nii"
 
         # Recommend the user to switch to fast mode if no GPU or not enough memory is available
         import torch
@@ -1067,7 +1064,7 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
             for i in range(numberOfItems):
                 self.log(f"Segmenting item {i+1}/{numberOfItems} of sequence")
                 self.processVolume(inputFile, inputVolume,
-                                   outputSegmentationFolder, outputSegmentation, outputSegmentationFile,
+                                   outputSegmentationFolder, outputSegmentation,
                                    task, subset, cpu, omaSegCommand)
                 sequenceBrowserNode.SelectNextItem()
             sequenceBrowserNode.SetSelectedItemNumber(selectedItemNumber)
@@ -1075,7 +1072,7 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         else:
             # Segment a single volume
             self.processVolume(inputFile, inputVolume,
-                               outputSegmentationFolder, outputSegmentation, outputSegmentationFile,
+                               outputSegmentationFolder, outputSegmentation,
                                task, subset, cpu, omaSegCommand)
 
         stopTime = time.time()
@@ -1088,7 +1085,7 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         else:
             self.log(f"Not cleaning up temporary folder: {tempFolder}")
 
-    def processVolume(self, inputFile, inputVolume, outputSegmentationFolder, outputSegmentation, outputSegmentationFile, task, subset, cpu, omaSegCommand):
+    def processVolume(self, inputFile, inputVolume, outputSegmentationFolder, outputSegmentation, task, subset, cpu, omaSegCommand):
         """Segment a single volume
         """
 
@@ -1102,10 +1099,12 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         volumeStorageNode.UnRegister(None)
 
         # Get options
+        # model_folder = '/Users/murong/Desktop/tum/models'
+        model_folder = '/home/jixing/Desktop/USZ/models'  #TODO:
         if cpu:     
-            options = ["-i", inputFile, "-o", outputSegmentationFolder, "--cpu"]
+            options = ["-i", inputFile, "-o", outputSegmentationFolder, "--cpu", "task", task, '-model', model_folder]
         else:
-            options = ["-i", inputFile, "-o", outputSegmentationFolder]
+            options = ["-i", inputFile, "-o", outputSegmentationFolder, "task", task, '-model', model_folder]
 
         # Launch OMASeg in fast mode to get initial segmentation, if needed
 
@@ -1151,8 +1150,8 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
 
         # Load result
         self.log('Importing segmentation results...')
-        if multilabel:
-            self.readSegmentation(outputSegmentation, outputSegmentationFile, task)
+        if multilabel: 
+            self.readSegmentation(outputSegmentation, outputSegmentationFolder, task) # TODO: 9x output nodes
         else:
             self.readSegmentationFolder(outputSegmentation, outputSegmentationFolder, task, subset)
 
@@ -1183,7 +1182,7 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
 
         # Get label descriptions if task is provided
         from totalsegmentator.map_to_binary import class_map  #TODO:
-        labelValueToSegmentName = class_map[task] if task else {}
+        labelValueToSegmentName = class_map[int(task)] if task else {}
 
         def import_labelmap_to_segmentation(labelmapVolumeNode, segmentName, segmentId):
             updatedSegmentIds = vtk.vtkStringArray()
@@ -1216,11 +1215,10 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
                 else:
                     self.log(f"{segmentName} not found.")
 
-    def readSegmentation(self, outputSegmentation, outputSegmentationFile, task):
-
+    def readSegmentation(self, outputSegmentation, outputSegmentationFolder, task):
         # Get label descriptions
-        from omaseg.dataset_utils.bodyparts_labelmaps import map_taskid_to_labelmaps  #TODO:
-        labelValueToSegmentName = map_taskid_to_labelmaps[task]
+        from omaseg.dataset_utils.bodyparts_labelmaps import map_taskid_to_labelmaps
+        labelValueToSegmentName = map_taskid_to_labelmaps[int(task)]
         maxLabelValue = max(labelValueToSegmentName.keys())
         if min(labelValueToSegmentName.keys()) < 0:
             raise RuntimeError("Label values in class_map must be positive")
@@ -1228,6 +1226,8 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         # Get color node with random colors
         randomColorsNode = slicer.mrmlScene.GetNodeByID('vtkMRMLColorTableNodeRandom')
         rgba = [0, 0, 0, 0]
+
+        outputSegmentationFile = os.path.join(outputSegmentationFolder, 'segmentation_task_'+task+'.nii.gz')
 
         # Create color table for this segmentation task
         colorTableNode = slicer.vtkMRMLColorTableNode()

@@ -16,7 +16,6 @@
 15,lung_upper_lobe_right,SCT,123037004,Anatomical Structure,SCT,45653009,Upper lobe of lung,SCT,24028007,Right,,,,,,
 16,lung_middle_lobe_right,SCT,123037004,Anatomical Structure,SCT,72481006,Middle lobe of right lung,,,,,,,,,
 17,lung_lower_lobe_right,SCT,123037004,Anatomical Structure,SCT,90572001,Lower lobe of lung,SCT,24028007,Right,,,,,,
-
 18,vertebrae_L5,SCT,123037004,Anatomical Structure,SCT,49668003,L5 vertebra,,,,,,,,,
 19,vertebrae_L4,SCT,123037004,Anatomical Structure,SCT,11994002,L4 vertebra,,,,,,,,,
 20,vertebrae_L3,SCT,123037004,Anatomical Structure,SCT,36470004,L3 vertebra,,,,,,,,,
@@ -41,7 +40,6 @@
 39,vertebrae_C3,SCT,123037004,Anatomical Structure,SCT,113205007,C3 vertebra,,,,,,,,,
 40,vertebrae_C2,SCT,123037004,Anatomical Structure,SCT,39976000,C2 vertebra,,,,,,,,,
 41,vertebrae_C1,SCT,123037004,Anatomical Structure,SCT,14806007,C1 vertebra,,,,,,,,,
-
 42,esophagus,SCT,123037004,Anatomical Structure,SCT,32849002,Esophagus,,,,,,,,,
 43,trachea,SCT,123037004,Anatomical Structure,SCT,44567001,Trachea,,,,,,,,,
 44,heart_myocardium,SCT,123037004,Anatomical Structure,SCT,74281007,Myocardium,,,,,,,,,
@@ -60,7 +58,6 @@
 57,colon,SCT,123037004,Anatomical Structure,SCT,71854001,Colon,,,,,,,,,
 58,urinary_bladder,SCT,123037004,Anatomical Structure,SCT,89837001,Urinary bladder,,,,,,,,,
 59,face,SCT,123037004,Anatomical Structure,SCT,89545001,Face,,,,,,,,,
-
 60,humerus_left,SCT,123037004,Anatomical Structure,SCT,85050009,Humerus,SCT,7771000,Left,,,,,,
 61,humerus_right,SCT,123037004,Anatomical Structure,SCT,85050009,Humerus,SCT,24028007,Right,,,,,,
 62,scapula_left,SCT,123037004,Anatomical Structure,SCT,79601000,Scapula,SCT,7771000,Left,,,,,,
@@ -82,7 +79,6 @@
 78,autochthon_right,SCT,123037004,Anatomical Structure,SCT,244849004,Deep muscle of back,SCT,24028007,Right,,,,,,
 79,iliopsoas_left,SCT,123037004,Anatomical Structure,SCT,68455001,Iliopsoas muscle,SCT,7771000,Left,,,,,,
 80,iliopsoas_right,SCT,123037004,Anatomical Structure,SCT,68455001,Iliopsoas muscle,SCT,24028007,Right,,,,,,
-
 81,rib_left_1,SCT,123037004,Anatomical Structure,SCT,48535007,First rib,SCT,7771000,Left,,,,,,
 82,rib_left_2,SCT,123037004,Anatomical Structure,SCT,78247007,Second rib,SCT,7771000,Left,,,,,,
 83,rib_left_3,SCT,123037004,Anatomical Structure,SCT,25888004,Third rib,SCT,7771000,Left,,,,,,
@@ -107,7 +103,6 @@
 102,rib_right_10,SCT,123037004,Anatomical Structure,SCT,77644006,Tenth rib,SCT,24028007,Right,,,,,,
 103,rib_right_11,SCT,123037004,Anatomical Structure,SCT,58830002,Eleventh rib,SCT,24028007,Right,,,,,,
 104,rib_right_12,SCT,123037004,Anatomical Structure,SCT,43993008,Twelfth rib,SCT,24028007,Right,,,,,,
-
 105,spinal_canal,SCT,123037004,Anatomical Structure,SCT,61853006,Spinal canal,,,,,,,,,
 106,larynx,SCT,123037004,Anatomical Structure,SCT,4596009,Larynx,,,,,,,,,
 107,heart,SCT,123037004,Anatomical Structure,SCT,80891009,Heart,,,,,,,,,
@@ -123,7 +118,6 @@
 117,left psoas major,SCT,123037004,Anatomical Structure,SCT,41216001,Prostate,,,,,,,,,  #TODO
 118,right rectus abdominis,SCT,123037004,Anatomical Structure,SCT,31243008,Rectus abdominis muscle,SCT,24028007,Right,,,,,,
 119,left rectus abdominis,SCT,123037004,Anatomical Structure,SCT,31243008,Rectus abdominis muscle,SCT,7771000,Left,,,,,,
-
 120,white matter,SCT,123037004,Anatomical Structure,SCT,389080008,White matter,,,,,,,,,
 121,gray matter,SCT,123037004,Anatomical Structure,SCT,389081007,Gray matter,,,,,,,,,
 122,csf,SCT,91720002,Body substance,SCT,65216001,Cerebrospinal fluid,,,,,,,,,
@@ -133,7 +127,6 @@
 126,spongy bone,SCT,123037004,Anatomical Structure,SCT,20870005,Spongy bone,,,,,,,,,
 127,blood,SCT,123037004,Anatomical Structure,SCT,87612001,Blood,,,,,,,,,
 128,head muscles,SCT,123037004,Anatomical Structure,SCT,22688005,Muscle of head,,,,,,,,,
-
 129,OAR_A_Carotid_L,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO common_carotid_artery_right + internal_carotid_artery_right
 130,OAR_A_Carotid_R,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO
 131,OAR_Arytenoid,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO
@@ -163,7 +156,6 @@
 155,OAR_Parotid_L,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO
 156,OAR_Parotid_R,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO
 157,OAR_Pituitary,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO
-
 158,subcutaneous_tissue,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO
 159,muscle,SCT,85756007,Tissue,SCT,71616004,Muscle,,,,,,,,,
 160,abdominal_cavity,SCT,123037004,Anatomical Structure,SCT,2748008,Spinal cord,,,,,,,,, # TODO

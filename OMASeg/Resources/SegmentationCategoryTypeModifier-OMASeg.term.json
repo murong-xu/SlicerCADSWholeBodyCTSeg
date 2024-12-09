@@ -355,9 +355,7 @@
 
           {
             "recommendedDisplayRGBValue": [
-              255,
-              255,
-              207
+              48, 232, 191
             ],
             "CodeMeaning": "C1 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -370,9 +368,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              255,
-              255,
-              207
+              55, 228, 185
             ],
             "CodeMeaning": "C2 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -385,9 +381,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              255,
-              255,
-              207
+              63, 224, 180
             ],
             "CodeMeaning": "C3 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -400,9 +394,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              255,
-              255,
-              207
+              71, 220, 175
             ],
             "CodeMeaning": "C4 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -415,9 +407,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              255,
-              255,
-              207
+              78, 216, 170
             ],
             "CodeMeaning": "C5 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -430,9 +420,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              255,
-              255,
-              207
+              86, 213, 165
             ],
             "CodeMeaning": "C6 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -445,9 +433,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              255,
-              255,
-              207
+              94, 209, 160
             ],
             "CodeMeaning": "C7 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -460,9 +446,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              226,
-              202,
-              134
+              101, 205, 155
             ],
             "CodeMeaning": "T1 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -475,9 +459,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              226,
-              202,
-              134
+              109, 201, 150
             ],
             "CodeMeaning": "T2 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -490,9 +472,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              226,
-              202,
-              134
+              117, 198, 145
             ],
             "CodeMeaning": "T3 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -505,9 +485,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              226,
-              202,
-              134
+              124, 194, 139
             ],
             "CodeMeaning": "T4 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -520,9 +498,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              226,
-              202,
-              134
+              132, 190, 134
             ],
             "CodeMeaning": "T5 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -535,9 +511,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              226,
-              202,
-              134
+              140, 186, 129
             ],
             "CodeMeaning": "T6 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -550,9 +524,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              226,
-              202,
-              134
+              147, 182, 124
             ],
             "CodeMeaning": "T7 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -565,9 +537,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              226,
-              202,
-              134
+              155, 179, 119
             ],
             "CodeMeaning": "T8 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -580,9 +550,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              226,
-              202,
-              134
+              163, 175, 114
             ],
             "CodeMeaning": "T9 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -595,9 +563,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              226,
-              202,
-              134
+              170, 171, 109
             ],
             "CodeMeaning": "T10 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -610,9 +576,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              226,
-              202,
-              134
+              178, 167, 104
             ],
             "CodeMeaning": "T11 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -625,9 +589,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              226,
-              202,
-              134
+              186, 164, 99
             ],
             "CodeMeaning": "T12 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -640,9 +602,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              212,
-              188,
-              102
+              193, 160, 93
             ],
             "CodeMeaning": "L1 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -655,9 +615,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              212,
-              188,
-              102
+              201, 156, 88
             ],
             "CodeMeaning": "L2 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -670,9 +628,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              212,
-              188,
-              102
+              209, 152, 83
             ],
             "CodeMeaning": "L3 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -685,9 +641,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              212,
-              188,
-              102
+              216, 148, 78
             ],
             "CodeMeaning": "L4 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -700,9 +654,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              212,
-              188,
-              102
+              224, 145, 73
             ],
             "CodeMeaning": "L5 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -1441,9 +1393,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  253,
-                  232,
-                  158
+                  189, 255, 243
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -1456,9 +1406,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  253,
-                  232,
-                  158
+                  243, 249, 167
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -1488,9 +1436,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  253,
-                  232,
-                  158
+                  178, 249, 234
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -1503,9 +1449,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  253,
-                  232,
-                  158
+                  239, 244, 156
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -1535,9 +1479,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  253,
-                  232,
-                  158
+                  168, 243, 226
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -1550,9 +1492,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  253,
-                  232,
-                  158
+                  235, 239, 145
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -1582,9 +1522,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  253,
-                  232,
-                  158
+                  157, 238, 218
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -1597,9 +1535,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  253,
-                  232,
-                  158
+                  231, 234, 134
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -1629,9 +1565,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  253,
-                  232,
-                  158
+                  147, 232, 210
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -1644,9 +1578,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  253,
-                  232,
-                  158
+                  228, 230, 124
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -1676,9 +1608,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  253,
-                  232,
-                  158
+                  136, 227, 202
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -1691,9 +1621,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  253,
-                  232,
-                  158
+                  224, 225, 113
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -1723,9 +1651,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  253,
-                  232,
-                  158
+                  126, 221, 194
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -1738,9 +1664,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  253,
-                  232,
-                  158
+                  220, 220, 102
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -1770,9 +1694,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  253,
-                  232,
-                  158
+                  115, 216, 186
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -1785,9 +1707,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  253,
-                  232,
-                  158
+                  216, 215, 91
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -1817,9 +1737,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  253,
-                  232,
-                  158
+                  105, 210, 178
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -1832,9 +1750,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  253,
-                  232,
-                  158
+                  213, 211, 81
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -1864,9 +1780,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  253,
-                  232,
-                  158
+                  94, 205, 170
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -1879,9 +1793,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  253,
-                  232,
-                  158
+                  209, 206, 70
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -1911,9 +1823,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  253,
-                  232,
-                  158
+                  84, 199, 162
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -1926,9 +1836,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  253,
-                  232,
-                  158
+                  205, 201, 59
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -1958,9 +1866,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  253,
-                  232,
-                  158
+                  74, 194, 154
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -1973,9 +1879,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  253,
-                  232,
-                  158
+                  202, 197, 49
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
