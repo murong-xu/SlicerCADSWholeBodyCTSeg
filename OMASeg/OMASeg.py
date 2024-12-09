@@ -289,18 +289,29 @@ class OMASegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
                 return
 
         with slicer.util.tryWithErrorDisplay("Failed to compute results.", waitCursor=True):
-
-            # Create new segmentation node, if not selected yet
+            # Create initial segmentation node if needed
             if not self.ui.outputSegmentationSelector.currentNode():
                 self.ui.outputSegmentationSelector.addNode()
 
             self.logic.useStandardSegmentNames = self.ui.useStandardSegmentNamesCheckBox.checked
 
-            # Compute output
-            self.logic.process(self.ui.inputVolumeSelector.currentNode(), self.ui.outputSegmentationSelector.currentNode(),
-                self.ui.cpuCheckBox.checked, self.ui.taskComboBox.currentData, interactive = True, sequenceBrowserNode = sequenceBrowserNode)
+            # Process and get all created nodes
+            segmentationNodes = self.logic.process(
+                self.ui.inputVolumeSelector.currentNode(),
+                self.ui.outputSegmentationSelector.currentNode(),
+                self.ui.cpuCheckBox.checked,
+                self.ui.taskComboBox.currentData,
+                interactive=True,
+                sequenceBrowserNode=sequenceBrowserNode
+            )
 
-        self.ui.statusLabel.appendPlainText("\nProcessing finished.")
+            # Update UI with first node
+            if segmentationNodes and len(segmentationNodes) > 0:
+                self.ui.outputSegmentationSelector.setCurrentNode(segmentationNodes[0])
+
+        self.ui.statusLabel.appendPlainText(
+            f"\nProcessing finished. Created {len(segmentationNodes)} segmentation nodes."
+        )
 
     def onPackageInfoUpdate(self):
         self.ui.packageInfoTextBrowser.plainText = ''
@@ -395,17 +406,29 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         # Ideally, this information should be provided by OMASeg itself.
         self.tasks = OrderedDict()
 
-        # Main
-        self.tasks['551'] = {'title': '551', 'supportsMultiLabel': True}
-        self.tasks['552'] = {'title': '552', 'supportsMultiLabel': True}
-        self.tasks['553'] = {'title': '553', 'supportsMultiLabel': True}
-        self.tasks['554'] = {'title': '554', 'supportsMultiLabel': True}
-        self.tasks['555'] = {'title': '555', 'supportsMultiLabel': True}
-        self.tasks['556'] = {'title': '556', 'supportsMultiLabel': True}
-        self.tasks['557'] = {'title': '557', 'supportsMultiLabel': True}
-        self.tasks['558'] = {'title': '558', 'supportsMultiLabel': True}
-        self.tasks['559'] = {'title': '559', 'supportsMultiLabel': True}
-        # self.tasks['all'] = {'title': 'all', 'supportsMultiLabel': True}
+        # Define available tasks
+        self._defineAvailableTasks()
+
+    def _defineAvailableTasks(self):
+        """Define all available segmentation tasks"""
+        # Individual tasks
+        individual_tasks = [
+            '551', '552', '553', '554', '555',
+            '556', '557', '558', '559'
+        ]
+        
+        for task_id in individual_tasks:
+            self.tasks[task_id] = {
+                'title': task_id,
+                'supportsMultiLabel': True
+            }
+            
+        # Special 'all' task that runs all individual tasks
+        self.tasks['all'] = {
+            'title': 'all',
+            'supportsMultiLabel': True,
+            'subtasks': individual_tasks
+        }
 
         self.loadOMASegLabelTerminology()
 
@@ -847,21 +870,21 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         # Install OMASeg with selected dependencies only
         # (it would replace Slicer's "requests")
         needToInstallSegmenter = False
-        try:
-            import omaseg  #TODO:
-            if not upgrade:
-                # Check if we need to update OMASeg Python package version
-                downloadUrl = self.installedOMASegPythonPackageDownloadUrl()
-                if downloadUrl and (downloadUrl != self.omaSegPythonPackageDownloadUrl):
-                    # OMASeg have been already installed from GitHub, from a different URL that this module needs
-                    if not slicer.util.confirmOkCancelDisplay(
-                        f"This module requires OMASeg Python package update.",
-                        detailedText=f"Currently installed: {downloadUrl}\n\nRequired: {self.omaSegPythonPackageDownloadUrl}"):  # TODO: 
-                      raise ValueError('OMASeg update was cancelled.')
-                    upgrade = True
-        except ModuleNotFoundError as e:
-            needToInstallSegmenter = True
-        # upgrade = False
+        # try:
+        #     import omaseg  #TODO:
+        #     if not upgrade:
+        #         # Check if we need to update OMASeg Python package version
+        #         downloadUrl = self.installedOMASegPythonPackageDownloadUrl()
+        #         if downloadUrl and (downloadUrl != self.omaSegPythonPackageDownloadUrl):
+        #             # OMASeg have been already installed from GitHub, from a different URL that this module needs
+        #             if not slicer.util.confirmOkCancelDisplay(
+        #                 f"This module requires OMASeg Python package update.",
+        #                 detailedText=f"Currently installed: {downloadUrl}\n\nRequired: {self.omaSegPythonPackageDownloadUrl}"):  # TODO: 
+        #               raise ValueError('OMASeg update was cancelled.')
+        #             upgrade = True
+        # except ModuleNotFoundError as e:
+        #     needToInstallSegmenter = True
+        upgrade = True
         if needToInstallSegmenter or upgrade:  # TODO:
             self.log(f'OMASeg Python package is required. Installing it from {self.omaSegPythonPackageDownloadUrl}... (it may take several minutes)')
 
@@ -985,22 +1008,23 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
 
     def process(self, inputVolume, outputSegmentation, cpu=False, task=None, subset=None, interactive=False, sequenceBrowserNode=None):
         """
-        Run the processing algorithm on a volume or a sequence of volumes.
-        Can be used without GUI widget.
-        :param inputVolume: volume to be thresholded
-        :param outputVolume: thresholding result
-        :param task: one of self.tasks, default is "total"
-        :param subset: a list of structures (OMASeg classe names https://github.com/wasserth/TotalSegmentator#class-detailsTotalSegmentator) to segment.
-          Default is None, which means that all available structures will be segmented."
-        :param interactive: set to True to enable warning popups to be shown to users
-        :param sequenceBrowserNode: if specified then all frames of the inputVolume sequence will be segmented
+        Run the processing algorithm.
+        Parameters:
+            inputVolume: Input volume node
+            outputSegmentation: Initial segmentation node
+            cpu: Whether to use CPU instead of GPU
+            task: Task ID to run
+            subset: Subset of structures to segment
+            interactive: Whether running in interactive mode
+            sequenceBrowserNode: Optional sequence browser node for sequence processing
+        Returns:
+            List of created segmentation nodes
         """
-
         if not inputVolume:
-            raise ValueError("Input or output volume is invalid")
+            raise ValueError("Input volume is invalid")
 
         if task == None and not subset:
-            task = "551"  #TODO: 
+            task = "all"
 
         import time
         startTime = time.time()
@@ -1009,82 +1033,161 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         if self.omaSegWeightsPath:
             os.environ["OMASEG_WEIGHTS_PATH"] = self.omaSegWeightsPath
 
-        # Create new empty folder
+        # Create temporary folder - moved here so it can be shared across tasks
         tempFolder = slicer.util.tempDirectory()
+        inputFile = os.path.join(tempFolder, "omaseg-input.nii")
+        outputSegmentationFolder = os.path.join(tempFolder, "segmentation")
 
-        inputFile = tempFolder+"/omaseg-input.nii"
-        outputSegmentationFolder = tempFolder + "/segmentation"
-
-        # Recommend the user to switch to fast mode if no GPU or not enough memory is available
-        import torch
-
-        cuda = torch.cuda if torch.backends.cuda.is_built() and torch.cuda.is_available() else None
-
-        if not cuda and interactive:
-
-            import ctk
-            import qt
-            mbox = ctk.ctkMessageBox(slicer.util.mainWindow())
-            mbox.addButton("Full-resolution (~5 to 50 minutes)", qt.QMessageBox.RejectRole)
-            # Windows 10 peek feature in taskbar shows all hidden but not destroyed windows
-            # (after creating and closing a messagebox, hovering over the mouse on Slicer icon, moving up the
-            # mouse to the peek thumbnail would show it again).
-            mbox.deleteLater()
-
-        # Get OMASeg launcher command
-        # OMASeg (.py file, without extension) is installed in Python Scripts folder
+        # Get Python and OMASeg paths
         import sysconfig
-        omaSegExecutablePath = os.path.join(sysconfig.get_path('scripts'), OMASegLogic.executableName("OMASegDummy"))  #TODO: DummySeg is written in setup.py (zip)
-        # Get Python executable path
         import shutil
         pythonSlicerExecutablePath = shutil.which('PythonSlicer')
         if not pythonSlicerExecutablePath:
             raise RuntimeError("Python was not found")
-        omaSegCommand = [ pythonSlicerExecutablePath, omaSegExecutablePath]
+        omaSegExecutablePath = os.path.join(sysconfig.get_path('scripts'), 
+                                        self.executableName("OMASegDummy"))
+        omaSegCommand = [pythonSlicerExecutablePath, omaSegExecutablePath]
 
-        inputVolumeSequence = None
-        if sequenceBrowserNode:
-            inputVolumeSequence = sequenceBrowserNode.GetSequenceNode(inputVolume)
+        try:
+            # Handle 'all' task specially
+            if task == 'all':
+                segmentationNodes = self._processAllTasks(
+                    inputVolume, outputSegmentation, cpu, 
+                    interactive, sequenceBrowserNode,
+                    inputFile, outputSegmentationFolder  # Pass the temp folders
+                )
+                return segmentationNodes
 
-        if inputVolumeSequence is not None:
+            # Process single task
+            inputVolumeSequence = None
+            if sequenceBrowserNode:
+                inputVolumeSequence = sequenceBrowserNode.GetSequenceNode(inputVolume)
 
-            # If the volume already has a sequence in the current browser node then use that
-            segmentationSequence = sequenceBrowserNode.GetSequenceNode(outputSegmentation)
-            if not segmentationSequence:
-                segmentationSequence = slicer.mrmlScene.AddNewNodeByClass("vtkMRMLSequenceNode", outputSegmentation.GetName())
-                sequenceBrowserNode.AddProxyNode(outputSegmentation, segmentationSequence, False)
+            segmentationNodes = []
 
-            selectedItemNumber = sequenceBrowserNode.GetSelectedItemNumber()
-            sequenceBrowserNode.PlaybackActiveOff()
-            sequenceBrowserNode.SelectFirstItem()
-            sequenceBrowserNode.SetRecording(segmentationSequence, True)
-            sequenceBrowserNode.SetSaveChanges(segmentationSequence, True)
+            if inputVolumeSequence is not None:
+                # Handle sequence data
+                segmentationSequence = sequenceBrowserNode.GetSequenceNode(outputSegmentation)
+                if not segmentationSequence:
+                    segmentationSequence = slicer.mrmlScene.AddNewNodeByClass(
+                        "vtkMRMLSequenceNode", 
+                        outputSegmentation.GetName()
+                    )
+                    sequenceBrowserNode.AddProxyNode(outputSegmentation, segmentationSequence, False)
 
-            numberOfItems = sequenceBrowserNode.GetNumberOfItems()
-            for i in range(numberOfItems):
-                self.log(f"Segmenting item {i+1}/{numberOfItems} of sequence")
-                self.processVolume(inputFile, inputVolume,
-                                   outputSegmentationFolder, outputSegmentation,
-                                   task, subset, cpu, omaSegCommand)
-                sequenceBrowserNode.SelectNextItem()
-            sequenceBrowserNode.SetSelectedItemNumber(selectedItemNumber)
+                selectedItemNumber = sequenceBrowserNode.GetSelectedItemNumber()
+                sequenceBrowserNode.PlaybackActiveOff()
+                sequenceBrowserNode.SelectFirstItem()
+                sequenceBrowserNode.SetRecording(segmentationSequence, True)
+                sequenceBrowserNode.SetSaveChanges(segmentationSequence, True)
 
-        else:
-            # Segment a single volume
-            self.processVolume(inputFile, inputVolume,
-                               outputSegmentationFolder, outputSegmentation,
-                               task, subset, cpu, omaSegCommand)
+                numberOfItems = sequenceBrowserNode.GetNumberOfItems()
+                for i in range(numberOfItems):
+                    self.log(f"Segmenting item {i+1}/{numberOfItems} of sequence")
+                    currentNodes = self.processVolume(
+                        inputFile, inputVolume,
+                        outputSegmentationFolder, outputSegmentation,
+                        task, subset, cpu, omaSegCommand
+                    )
+                    if currentNodes:
+                        segmentationNodes.extend(currentNodes)
+                    sequenceBrowserNode.SelectNextItem()
+                
+                sequenceBrowserNode.SetSelectedItemNumber(selectedItemNumber)
+            
+            else:
+                # Process single volume
+                self.log(f"Writing input file to {inputFile}")
+                volumeStorageNode = slicer.mrmlScene.CreateNodeByClass("vtkMRMLVolumeArchetypeStorageNode")
+                volumeStorageNode.SetFileName(inputFile)
+                volumeStorageNode.UseCompressionOff()
+                volumeStorageNode.WriteData(inputVolume)
+                volumeStorageNode.UnRegister(None)
 
-        stopTime = time.time()
-        self.log(f"Processing completed in {stopTime-startTime:.2f} seconds")
+                segmentationNodes = self.processVolume(
+                    inputFile, inputVolume,
+                    outputSegmentationFolder, outputSegmentation,
+                    task, subset, cpu, omaSegCommand
+                )
 
-        if self.clearOutputFolder:
-            self.log("Cleaning up temporary folder...")
-            if os.path.isdir(tempFolder):
-                shutil.rmtree(tempFolder)
-        else:
-            self.log(f"Not cleaning up temporary folder: {tempFolder}")
+            stopTime = time.time()
+            self.log(f"Processing completed in {stopTime-startTime:.2f} seconds")
 
+            return segmentationNodes
+
+        except Exception as e:
+            self.log(f"Error during processing: {str(e)}")
+            raise
+
+        finally:
+            # Cleanup temp folder after all processing is complete
+            if self.clearOutputFolder:
+                self.log("Cleaning up temporary folder...")
+                if os.path.isdir(tempFolder):
+                    shutil.rmtree(tempFolder)
+            else:
+                self.log(f"Not cleaning up temporary folder: {tempFolder}")
+
+    def _processAllTasks(self, inputVolume, outputSegmentation, cpu, interactive, 
+                    sequenceBrowserNode, inputFile, outputSegmentationFolder):
+        """
+        Process all tasks sequentially using the same temporary folders
+        Returns list of all created segmentation nodes
+        """
+        allSegmentationNodes = []
+        subtasks = self.tasks['all']['subtasks']
+        
+        # Write input volume to file once for all tasks
+        self.log(f"Writing input file to {inputFile}")
+        volumeStorageNode = slicer.mrmlScene.CreateNodeByClass("vtkMRMLVolumeArchetypeStorageNode")
+        volumeStorageNode.SetFileName(inputFile)
+        volumeStorageNode.UseCompressionOff()
+        volumeStorageNode.WriteData(inputVolume)
+        volumeStorageNode.UnRegister(None)
+
+        # Get Python and OMASeg paths
+        import sysconfig
+        import shutil
+        pythonSlicerExecutablePath = shutil.which('PythonSlicer')
+        if not pythonSlicerExecutablePath:
+            raise RuntimeError("Python was not found")
+        omaSegExecutablePath = os.path.join(sysconfig.get_path('scripts'), 
+                                        self.executableName("OMASegDummy"))
+        omaSegCommand = [pythonSlicerExecutablePath, omaSegExecutablePath]
+        
+        originalName = outputSegmentation.GetName()
+        for i, subtask in enumerate(subtasks):
+            self.log(f'Processing task {subtask} ({i+1}/{len(subtasks)})')
+            
+            # Create new segmentation node for each task except first
+            if i == 0:
+                currentSegmentation = outputSegmentation
+                currentSegmentation.SetName(f"{originalName}_{subtask}")
+            else:
+                currentSegmentation = slicer.mrmlScene.AddNewNodeByClass(
+                    'vtkMRMLSegmentationNode',
+                    f"{originalName}_{subtask}"
+                )
+            
+            # Process current task using the same temp folders
+            segNodes = self.processVolume(
+                inputFile=inputFile,
+                inputVolume=inputVolume,
+                outputSegmentationFolder=outputSegmentationFolder,
+                outputSegmentation=currentSegmentation,
+                task=subtask,
+                subset=None,
+                cpu=cpu,
+                omaSegCommand=omaSegCommand
+            )
+            
+            if isinstance(segNodes, list):
+                allSegmentationNodes.extend(segNodes)
+            else:
+                allSegmentationNodes.append(segNodes)
+
+        return allSegmentationNodes
+    
     def processVolume(self, inputFile, inputVolume, outputSegmentationFolder, outputSegmentation, task, subset, cpu, omaSegCommand):
         """Segment a single volume
         """
@@ -1151,10 +1254,24 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         # Load result
         self.log('Importing segmentation results...')
         if multilabel: 
-            self.readSegmentation(outputSegmentation, outputSegmentationFolder, task) # TODO: 9x output nodes
+            self.readSegmentation(
+                outputSegmentation, 
+                outputSegmentationFolder, 
+                task
+            )
         else:
-            self.readSegmentationFolder(outputSegmentation, outputSegmentationFolder, task, subset)
+            segmentationNodes = self.readSegmentationFolder(
+                outputSegmentation,
+                outputSegmentationFolder,
+                task,
+                subset
+            )
 
+        # # Set properties for all nodes
+        # for segNode in segmentationNodes:
+        #     self._setSegmentationNodeProperties(segNode, inputVolume)
+        # return segmentationNodes
+    
         # Set source volume - required for DICOM Segmentation export
         outputSegmentation.SetNodeReferenceID(outputSegmentation.GetReferenceImageGeometryReferenceRole(), inputVolume.GetID())
         outputSegmentation.SetReferenceImageGeometryParameterFromVolumeNode(inputVolume)
@@ -1166,6 +1283,22 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         segmentationShItem = shNode.GetItemByDataNode(outputSegmentation)
         shNode.SetItemParent(segmentationShItem, studyShItem)
 
+    def _setSegmentationNodeProperties(self, segmentationNode, inputVolume):
+        """Helper method to set common properties for segmentation nodes"""
+        # Set source volume reference
+        segmentationNode.SetNodeReferenceID(
+            segmentationNode.GetReferenceImageGeometryReferenceRole(),
+            inputVolume.GetID()
+        )
+        segmentationNode.SetReferenceImageGeometryParameterFromVolumeNode(inputVolume)
+
+        # Set scene placement
+        shNode = slicer.vtkMRMLSubjectHierarchyNode.GetSubjectHierarchyNode(slicer.mrmlScene)
+        inputVolumeShItem = shNode.GetItemByDataNode(inputVolume)
+        studyShItem = shNode.GetItemParent(inputVolumeShItem)
+        segmentationShItem = shNode.GetItemByDataNode(segmentationNode)
+        shNode.SetItemParent(segmentationShItem, studyShItem)
+        
     def readSegmentationFolder(self, outputSegmentation, output_segmentation_dir, task, subset=None):
         """
         The method is very slow, but this is the only option for some specialized tasks.
@@ -1214,6 +1347,8 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
                     import_labelmap_to_segmentation(labelmapVolumeNode, segmentName, segmentId)
                 else:
                     self.log(f"{segmentName} not found.")
+
+        return [outputSegmentation]  # Return as list for consistency
 
     def readSegmentation(self, outputSegmentation, outputSegmentationFolder, task):
         # Get label descriptions
