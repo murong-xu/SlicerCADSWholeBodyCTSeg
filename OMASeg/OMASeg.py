@@ -1205,9 +1205,9 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         # model_folder = '/Users/murong/Desktop/tum/models'
         model_folder = '/home/jixing/Desktop/USZ/models'  #TODO:
         if cpu:     
-            options = ["-i", inputFile, "-o", outputSegmentationFolder, "--cpu", "task", task, '-model', model_folder]
+            options = ["-i", inputFile, "-o", outputSegmentationFolder, "--cpu", "-task", task, '-model', model_folder]
         else:
-            options = ["-i", inputFile, "-o", outputSegmentationFolder, "task", task, '-model', model_folder]
+            options = ["-i", inputFile, "-o", outputSegmentationFolder, "-task", task, '-model', model_folder]
 
         # Launch OMASeg in fast mode to get initial segmentation, if needed
 
