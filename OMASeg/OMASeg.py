@@ -297,9 +297,9 @@ class OMASegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
     def onPackageInfoUpdate(self):
         self.ui.packageInfoTextBrowser.plainText = ''
         with slicer.util.tryWithErrorDisplay("Failed to get OMASeg package version information", waitCursor=True):
-            self.ui.packageInfoTextBrowser.plainText = self.logic.installedOMASegPythonPackageInfo().rstrip()  #TODO:
+            self.ui.packageInfoTextBrowser.plainText = self.logic.installedOMASegPythonPackageInfo().rstrip()
 
-    def onPackageUpgrade(self):  #TODO: handle on-demand package update+check
+    def onPackageUpgrade(self):
         with slicer.util.tryWithErrorDisplay("Failed to upgrade OMASeg", waitCursor=True):
             self.logic.setupPythonRequirements(upgrade=True)
         self.onPackageInfoUpdate()
@@ -341,7 +341,7 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         from collections import OrderedDict
 
         ScriptedLoadableModuleLogic.__init__(self)
-        self.omaSegPythonPackageDownloadUrl = "https://github.com/murong-xu/OMASeg/releases/download/dev/OMASeg_SSH.zip"  #TODO:
+        self.omaSegPythonPackageDownloadUrl = "https://github.com/murong-xu/OMASeg/releases/download/dev/OMASeg_SSH.zip"  #TODO: update this in every release
 
         # Custom applications can set custom location for weights.
         # For example, it could be set to `sysconfig.get_path('scripts')` to have an independent copy of
@@ -543,14 +543,14 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         if self.logCallback:
             self.logCallback(text)
 
-    def installedOMASegPythonPackageDownloadUrl(self):  #TODO: how to retrieve correct URL?
+    def installedOMASegPythonPackageDownloadUrl(self):
         """Get package download URL of the installed OMASeg Python package"""
         import importlib.metadata
         import json
         try:
             metadataPath = [p for p in importlib.metadata.files('OMASeg') if 'direct_url.json' in str(p)][0]
             with open(metadataPath.locate()) as json_file:
-                data = json.load(json_file)
+                data = json.load(json_file)  # 'https://github.com/murong-xu/OMASeg/releases/download/dev/OMASeg_SSH.zip' where 'dev' is identified as the package version
             return data['url']
         except:
             # Failed to get version information, probably not installed from download URL
@@ -589,104 +589,169 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         version = versionInfo.split('\n')[1].split(' ')[1].strip()
         return version
 
-    def pipInstallSelectiveFromLocal(self, packageToInstall, installURL, packagesToSkip):  #TODO: 优化针对OMASeg install zip file的安装
-        """Installs a Python package, skipping a list of packages.
-        Return the list of skipped requirements (package name with version requirement).
+    def pipInstallSelectiveFromURL(self, packageToInstall, installURL, packagesToSkip):
+        """Installs a Python package from a local zip file or URL, skipping specified packages.
+        Records original source URL in package metadata.
         """
-        # TODO: 
         import os
         import zipfile
         import tempfile
         import urllib.request
-
-        temp_dir = tempfile.mkdtemp()        
-        # Check if installURL is a URL or local path
-        if installURL.startswith(('http://', 'https://')):
-            # Download the zip file if it's a URL
-            zip_path = os.path.join(temp_dir, "package.zip")
-            urllib.request.urlretrieve(installURL, zip_path)
-        else:
-            # Use the local path directly
-            zip_path = installURL
-
-        # check zip file structure
-        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-            zip_ref.extractall(temp_dir)
-            
-            # look for setup.py/pyproject.toml
-            setup_files = []
-            for root, dirs, files in os.walk(temp_dir):
-                if 'setup.py' in files or 'pyproject.toml' in files:
-                    package_dir = root
-                    setup_files.extend([os.path.join(root, f) for f in files 
-                                    if f in ['setup.py', 'pyproject.toml']])
-                    break
-            
-            if not setup_files:
-                raise ValueError(f"No setup.py or pyproject.toml found in {installURL}")
-            
-            slicer.util.pip_install(f"{package_dir} --no-deps")
-        # slicer.util.pip_install(f"{installCommand} --no-deps")
-        skippedRequirements = []  # list of all missed packages and their version
-
-        # Get path to site-packages\nnunetv2-5.1.dist-info\METADATA
+        import json
+        import shutil
         import importlib.metadata
-        metadataPath = [p for p in importlib.metadata.files(packageToInstall) if 'METADATA' in str(p)][0]
-        metadataPath.locate()
+        import re
+        
+        with tempfile.TemporaryDirectory() as temp_dir:
+            try:
+                # Download or copy zip file
+                zip_path = os.path.join(temp_dir, "package.zip")
+                if installURL.startswith(('http://', 'https://')):
+                    self.log(f'Downloading package from {installURL}...')
+                    urllib.request.urlretrieve(installURL, zip_path)
+                    source_url = installURL
+                else:
+                    self.log(f'Copying package from {installURL}...')
+                    shutil.copy2(installURL, zip_path)
+                    source_url = installURL
+                    
+                # Extract and find setup files
+                self.log('Extracting package...')
+                with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+                    zip_ref.extractall(temp_dir)
 
-        # Remove line: `Requires-Dist: SimpleITK (==2.0.2)`
-        # User Latin-1 encoding to read the file, as it may contain non-ASCII characters and not necessarily in UTF-8 encoding.
-        filteredMetadata = ""
-        with open(metadataPath.locate(), "r+", encoding="latin1") as file:
-            for line in file:
-                skipThisPackage = False
-                requirementPrefix = 'Requires-Dist: '
-                if line.startswith(requirementPrefix):
-                    for packageToSkip in packagesToSkip:
-                        if packageToSkip in line:
-                            skipThisPackage = True
+                # Look for setup files
+                package_dir = None
+                for root, _, files in os.walk(temp_dir):
+                    if any(f in files for f in ['setup.py', 'pyproject.toml']):
+                        package_dir = root
+                        break
+                    
+                if not package_dir:
+                    raise ValueError(f"No setup.py or pyproject.toml found in {installURL}")
+
+                # First install the package without dependencies
+                self.log(f'Installing {packageToInstall}...')
+                slicer.util.pip_install(f"{package_dir} --no-deps")
+
+                # Now create and add direct_url.json to the installed package's dist-info
+                try:
+                    # Find the package's dist-info directory
+                    dist_info_dir = None
+                    for path in importlib.metadata.files(packageToInstall):
+                        if '.dist-info' in str(path):
+                            dist_info_dir = os.path.dirname(path.locate())
                             break
-                if skipThisPackage:
-                    # skip SimpleITK requirement
-                    skippedRequirements.append(line.removeprefix(requirementPrefix))
-                    continue
-                filteredMetadata += line
-            # Update file content with filtered result
-            file.seek(0)
-            file.write(filteredMetadata)
-            file.truncate()
+                    
+                    if not dist_info_dir:
+                        raise RuntimeError(f"Could not find dist-info directory for {packageToInstall}")
 
-        # Install all dependencies but the ones listed in packagesToSkip
-        import importlib.metadata
-        requirements = importlib.metadata.requires(packageToInstall)
-        for requirement in requirements:
-            skipThisPackage = False
-            for packageToSkip in packagesToSkip:
-                if requirement.startswith(packageToSkip):
-                    # Do not install
-                    skipThisPackage = True
-                    break
+                    # Create direct_url.json content
+                    direct_url_data = {
+                        "url": source_url,  # need to overwrite the tmp dir generated by pip install a local file
+                        "dir_info": {
+                            "editable": False
+                        },
+                        "vcs_info": {
+                            "vcs": "git",
+                            "requested_revision": None,
+                            "commit_id": None
+                        }
+                    }
+                    
+                    # Save direct_url.json in the dist-info directory
+                    direct_url_path = os.path.join(dist_info_dir, "direct_url.json")
+                    self.log(f'Creating direct_url.json at: {direct_url_path}')
+                    with open(direct_url_path, 'w') as f:
+                        json.dump(direct_url_data, f)
 
-            match = False
-            if not match:
-                # ruff ; extra == 'dev' -> rewrite to: ruff[extra]
-                match = re.match(r"([\S]+)[\s]*; extra == '([^']+)'", requirement)
-                if match:
-                    requirement = f"{match.group(1)}[{match.group(2)}]"
-            if not match:
-                # nibabel >=2.3.0 -> rewrite to: nibabel>=2.3.0
-                match = re.match("([\S]+)[\s](.+)", requirement)
-                if match:
-                    requirement = f"{match.group(1)}{match.group(2)}"
+                except Exception as e:
+                    self.log(f'Warning: Failed to create direct_url.json: {str(e)}')
+                    # Continue with installation even if direct_url.json creation fails
 
-            if skipThisPackage:
-                self.log(f'- Skip {requirement}')
-            else:
-                self.log(f'- Installing {requirement}...')
-                slicer.util.pip_install(requirement)
+                # Process metadata to skip packages
+                skippedRequirements = []
+                try:
+                    metadataPath = [p for p in importlib.metadata.files(packageToInstall) if 'METADATA' in str(p)][0]
+                except (IndexError, ImportError) as e:
+                    raise RuntimeError(f"Could not find metadata for {packageToInstall}") from e
 
-        return skippedRequirements
+                # Filter requirements in metadata
+                self.log('Processing package dependencies...')
+                filteredMetadata = ""
+                with open(metadataPath.locate(), "r+", encoding="latin1") as file:
+                    for line in file:
+                        skipThisPackage = False
+                        requirementPrefix = 'Requires-Dist: '
+                        
+                        if line.startswith(requirementPrefix):
+                            # Skip dev dependencies
+                            if '; extra == "dev"' in line:
+                                continue
+                                
+                            # Check if package should be skipped
+                            for packageToSkip in packagesToSkip:
+                                if packageToSkip in line:
+                                    skipThisPackage = True
+                                    skippedRequirements.append(line.removeprefix(requirementPrefix))
+                                    break
+                                    
+                        if not skipThisPackage:
+                            filteredMetadata += line
+                            
+                    # Update metadata file
+                    file.seek(0)
+                    file.write(filteredMetadata)
+                    file.truncate()
+
+                # Install remaining dependencies
+                requirements = importlib.metadata.requires(packageToInstall) or []
+                for requirement in requirements:
+                    # Skip dev dependencies
+                    if '; extra == "dev"' in requirement:
+                        continue
+                        
+                    # Check if package should be skipped
+                    skipThisPackage = any(requirement.startswith(pkg) for pkg in packagesToSkip)
+                    
+                    if not skipThisPackage:
+                        # Clean up requirement string
+                        if '; extra == ' in requirement:
+                            pkg, extra = re.match(r"([\S]+)[\s]*; extra == '([^']+)'", requirement).groups()
+                            requirement = f"{pkg}[{extra}]"
+                        else:
+                            match = re.match("([\S]+)[\s](.+)", requirement)
+                            if match:
+                                requirement = f"{match.group(1)}{match.group(2)}"
+                                
+                        self.log(f'Installing dependency: {requirement}')
+                        slicer.util.pip_install(requirement)
+                    else:
+                        self.log(f'Skipping dependency: {requirement}')
+
+                return skippedRequirements
+
+            except urllib.error.URLError as e:
+                self.log(f'Error downloading package: {str(e)}')
+                raise RuntimeError(f"Failed to download package from {installURL}") from e
+            
+            except zipfile.BadZipFile as e:
+                self.log(f'Error extracting package: {str(e)}')
+                raise RuntimeError(f"The file at {installURL} is not a valid zip file") from e
+                
+            except json.JSONDecodeError as e:
+                self.log(f'Error creating direct_url.json: {str(e)}')
+                raise RuntimeError("Failed to create package metadata") from e
+                
+            except OSError as e:
+                self.log(f'File system error: {str(e)}')
+                raise RuntimeError(f"File system error while installing package: {str(e)}") from e
+                
+            except Exception as e:
+                self.log(f'Unexpected error during installation: {str(e)}')
+                raise RuntimeError(f"Failed to install package: {str(e)}") from e
     
+
     def pipInstallSelective(self, packageToInstall, installCommand, packagesToSkip):
         """Installs a Python package, skipping a list of packages.
         Return the list of skipped requirements (package name with version requirement).
@@ -838,13 +903,12 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
                     # OMASeg have been already installed from GitHub, from a different URL that this module needs
                     if not slicer.util.confirmOkCancelDisplay(
                         f"This module requires OMASeg Python package update.",
-                        detailedText=f"Currently installed: {downloadUrl}\n\nRequired: {self.omaSegPythonPackageDownloadUrl}"):  # TODO: 
+                        detailedText=f"Currently installed: {downloadUrl}\n\nRequired: {self.omaSegPythonPackageDownloadUrl}"):
                       raise ValueError('OMASeg update was cancelled.')
                     upgrade = True
         except ModuleNotFoundError as e:
             needToInstallSegmenter = True
-        upgrade = True
-        if needToInstallSegmenter or upgrade:  # TODO:
+        if needToInstallSegmenter or upgrade:
             self.log(f'OMASeg Python package is required. Installing it from {self.omaSegPythonPackageDownloadUrl}... (it may take several minutes)')
 
             if upgrade:
@@ -852,7 +916,7 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
                 slicer.util.pip_uninstall("OMASeg")
 
             # Update OMASeg and all its dependencies
-            skippedRequirements = self.pipInstallSelectiveFromLocal(  #TODO:
+            skippedRequirements = self.pipInstallSelectiveFromURL(
                 "OMASeg",
                 self.omaSegPythonPackageDownloadUrl,
                 packagesToSkip + ["nnunetv2"])
