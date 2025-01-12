@@ -1,7 +1,6 @@
 import logging
 import os
 import re
-
 import vtk
 
 import slicer
@@ -9,16 +8,7 @@ from slicer.ScriptedLoadableModule import *
 from slicer.util import VTKObservationMixin
 
 
-#
-# OMASeg
-#
-#
-
 class OMASeg(ScriptedLoadableModule):
-    """Uses ScriptedLoadableModule base class, available at:
-    https://github.com/Slicer/Slicer/blob/master/Base/Python/slicer/ScriptedLoadableModule.py
-    """
-
     def __init__(self, parent):
         ScriptedLoadableModule.__init__(self, parent)
         self.parent.title = "OMASeg"
@@ -26,17 +16,15 @@ class OMASeg(ScriptedLoadableModule):
         self.parent.dependencies = []
         self.parent.contributors = ["Murong"]
         self.parent.helpText = """
-3D Slicer extension for fully automatic whole body CT segmentation using "OMASeg" AI model.
-See more information in the <a href="https://github.com/lassoan/SlicerTotalSegmentator">extension documentation</a>.
-"""
-        self.parent.acknowledgementText = """
-This file was originally developed by Andras Lasso (PerkLab, Queen's University).
-The module uses <a href="https://github.com/wasserth/OMASeg">TotalSegmentator</a>.
-If you use the TotalSegmentator nn-Unet function from this software in your research, please cite:
-Wasserthal J., Meyer M., , Hanns-Christian Breit H.C., Cyriac J., Shan Y., Segeroth, M.:
-TotalSegmentator: robust segmentation of 104 anatomical structures in CT images.
-https://arxiv.org/abs/2208.05868
-"""
+        3D Slicer extension for automated whole-body CT segmentation using "OMASeg" AI model.
+        See more information in the <a href="https://github.com/murong-xu/SlicerOMASeg">extension documentation</a>.
+        """
+        self.parent.acknowledgementText = """  #TODO: cite
+        This file was originally developed by Andras Lasso (PerkLab, Queen's University).
+        The module uses <a href="https://github.com/murong-xu/OMASeg">OMASeg</a>.
+        If you use the OMASeg from this software in your research, please cite:
+        OMASeg: Open Model for Anatomy Segmentation in Computer Tomography
+        """
         slicer.app.connect("startupCompleted()", self.configureDefaultTerminology)
 
     def configureDefaultTerminology(self):
@@ -45,21 +33,14 @@ https://arxiv.org/abs/2208.05868
         tlogic = slicer.modules.terminologies.logic()
         self.terminologyName = tlogic.LoadTerminologyFromFile(omaSegTerminologyFilePath)
 
-#
-# OMASegWidget
-#
 
 class OMASegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
-    """Uses ScriptedLoadableModuleWidget base class, available at:
-    https://github.com/Slicer/Slicer/blob/master/Base/Python/slicer/ScriptedLoadableModule.py
-    """
-
     def __init__(self, parent=None):
         """
         Called when the user opens the module the first time and the widget is initialized.
         """
         ScriptedLoadableModuleWidget.__init__(self, parent)
-        VTKObservationMixin.__init__(self)  # needed for parameter node observation
+        VTKObservationMixin.__init__(self)
         self.logic = None
         self._parameterNode = None
         self._updatingGUIFromParameterNode = False
@@ -258,7 +239,7 @@ class OMASegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
         import qt
 
         sequenceBrowserNode = slicer.modules.sequences.logic().GetFirstBrowserNodeForProxyNode(self.ui.inputVolumeSelector.currentNode())
-        if sequenceBrowserNode:
+        if sequenceBrowserNode:  #TODO: handle sequence input
             if not slicer.util.confirmYesNoDisplay("The input volume you provided are part of a sequence. Do you want to segment all frames of that sequence?"):
                 sequenceBrowserNode = None
 
@@ -316,9 +297,9 @@ class OMASegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
     def onPackageInfoUpdate(self):
         self.ui.packageInfoTextBrowser.plainText = ''
         with slicer.util.tryWithErrorDisplay("Failed to get OMASeg package version information", waitCursor=True):
-            self.ui.packageInfoTextBrowser.plainText = self.logic.installedOMASegPythonPackageInfo().rstrip()
+            self.ui.packageInfoTextBrowser.plainText = self.logic.installedOMASegPythonPackageInfo().rstrip()  #TODO:
 
-    def onPackageUpgrade(self):
+    def onPackageUpgrade(self):  #TODO: handle on-demand package update+check
         with slicer.util.tryWithErrorDisplay("Failed to upgrade OMASeg", waitCursor=True):
             self.logic.setupPythonRequirements(upgrade=True)
         self.onPackageInfoUpdate()
@@ -327,7 +308,7 @@ class OMASegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
         else:
             slicer.util.restart()
 
-    def onSetLicense(self):
+    def onSetLicense(self):  #TODO: do we need to set up license?
         import qt
         licenseText = qt.QInputDialog.getText(slicer.util.mainWindow(), "Set OMASeg license key", "License key:")
 
@@ -343,10 +324,6 @@ class OMASegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
             slicer.util.infoDisplay("License key is set. You can now use OMASeg tasks that require a license.")
 
 
-#
-# OMASegLogic
-#
-
 class InstallError(Exception):
     def __init__(self, message, restartRequired=False):
         # Call the base class constructor with the parameters it needs
@@ -357,15 +334,6 @@ class InstallError(Exception):
         return self.message
 
 class OMASegLogic(ScriptedLoadableModuleLogic):
-    """This class should implement all the actual
-    computation done by your module.  The interface
-    should be such that other python code can import
-    this class and make use of the functionality without
-    requiring an instance of the Widget.
-    Uses ScriptedLoadableModuleLogic base class, available at:
-    https://github.com/Slicer/Slicer/blob/master/Base/Python/slicer/ScriptedLoadableModule.py
-    """
-
     def __init__(self):
         """
         Called when the logic class is instantiated. Can be used for initializing member variables.
@@ -373,13 +341,13 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         from collections import OrderedDict
 
         ScriptedLoadableModuleLogic.__init__(self)
-        self.omaSegPythonPackageDownloadUrl = "https://github.com/murong-xu/OMASeg/releases/download/dev/OMASeg_SSH.zip"  # latest master as of 2024-09-03 #TODO:
+        self.omaSegPythonPackageDownloadUrl = "https://github.com/murong-xu/OMASeg/releases/download/dev/OMASeg_SSH.zip"  #TODO:
 
         # Custom applications can set custom location for weights.
         # For example, it could be set to `sysconfig.get_path('scripts')` to have an independent copy of
         # the weights for each Slicer installation. However, setting such custom path would result in extra downloads and
         # storage space usage if there were multiple Slicer installations on the same computer.
-        self.omaSegWeightsPath = None
+        self.omaSegWeightsPath = None  #TODO: what to do with the weight path
 
         self.logCallback = None
         self.clearOutputFolder = True
@@ -412,10 +380,7 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
     def _defineAvailableTasks(self):
         """Define all available segmentation tasks"""
         # Individual tasks
-        individual_tasks = [
-            '551', '552', '553', '554', '555',
-            '556', '557', '558', '559'
-        ]
+        individual_tasks = ['551', '552', '553', '554', '555', '556', '557', '558', '559']
         
         for task_id in individual_tasks:
             self.tasks[task_id] = {
@@ -530,7 +495,7 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
     def isPreSegmentationRequiredForTask(self, task):
         return (task in self.tasks) and ('requiresPreSegmentation' in self.tasks[task]) and self.tasks[task]['requiresPreSegmentation']
 
-    def isLicenseRequiredForTask(self, task):
+    def isLicenseRequiredForTask(self, task):  # TODO: license in our model?
         return (task in self.tasks) and ('requiresLicense' in self.tasks[task]) and self.tasks[task]['requiresLicense']
 
     def getSegmentLabelColor(self, terminologyEntryStr):
@@ -578,7 +543,7 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         if self.logCallback:
             self.logCallback(text)
 
-    def installedOMASegPythonPackageDownloadUrl(self):
+    def installedOMASegPythonPackageDownloadUrl(self):  #TODO: how to retrieve correct URL?
         """Get package download URL of the installed OMASeg Python package"""
         import importlib.metadata
         import json
@@ -624,7 +589,7 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         version = versionInfo.split('\n')[1].split(' ')[1].strip()
         return version
 
-    def pipInstallSelectiveFromLocal(self, packageToInstall, installURL, packagesToSkip):
+    def pipInstallSelectiveFromLocal(self, packageToInstall, installURL, packagesToSkip):  #TODO: 优化针对OMASeg install zip file的安装
         """Installs a Python package, skipping a list of packages.
         Return the list of skipped requirements (package name with version requirement).
         """
@@ -644,19 +609,14 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
             # Use the local path directly
             zip_path = installURL
 
-        # 检查zip文件结构
+        # check zip file structure
         with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-            # 获取所有文件列表
-            file_list = zip_ref.namelist()
-            
-            # 解压到临时目录
             zip_ref.extractall(temp_dir)
             
-            # 查找setup.py或pyproject.toml
+            # look for setup.py/pyproject.toml
             setup_files = []
             for root, dirs, files in os.walk(temp_dir):
                 if 'setup.py' in files or 'pyproject.toml' in files:
-                    # 找到包含setup文件的目录
                     package_dir = root
                     setup_files.extend([os.path.join(root, f) for f in files 
                                     if f in ['setup.py', 'pyproject.toml']])
@@ -665,7 +625,6 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
             if not setup_files:
                 raise ValueError(f"No setup.py or pyproject.toml found in {installURL}")
             
-            # 使用找到的包目录进行安装
             slicer.util.pip_install(f"{package_dir} --no-deps")
         # slicer.util.pip_install(f"{installCommand} --no-deps")
         skippedRequirements = []  # list of all missed packages and their version
@@ -870,20 +829,20 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         # Install OMASeg with selected dependencies only
         # (it would replace Slicer's "requests")
         needToInstallSegmenter = False
-        # try:
-        #     import omaseg  #TODO:
-        #     if not upgrade:
-        #         # Check if we need to update OMASeg Python package version
-        #         downloadUrl = self.installedOMASegPythonPackageDownloadUrl()
-        #         if downloadUrl and (downloadUrl != self.omaSegPythonPackageDownloadUrl):
-        #             # OMASeg have been already installed from GitHub, from a different URL that this module needs
-        #             if not slicer.util.confirmOkCancelDisplay(
-        #                 f"This module requires OMASeg Python package update.",
-        #                 detailedText=f"Currently installed: {downloadUrl}\n\nRequired: {self.omaSegPythonPackageDownloadUrl}"):  # TODO: 
-        #               raise ValueError('OMASeg update was cancelled.')
-        #             upgrade = True
-        # except ModuleNotFoundError as e:
-        #     needToInstallSegmenter = True
+        try:
+            import omaseg
+            if not upgrade:
+                # Check if we need to update OMASeg Python package version
+                downloadUrl = self.installedOMASegPythonPackageDownloadUrl()
+                if downloadUrl and (downloadUrl != self.omaSegPythonPackageDownloadUrl):
+                    # OMASeg have been already installed from GitHub, from a different URL that this module needs
+                    if not slicer.util.confirmOkCancelDisplay(
+                        f"This module requires OMASeg Python package update.",
+                        detailedText=f"Currently installed: {downloadUrl}\n\nRequired: {self.omaSegPythonPackageDownloadUrl}"):  # TODO: 
+                      raise ValueError('OMASeg update was cancelled.')
+                    upgrade = True
+        except ModuleNotFoundError as e:
+            needToInstallSegmenter = True
         upgrade = True
         if needToInstallSegmenter or upgrade:  # TODO:
             self.log(f'OMASeg Python package is required. Installing it from {self.omaSegPythonPackageDownloadUrl}... (it may take several minutes)')
@@ -925,7 +884,7 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         Initialize parameter node with default settings.
         """
         if not parameterNode.GetParameter("Task"):
-            parameterNode.SetParameter("Task", "551")  # TODO:
+            parameterNode.SetParameter("Task", "551")
         if not parameterNode.GetParameter("UseStandardSegmentNames"):
             parameterNode.SetParameter("UseStandardSegmentNames", "true")
 
@@ -1031,7 +990,7 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         self.log('Processing started')
 
         if self.omaSegWeightsPath:
-            os.environ["OMASEG_WEIGHTS_PATH"] = self.omaSegWeightsPath
+            os.environ["OMASEG_WEIGHTS_PATH"] = self.omaSegWeightsPath  #TODO: how to integrate weights importing
 
         # Create temporary folder - moved here so it can be shared across tasks
         tempFolder = slicer.util.tempDirectory()
@@ -1066,7 +1025,7 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
             segmentationNodes = []
 
             if inputVolumeSequence is not None:
-                # Handle sequence data
+                # Handle sequence data TODO:
                 segmentationSequence = sequenceBrowserNode.GetSequenceNode(outputSegmentation)
                 if not segmentationSequence:
                     segmentationSequence = slicer.mrmlScene.AddNewNodeByClass(
@@ -1203,7 +1162,7 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
 
         # Get options
         # model_folder = '/Users/murong/Desktop/tum/models'
-        model_folder = '/home/jixing/Desktop/USZ/models'  #TODO:
+        model_folder = '/home/jixing/Desktop/USZ/models'  #TODO: load from model folder
         if cpu:     
             options = ["-i", inputFile, "-o", outputSegmentationFolder, "--cpu", "-task", task, '-model', model_folder]
         else:
@@ -1214,10 +1173,10 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         #options.extend(["--nr_thr_saving", "1"])
         #options.append("--force_split")
 
-        if self.isPreSegmentationRequiredForTask(task):
+        if self.isPreSegmentationRequiredForTask(task):  #TODO: check what TotalSeg did here
             preOptions = options
             self.log('Creating segmentations with OMASeg AI (pre-run)...')
-            self.log(f"Total Segmentator arguments: {preOptions}")
+            self.log(f"OMASeg arguments: {preOptions}")
             proc = slicer.util.launchConsoleProcess(omaSegCommand + preOptions)
             self.logProcessOutput(proc)
 
@@ -1227,7 +1186,7 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         # but we need to do it for some specialized models.
         multilabel = self.isMultiLabelSupportedForTask(task)
 
-        # if multilabel:
+        # if multilabel: TODO: 改善上面的argument input
         #     options.append("--ml")
         # if task:
         #     options.extend(["--task", task])
@@ -1245,13 +1204,12 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         #         except:
         #             # Failed to get terminology info, item probably misspelled
         #             raise ValueError("'" + item + "' is not a valid OMASeg label terminology.")
-
         self.log('Creating segmentations with OMASeg AI...')
         self.log(f"OMASeg arguments: {options}")
-        # proc = slicer.util.launchConsoleProcess(omaSegCommand + options)  # TODO: 
+        # proc = slicer.util.launchConsoleProcess(omaSegCommand + options)
         # self.logProcessOutput(proc)
 
-        # Load result
+        # Load result  TODO: 两种load
         self.log('Importing segmentation results...')
         if multilabel: 
             self.readSegmentation(
@@ -1266,11 +1224,10 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
                 task,
                 subset
             )
-
-        # # Set properties for all nodes
-        # for segNode in segmentationNodes:
-        #     self._setSegmentationNodeProperties(segNode, inputVolume)
-        # return segmentationNodes
+            # # Set properties for all nodes
+            # for segNode in segmentationNodes:
+            #     self._setSegmentationNodeProperties(segNode, inputVolume)
+            # return segmentationNodes
     
         # Set source volume - required for DICOM Segmentation export
         outputSegmentation.SetNodeReferenceID(outputSegmentation.GetReferenceImageGeometryReferenceRole(), inputVolume.GetID())
