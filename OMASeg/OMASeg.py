@@ -1214,7 +1214,6 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
     def processVolume(self, inputFile, inputVolume, outputSegmentationFolder, outputSegmentation, task, subset, cpu, omaSegCommand):
         """Segment a single volume
         """
-
         # Write input volume to file
         # OMASeg requires NIFTI
         self.log(f"Writing input file to {inputFile}")
@@ -1225,17 +1224,9 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         volumeStorageNode.UnRegister(None)
 
         # Get options
-        # model_folder = '/Users/murong/Desktop/tum/models'
-        model_folder = '/home/jixing/Desktop/USZ/models'  #TODO: load from model folder
-        if cpu:     
-            options = ["-i", inputFile, "-o", outputSegmentationFolder, "--cpu", "-task", task, '-model', model_folder]
-        else:
-            options = ["-i", inputFile, "-o", outputSegmentationFolder, "-task", task, '-model', model_folder]
-
-        # Launch OMASeg in fast mode to get initial segmentation, if needed
-
-        #options.extend(["--nr_thr_saving", "1"])
-        #options.append("--force_split")
+        options = ["-i", inputFile, "-o", outputSegmentationFolder, "-task", task]
+        if cpu:
+            options.extend(["--cpu"])
 
         if self.isPreSegmentationRequiredForTask(task):  #TODO: check what TotalSeg did here
             preOptions = options
@@ -1250,27 +1241,9 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         # but we need to do it for some specialized models.
         multilabel = self.isMultiLabelSupportedForTask(task)
 
-        # if multilabel: TODO: 改善上面的argument input
-        #     options.append("--ml")
-        # if task:
-        #     options.extend(["--task", task])
-        # if fast:
-        #     options.append("--fast")
-        # if cpu:
-        #     options.extend(["--device", "cpu"])
-        # if subset:
-        #     options.append("--roi_subset")
-        #     # append each item of the subset
-        #     for item in subset:
-        #         try:
-        #             if self.omaSegLabelTerminology[item]:
-        #                 options.append(item)
-        #         except:
-        #             # Failed to get terminology info, item probably misspelled
-        #             raise ValueError("'" + item + "' is not a valid OMASeg label terminology.")
         self.log('Creating segmentations with OMASeg AI...')
         self.log(f"OMASeg arguments: {options}")
-        # proc = slicer.util.launchConsoleProcess(omaSegCommand + options)
+        # proc = slicer.util.launchConsoleProcess(omaSegCommand + options) TODO: 
         # self.logProcessOutput(proc)
 
         # Load result  TODO: 两种load
