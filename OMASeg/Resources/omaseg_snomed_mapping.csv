@@ -146,7 +146,7 @@
 145,OAR_Glnd_Lacrimal_R,SCT,123037004,Anatomical Structure,SCT,0018,Lacrimal gland,SCT,24028007,Right,,,,,, #TODO
 146,OAR_Glnd_Submand_L,SCT,123037004,Anatomical Structure,SCT,0020,Submandibular gland,SCT,7771000,Left,,,,,,  #TODO
 147,OAR_Glnd_Submand_R,SCT,123037004,Anatomical Structure,SCT,0020,Submandibular gland,SCT,24028007,Right,,,,,, #TODO
-148,OAR_Glnd_Thyroid,SCT,123037004,Anatomical Structure,SCT,0022,Thyroid gland,,,,,,,,,
+148,OAR_Glnd_Thyroid,SCT,123037004,Anatomical Structure,SCT,69748006,Thyroid gland,,,,,,,,,
 149,OAR_Glottis,SCT,123037004,Anatomical Structure,SCT,0023,Larynx-glottis,,,,,,,,, # TODO
 150,OAR_Larynx_SG,SCT,123037004,Anatomical Structure,SCT,0024,Larynx-supraglottic,,,,,,,,, # TODO
 151,OAR_Lips,SCT,123037004,Anatomical Structure,SCT,0025,Lips,,,,,,,,, # TODO

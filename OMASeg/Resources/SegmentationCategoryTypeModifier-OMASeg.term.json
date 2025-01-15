@@ -1132,7 +1132,7 @@
             "CodingSchemeDesignator": "SCT",
             "cid": "4,4031",
             "UMLSConceptUID": "C0019558",
-            "CodeValue": "24136001",
+            "CodeValue": "29836001",
             "contextGroupName": "AnatomicRegion,CommonAnatomicRegions",
             "SNOMEDCTConceptID": "29836001",
             "paired": "Y",
@@ -2247,52 +2247,6 @@
             "SNOMEDCTConceptID": "389081007"
           },
           {
-            "recommendedDisplayRGBValue": [
-              85,
-              188,
-              255
-            ],
-            "CodeMeaning": "Cerebrospinal Fluid",
-            "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "cerebro-spinal fluid",
-            "3dSlicerIntegerLabel": 25,
-            "cid": "7153",
-            "UMLSConceptUID": "C0007806",
-            "CodeValue": "65216001",
-            "contextGroupName": "CNSSegmentationTypes",
-            "SNOMEDCTConceptID": "65216001",
-            "paired": "Y",
-            "Modifier": [
-              {
-                "CodeMeaning": "Right",
-                "CodingSchemeDesignator": "SCT",
-                "cid": "244",
-                "UMLSConceptUID": "C0205090",
-                "CodeValue": "24028007",
-                "contextGroupName": "Laterality",
-                "SNOMEDCTConceptID": "24028007"
-              },
-              {
-                "CodeMeaning": "Left",
-                "CodingSchemeDesignator": "SCT",
-                "cid": "244",
-                "UMLSConceptUID": "C0205091",
-                "CodeValue": "7771000",
-                "contextGroupName": "Laterality",
-                "SNOMEDCTConceptID": "7771000"
-              },
-              {
-                "CodeMeaning": "Right and left",
-                "CodingSchemeDesignator": "SCT",
-                "cid": "244",
-                "UMLSConceptUID": "C0238767",
-                "CodeValue": "51440002",
-                "contextGroupName": "Laterality",
-                "SNOMEDCTConceptID": "51440002"
-              }
-            ]
-          },
-          {
             "CodeMeaning": "Scalp",
             "CodingSchemeDesignator": "SCT",
             "cid": "4",
@@ -2789,6 +2743,22 @@
               140,
               130
             ],
+            "CodeMeaning": "Thyroid",
+            "CodingSchemeDesignator": "SCT",
+            "3dSlicerLabel": "thyroid",
+            "3dSlicerIntegerLabel": 148,
+            "cid": "4030,6113",
+            "CodeValue": "69748006",
+            "contextGroupName": "CT,MRandPETAnatomyImaged,MediastinumAnatomyFindingorFeature",
+            "SNOMEDCTConceptID": "69748006",
+            "paired": "U"
+          },
+          {
+            "recommendedDisplayRGBValue": [
+              62,
+              162,
+              114
+            ],
             "CodeMeaning": "Larynx-glottis",
             "CodingSchemeDesignator": "SCT",
             "3dSlicerLabel": "larynx-glottis",
@@ -3023,38 +2993,6 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              192,
-              104,
-              88
-            ],
-            "CodeMeaning": "Muscle",
-            "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "muscle",
-            "3dSlicerIntegerLabel": 8,
-            "cid": "7166",
-            "UMLSConceptUID": "C0026845",
-            "CodeValue": "71616004",
-            "contextGroupName": "CommonTissueSegmentationTypes",
-            "SNOMEDCTConceptID": "71616004"
-          },
-          {
-            "recommendedDisplayRGBValue": [
-              241,
-              214,
-              145
-            ],
-            "CodeMeaning": "Bone",
-            "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "bone",
-            "3dSlicerIntegerLabel": 2,
-            "cid": "7166",
-            "UMLSConceptUID": "C0262950",
-            "CodeValue": "272673000",
-            "contextGroupName": "CommonTissueSegmentationTypes",
-            "SNOMEDCTConceptID": "272673000"
-          },
-          {
-            "recommendedDisplayRGBValue": [
               255,
               244,
               209
@@ -3103,6 +3041,106 @@
             "contextGroupName": "AnatomicRegion,CNSSegmentationTypes",
             "SNOMEDCTConceptID": "2748008",
             "paired": "U"
+          }
+        ]
+      },
+      {
+        "CodeMeaning": "Tissue",
+        "CodingSchemeDesignator": "SCT",
+        "showAnatomy": false,
+        "cid": "7150",
+        "CodeValue": "85756007",
+        "contextGroupName": "SegmentationPropertyCategories",
+        "Type": 
+        [
+          {
+            "recommendedDisplayRGBValue": [
+              241,
+              214,
+              145
+            ],
+            "CodeMeaning": "Bone",
+            "CodingSchemeDesignator": "SCT",
+            "3dSlicerLabel": "bone",
+            "3dSlicerIntegerLabel": 2,
+            "cid": "7166",
+            "UMLSConceptUID": "C0262950",
+            "CodeValue": "272673000",
+            "contextGroupName": "CommonTissueSegmentationTypes",
+            "SNOMEDCTConceptID": "272673000"
+          },
+          {
+            "recommendedDisplayRGBValue": [
+              192,
+              104,
+              88
+            ],
+            "CodeMeaning": "Muscle",
+            "CodingSchemeDesignator": "SCT",
+            "3dSlicerLabel": "muscle",
+            "3dSlicerIntegerLabel": 8,
+            "cid": "7166",
+            "UMLSConceptUID": "C0026845",
+            "CodeValue": "71616004",
+            "contextGroupName": "CommonTissueSegmentationTypes",
+            "SNOMEDCTConceptID": "71616004"
+          }
+        ]
+      },
+      {
+        "CodeMeaning": "Body substance",
+        "CodingSchemeDesignator": "SCT",
+        "showAnatomy": false,
+        "cid": "7150",
+        "CodeValue": "91720002",
+        "contextGroupName": "SegmentationPropertyCategories",
+        "Type": 
+        [
+          {
+            "recommendedDisplayRGBValue": [
+              85,
+              188,
+              255
+            ],
+            "CodeMeaning": "Cerebrospinal Fluid",
+            "CodingSchemeDesignator": "SCT",
+            "3dSlicerLabel": "cerebro-spinal fluid",
+            "3dSlicerIntegerLabel": 25,
+            "cid": "7153",
+            "UMLSConceptUID": "C0007806",
+            "CodeValue": "65216001",
+            "contextGroupName": "CNSSegmentationTypes",
+            "SNOMEDCTConceptID": "65216001",
+            "paired": "Y",
+            "Modifier": [
+              {
+                "CodeMeaning": "Right",
+                "CodingSchemeDesignator": "SCT",
+                "cid": "244",
+                "UMLSConceptUID": "C0205090",
+                "CodeValue": "24028007",
+                "contextGroupName": "Laterality",
+                "SNOMEDCTConceptID": "24028007"
+              },
+              {
+                "CodeMeaning": "Left",
+                "CodingSchemeDesignator": "SCT",
+                "cid": "244",
+                "UMLSConceptUID": "C0205091",
+                "CodeValue": "7771000",
+                "contextGroupName": "Laterality",
+                "SNOMEDCTConceptID": "7771000"
+              },
+              {
+                "CodeMeaning": "Right and left",
+                "CodingSchemeDesignator": "SCT",
+                "cid": "244",
+                "UMLSConceptUID": "C0238767",
+                "CodeValue": "51440002",
+                "contextGroupName": "Laterality",
+                "SNOMEDCTConceptID": "51440002"
+              }
+            ]
           }
         ]
       }
