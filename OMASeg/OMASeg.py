@@ -67,28 +67,38 @@ class OMASegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
         self.logic = OMASegLogic()
         self.logic.logCallback = self.addLog
 
-        for task in self.logic.tasks:
-            taskTitle = self.logic.tasks[task]['title']
-            if self.logic.isLicenseRequiredForTask(task):
-                taskTitle += " [license required]"
-            self.ui.taskComboBox.addItem(taskTitle, task)
+        # Add tasks to taskComboBox
+        self.ui.taskComboBox.clear()
+        try:
+            for task in self.logic.tasks:
+                taskTitle = self.logic.tasks[task]['title']
+                if self.logic.isLicenseRequiredForTask(task):
+                    taskTitle += " [license required]"
+                print(f"Adding task: {task} with title: {taskTitle}")
+                self.ui.taskComboBox.addItem(str(taskTitle), str(task))
+        except Exception as e:
+            print(f"Error adding tasks: {str(e)}")
+
+        # Create a QListWidget for targets
+        from qt import QListWidget, QAbstractItemView, QSizePolicy
+        self.targetsList = QListWidget()
+        self.targetsList.setSelectionMode(QAbstractItemView.MultiSelection)
+        self.targetsList.setMinimumHeight(100)
+        self.targetsList.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        
+        # Add it to the layout after targetsComboBox
+        formLayout = self.ui.inputsCollapsibleButton.layout()
+        formLayout.addRow("Available targets:", self.targetsList)
 
         # Connections
-
-        # These connections ensure that we update parameter node when scene is closed
         self.addObserver(slicer.mrmlScene, slicer.mrmlScene.StartCloseEvent, self.onSceneStartClose)
         self.addObserver(slicer.mrmlScene, slicer.mrmlScene.EndCloseEvent, self.onSceneEndClose)
 
-        # These connections ensure that whenever user changes some settings on the GUI, that is saved in the MRML scene
-        # (in the selected parameter node).
+        # Connect UI elements
         self.ui.inputVolumeSelector.connect("currentNodeChanged(vtkMRMLNode*)", self.updateParameterNodeFromGUI)
-        self.ui.cpuCheckBox.connect('toggled(bool)', self.updateParameterNodeFromGUI)
-        self.ui.useStandardSegmentNamesCheckBox.connect('toggled(bool)', self.updateParameterNodeFromGUI)
-
-
-        self.ui.taskComboBox.currentTextChanged.connect(self.updateParameterNodeFromGUI)
-        self.ui.outputSegmentationSelector.connect("currentNodeChanged(vtkMRMLNode*)", self.updateParameterNodeFromGUI)
-        self.ui.outputSegmentationSelector.connect("currentNodeChanged(vtkMRMLNode*)", self.ui.segmentationShow3DButton.setSegmentationNode)
+        self.ui.taskComboBox.currentIndexChanged.connect(self.updateParameterNodeFromGUI)
+        self.ui.taskComboBox.currentIndexChanged.connect(self.updateTargetsList)
+        self.targetsList.itemSelectionChanged.connect(self.updateParameterNodeFromGUI)
 
         # Buttons
         self.ui.packageInfoUpdateButton.connect('clicked(bool)', self.onPackageInfoUpdate)
@@ -96,6 +106,8 @@ class OMASegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
         self.ui.setLicenseButton.connect('clicked(bool)', self.onSetLicense)
         self.ui.applyButton.connect('clicked(bool)', self.onApplyButton)
 
+        self.updateTargetsList()
+        
         # Make sure parameter node is initialized (needed for module reload)
         self.initializeParameterNode()
 
@@ -175,7 +187,6 @@ class OMASegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
         This method is called whenever parameter node is changed.
         The module GUI is updated to show the current state of the parameter node.
         """
-
         if self._parameterNode is None or self._updatingGUIFromParameterNode:
             return
 
@@ -185,7 +196,7 @@ class OMASegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
         # Update node selectors and sliders
         self.ui.inputVolumeSelector.setCurrentNode(self._parameterNode.GetNodeReference("InputVolume"))
         task = self._parameterNode.GetParameter("Task")
-        self.ui.taskComboBox.setCurrentIndex(self.ui.taskComboBox.findData(task))
+        self.ui.taskComboBox.setCurrentIndex(self.ui.taskComboBox.findData(task))    
         self.ui.cpuCheckBox.checked = self._parameterNode.GetParameter("CPU") == "true"
         self.ui.useStandardSegmentNamesCheckBox.checked = self._parameterNode.GetParameter("UseStandardSegmentNames") == "true"
         self.ui.outputSegmentationSelector.setCurrentNode(self._parameterNode.GetNodeReference("OutputSegmentation"))
@@ -210,20 +221,92 @@ class OMASegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
         This method is called when the user makes any change in the GUI.
         The changes are saved into the parameter node (so that they are restored when the scene is saved and loaded).
         """
-
         if self._parameterNode is None or self._updatingGUIFromParameterNode:
             return
 
         wasModified = self._parameterNode.StartModify()  # Modify all properties in a single batch
 
         self._parameterNode.SetNodeReferenceID("InputVolume", self.ui.inputVolumeSelector.currentNodeID)
-        self._parameterNode.SetParameter("Task", self.ui.taskComboBox.currentData)
+
+        # Update task
+        currentIndex = self.ui.taskComboBox.currentIndex
+        if currentIndex >= 0:
+            task = self.ui.taskComboBox.itemData(currentIndex)
+            self._parameterNode.SetParameter("Task", str(task))
+        
+        # Update selected targets
+        selectedTargets = self.getSelectedTargets()
+        self._parameterNode.SetParameter("Targets", ','.join(selectedTargets))
+
         self._parameterNode.SetParameter("CPU", "true" if self.ui.cpuCheckBox.checked else "false")
         self._parameterNode.SetParameter("UseStandardSegmentNames", "true" if self.ui.useStandardSegmentNamesCheckBox.checked else "false")
         self._parameterNode.SetNodeReferenceID("OutputSegmentation", self.ui.outputSegmentationSelector.currentNodeID)
 
         self._parameterNode.EndModify(wasModified)
 
+    def updateTargetsList(self):
+        """Update available targets based on selected task"""
+        if not hasattr(self, 'targetsList'):
+            return
+                
+        self.targetsList.clear()
+        
+        # Get current task
+        currentTask = self.ui.taskComboBox.currentData
+        if not currentTask:
+            self.targetsList.setEnabled(False)
+            return
+                
+        try:
+            from omaseg.dataset_utils.bodyparts_labelmaps import map_taskid_to_labelmaps
+            if currentTask == 'all':
+                self.targetsList.setEnabled(True)
+                all_targets = []
+                
+                for subtask in range(551, 560):
+                    labelValueToSegmentName = map_taskid_to_labelmaps[subtask]
+                    availableTargets = list(labelValueToSegmentName.values())
+                    if 'background' in availableTargets:
+                        availableTargets.remove('background')
+                    for target in availableTargets:
+                        all_targets.append(target)
+                
+                availableTargets_snomed = [
+                    self.logic.getSegmentLabelColor(self.logic.omaSegLabelTerminology[i]['terminologyStr'])[0] 
+                    for i in all_targets
+                ]
+                
+            else:
+                labelValueToSegmentName = map_taskid_to_labelmaps[int(currentTask)]
+                availableTargets = list(labelValueToSegmentName.values())
+                if 'background' in availableTargets:
+                    availableTargets.remove('background')
+                availableTargets_snomed = [
+                    self.logic.getSegmentLabelColor(self.logic.omaSegLabelTerminology[i]['terminologyStr'])[0] 
+                    for i in availableTargets
+                ]
+                
+                self.targetsList.setEnabled(True)
+            
+            # Add targets to list widget
+            for target in availableTargets_snomed:
+                self.targetsList.addItem(str(target))
+                            
+        except Exception as e:
+            print(f"Error updating targets: {str(e)}")
+            import traceback
+            traceback.print_exc()
+            self.targetsList.setEnabled(False)
+
+    def getSelectedTargets(self):
+        """Get list of currently selected targets"""
+        selectedTargets = []
+        if hasattr(self, 'targetsList'):
+            selectedItems = self.targetsList.selectedItems()
+            selectedTargets = [item.text() for item in selectedItems]
+        return selectedTargets
+
+    
     def addLog(self, text):
         """Append text to log window
         """
@@ -235,7 +318,11 @@ class OMASegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
         Run processing when user clicks "Apply" button.
         """
         self.ui.statusLabel.plainText = ''
-
+        subset = None
+        if self._parameterNode:
+            targetsStr = self._parameterNode.GetParameter("Targets")
+            if targetsStr:
+                subset = targetsStr.split(',')
         import qt
 
         sequenceBrowserNode = slicer.modules.sequences.logic().GetFirstBrowserNodeForProxyNode(self.ui.inputVolumeSelector.currentNode())
@@ -283,7 +370,8 @@ class OMASegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
                 self.ui.cpuCheckBox.checked,
                 self.ui.taskComboBox.currentData,
                 interactive=True,
-                sequenceBrowserNode=sequenceBrowserNode
+                sequenceBrowserNode=sequenceBrowserNode,
+                subset=subset
             )
 
             # Update UI with first node
@@ -379,61 +467,31 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
 
     def _defineAvailableTasks(self):
         """Define all available segmentation tasks"""
-        # Individual tasks
-        individual_tasks = ['551', '552', '553', '554', '555', '556', '557', '558', '559']
-        
-        for task_id in individual_tasks:
-            self.tasks[task_id] = {
-                'title': task_id,
-                'supportsMultiLabel': True
-            }
-            
-        # Special 'all' task that runs all individual tasks
-        self.tasks['all'] = {
-            'title': 'all',
-            'supportsMultiLabel': True,
-            'subtasks': individual_tasks
+        self.tasks = {
+            '551': {'title': 551, },
+            '552': {'title': 552, },
+            '553': {'title': 553, },
+            '554': {'title': 554, },
+            '555': {'title': 555, },
+            '556': {'title': 556, },
+            '557': {'title': 557, },
+            '558': {'title': 558, },
+            '559': {'title': 559, },
+            'all': {'title': 'all', 'subtasks': ['551', '552', '553', '554', '555', '556', '557', '558', '559']}
         }
-
         self.loadOMASegLabelTerminology()
-
+    
     def loadOMASegLabelTerminology(self):
         """Load label terminology from OMASeg_snomed_mapping.csv file.
         Terminology entries are either in DICOM or OMASeg "Segmentation category and type".
         """
-
         moduleDir = os.path.dirname(slicer.util.getModule('OMASeg').path)
         omaSegTerminologyMappingFilePath = os.path.join(moduleDir, 'Resources', 'omaseg_snomed_mapping.csv')
+        omaSegTerminologyFilePath = os.path.join(moduleDir, 'Resources', 'SegmentationCategoryTypeModifier-OMASeg.term.json')
 
-        terminologiesLogic = slicer.util.getModuleLogic('Terminologies')
-        omaSegTerminologyName = "Segmentation category and type - OMASeg"
-
-        anatomicalStructureCategory = slicer.vtkSlicerTerminologyCategory()
-        numberOfCategories = terminologiesLogic.GetNumberOfCategoriesInTerminology(omaSegTerminologyName)
-        for i in range(numberOfCategories):
-            terminologiesLogic.GetNthCategoryInTerminology(omaSegTerminologyName, i, anatomicalStructureCategory)
-            if anatomicalStructureCategory.GetCodingSchemeDesignator() == 'SCT' and anatomicalStructureCategory.GetCodeValue() == '123037004':
-                # Found the (123037004, SCT, "Anatomical Structure") category within DICOM master list
-                break
-
-        alteredStructureCategory = slicer.vtkSlicerTerminologyCategory()
-        for i in range(numberOfCategories):
-            terminologiesLogic.GetNthCategoryInTerminology(omaSegTerminologyName, i, alteredStructureCategory)
-            if alteredStructureCategory.GetCodingSchemeDesignator() == 'SCT' and alteredStructureCategory.GetCodeValue() == '49755003':
-                # Found the (49755003, SCT, "Morphologically Altered Structure") category within DICOM master list
-                break
-
-        # Retrieve all property type codes from the OMASeg terminology
-        self.omaSegTerminologyPropertyTypes = []
-        terminologyType = slicer.vtkSlicerTerminologyType()
-        numberOfTypes = terminologiesLogic.GetNumberOfTypesInTerminologyCategory(omaSegTerminologyName, anatomicalStructureCategory)
-        for i in range(numberOfTypes):
-            if terminologiesLogic.GetNthTypeInTerminologyCategory(omaSegTerminologyName, anatomicalStructureCategory, i, terminologyType):
-                self.omaSegTerminologyPropertyTypes.append(terminologyType.GetCodingSchemeDesignator() + "^" + terminologyType.GetCodeValue())
-        numberOfTypes = terminologiesLogic.GetNumberOfTypesInTerminologyCategory(omaSegTerminologyName, alteredStructureCategory)
-        for i in range(numberOfTypes):
-            if terminologiesLogic.GetNthTypeInTerminologyCategory(omaSegTerminologyName, alteredStructureCategory, i, terminologyType):
-                self.omaSegTerminologyPropertyTypes.append(terminologyType.GetCodingSchemeDesignator() + "^" + terminologyType.GetCodeValue())
+        # load .term.json
+        tlogic = slicer.modules.terminologies.logic()
+        terminologyName = tlogic.LoadTerminologyFromFile(omaSegTerminologyFilePath)
 
         # Helper function to get code string from CSV file row
         def getCodeString(field, columnNames, row):
@@ -443,61 +501,108 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
                 try:
                     columnValue = row[columnIndex]
                 except IndexError:
-                    # Probably the line in the CSV file was not terminated by multiple commas (,)
                     columnValue = ''
                 columnValues.append(columnValue)
             return columnValues
 
+        # Load the terminology mappings from CSV
         import csv
         with open(omaSegTerminologyMappingFilePath, "r") as f:
             reader = csv.reader(f)
             columnNames = next(reader)
-            data = {}
-            # Loop through the rows of the csv file
+            
             for row in reader:
+                try:
+                    terminologyEntryStrWithoutCategoryName = (
+                        "~"
+                        + '^'.join(getCodeString("SegmentedPropertyCategoryCodeSequence", columnNames, row))
+                        + '~'
+                        + '^'.join(getCodeString("SegmentedPropertyTypeCodeSequence", columnNames, row))
+                        + '~'
+                        + '^'.join(getCodeString("SegmentedPropertyTypeModifierCodeSequence", columnNames, row))
+                        + '~Anatomic codes - DICOM master list'
+                        + '~'
+                        + '^'.join(getCodeString("AnatomicRegionSequence", columnNames, row))
+                        + '~'
+                        + '^'.join(getCodeString("AnatomicRegionModifierSequence", columnNames, row))
+                        + '|'
+                    )
 
-                # Determine segmentation category (DICOM or OMASeg)
-                terminologyEntryStrWithoutCategoryName = (
-                    "~"
-                    # Property category: "SCT^123037004^Anatomical Structure" or "SCT^49755003^Morphologically Altered Structure"
-                    + '^'.join(getCodeString("SegmentedPropertyCategoryCodeSequence", columnNames, row))
-                    + '~'
-                    # Property type: "SCT^23451007^Adrenal gland", "SCT^367643001^Cyst", ...
-                    + '^'.join(getCodeString("SegmentedPropertyTypeCodeSequence", columnNames, row))
-                    + '~'
-                    # Property type modifier: "SCT^7771000^Left", ...
-                    + '^'.join(getCodeString("SegmentedPropertyTypeModifierCodeSequence", columnNames, row))
-                    + '~Anatomic codes - DICOM master list'
-                    + '~'
-                    # Anatomic region (set if category is not anatomical structure): "SCT^64033007^Kidney", ...
-                    + '^'.join(getCodeString("AnatomicRegionSequence", columnNames, row))
-                    + '~'
-                    # Anatomic region modifier: "SCT^7771000^Left", ...
-                    + '^'.join(getCodeString("AnatomicRegionModifierSequence", columnNames, row))
-                    + '|')
-                terminologyEntry = slicer.vtkSlicerTerminologyEntry()
-                terminologyPropertyTypeStr = (  # Example: SCT^23451007
-                    row[columnNames.index("SegmentedPropertyTypeCodeSequence.CodingSchemeDesignator")]
-                    + "^" + row[columnNames.index("SegmentedPropertyTypeCodeSequence.CodeValue")])
-                if terminologyPropertyTypeStr in self.omaSegTerminologyPropertyTypes:
-                    terminologyEntryStr = "Segmentation category and type - OMASeg" + terminologyEntryStrWithoutCategoryName
-                else:
-                    terminologyEntryStr = "Segmentation category and type - DICOM master list" + terminologyEntryStrWithoutCategoryName
+                    # Get Structure name and code values
+                    structure_name = row[columnNames.index("Structure")]
+                    category_code = row[columnNames.index("SegmentedPropertyCategoryCodeSequence.CodeValue")]
+                    type_code = row[columnNames.index("SegmentedPropertyTypeCodeSequence.CodeValue")]
+                    
+                    category = slicer.vtkSlicerTerminologyCategory()
+                    type_object = slicer.vtkSlicerTerminologyType()
+                    slicer_label = structure_name  # default: using model's structure_name as slicer display name
+                    
+                    # retrieve slicer labels 
+                    numberOfCategories = tlogic.GetNumberOfCategoriesInTerminology(terminologyName)
+                    for i in range(numberOfCategories):
+                        tlogic.GetNthCategoryInTerminology(terminologyName, i, category)
+                        if category.GetCodeValue() == category_code:
+                            numberOfTypes = tlogic.GetNumberOfTypesInTerminologyCategory(terminologyName, category)
+                            for j in range(numberOfTypes):
+                                tlogic.GetNthTypeInTerminologyCategory(terminologyName, category, j, type_object)
+                                if type_object.GetCodeValue() == type_code:
+                                    # first, get base label name (e.g. Kidney)
+                                    base_label = type_object.GetSlicerLabel() or type_object.GetCodeMeaning()
+                                    # then, check if modifier code available (left/right)
+                                    modifier_code = row[columnNames.index("SegmentedPropertyTypeModifierCodeSequence.CodeValue")]
+                                    if modifier_code:
+                                        type_modifier = slicer.vtkSlicerTerminologyType()
+                                        numberOfModifiers = tlogic.GetNumberOfTypeModifiersInTerminologyType(
+                                            terminologyName, 
+                                            category, 
+                                            type_object
+                                        )
+                                        for k in range(numberOfModifiers):
+                                            tlogic.GetNthTypeModifierInTerminologyType(
+                                                terminologyName,
+                                                category,
+                                                type_object,
+                                                k,
+                                                type_modifier
+                                            )
+                                            if type_modifier.GetCodeValue() == modifier_code:
+                                                slicer_label = type_modifier.GetSlicerLabel() or type_modifier.GetCodeMeaning()
+                                                break
+                                    else:
+                                        slicer_label = base_label
+                                    break
+                    
+                    # Store terminology string and mapping information
+                    self.omaSegLabelTerminology[structure_name] = {
+                        'terminologyStr': "Segmentation category and type - OMASeg" + terminologyEntryStrWithoutCategoryName,
+                        'slicerLabel': slicer_label
+                    }
+                    
+                except Exception as e:
+                    logging.warning(f"Error processing row in terminology CSV: {str(e)}")
 
-                # Store the terminology string for this structure
-                omaSegStructureName = row[columnNames.index("Structure")]  # OMASeg structure name, such as "adrenal_gland_left"
-                self.omaSegLabelTerminology[omaSegStructureName] = terminologyEntryStr
+    def getSlicerLabel(self, structure_name):
+        """Get Slicer display label for a structure"""
+        if structure_name in self.omaSegLabelTerminology:
+            return self.omaSegLabelTerminology[structure_name]['slicerLabel']
+        return structure_name
 
+    def getStructureName(self, slicer_label):
+        """Get structure name from Slicer display label"""
+        for structure_name, info in self.omaSegLabelTerminology.items():
+            if info['slicerLabel'] == slicer_label:
+                return structure_name
+        return slicer_label
 
-    def isMultiLabelSupportedForTask(self, task):
-        return (task in self.tasks) and ('supportsMultiLabel' in self.tasks[task]) and self.tasks[task]['supportsMultiLabel']
-
-    def isPreSegmentationRequiredForTask(self, task):
-        return (task in self.tasks) and ('requiresPreSegmentation' in self.tasks[task]) and self.tasks[task]['requiresPreSegmentation']
-
+    def getTerminologyString(self, structure_name):
+        """Get terminology string for a structure"""
+        if structure_name in self.omaSegLabelTerminology:
+            return self.omaSegLabelTerminology[structure_name]['terminologyStr']
+        return None
+    
     def isLicenseRequiredForTask(self, task):  # TODO: license in our model?
         return (task in self.tasks) and ('requiresLicense' in self.tasks[task]) and self.tasks[task]['requiresLicense']
-
+  
     def getSegmentLabelColor(self, terminologyEntryStr):
         """Get segment label and color from terminology"""
 
@@ -1029,7 +1134,7 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
             raise ValueError('Restart was cancelled.')
 
 
-    def process(self, inputVolume, outputSegmentation, cpu=False, task=None, subset=None, interactive=False, sequenceBrowserNode=None):
+    def process(self, inputVolume, outputSegmentation, cpu=False, task=None, interactive=False, sequenceBrowserNode=None, subset=None):
         """
         Run the processing algorithm.
         Parameters:
@@ -1037,7 +1142,6 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
             outputSegmentation: Initial segmentation node
             cpu: Whether to use CPU instead of GPU
             task: Task ID to run
-            subset: Subset of structures to segment
             interactive: Whether running in interactive mode
             sequenceBrowserNode: Optional sequence browser node for sequence processing
         Returns:
@@ -1045,9 +1149,6 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         """
         if not inputVolume:
             raise ValueError("Input volume is invalid")
-
-        if task == None and not subset:
-            task = "all"
 
         import time
         startTime = time.time()
@@ -1075,7 +1176,7 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
             # Handle 'all' task specially
             if task == 'all':
                 segmentationNodes = self._processAllTasks(
-                    inputVolume, outputSegmentation, cpu, 
+                    inputVolume, outputSegmentation, cpu, subset, 
                     interactive, sequenceBrowserNode,
                     inputFile, outputSegmentationFolder  # Pass the temp folders
                 )
@@ -1151,7 +1252,7 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
             else:
                 self.log(f"Not cleaning up temporary folder: {tempFolder}")
 
-    def _processAllTasks(self, inputVolume, outputSegmentation, cpu, interactive, 
+    def _processAllTasks(self, inputVolume, outputSegmentation, cpu, subset, interactive, 
                     sequenceBrowserNode, inputFile, outputSegmentationFolder):
         """
         Process all tasks sequentially using the same temporary folders
@@ -1199,7 +1300,7 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
                 outputSegmentationFolder=outputSegmentationFolder,
                 outputSegmentation=currentSegmentation,
                 task=subtask,
-                subset=None,
+                subset=subset,
                 cpu=cpu,
                 omaSegCommand=omaSegCommand
             )
@@ -1228,43 +1329,26 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         if cpu:
             options.extend(["--cpu"])
 
-        if self.isPreSegmentationRequiredForTask(task):  #TODO: check what TotalSeg did here
-            preOptions = options
-            self.log('Creating segmentations with OMASeg AI (pre-run)...')
-            self.log(f"OMASeg arguments: {preOptions}")
-            proc = slicer.util.launchConsoleProcess(omaSegCommand + preOptions)
-            self.logProcessOutput(proc)
-
         # Launch OMASeg
 
         # When there are many segments then reading each segment from a separate file would be too slow,
         # but we need to do it for some specialized models.
-        multilabel = self.isMultiLabelSupportedForTask(task)
-
         self.log('Creating segmentations with OMASeg AI...')
         self.log(f"OMASeg arguments: {options}")
         # proc = slicer.util.launchConsoleProcess(omaSegCommand + options) TODO: 
         # self.logProcessOutput(proc)
 
-        # Load result  TODO: 两种load
+        # Load result
         self.log('Importing segmentation results...')
-        if multilabel: 
-            self.readSegmentation(
-                outputSegmentation, 
-                outputSegmentationFolder, 
-                task
+        readSegmentationIntoSlicer = self.readSegmentation(
+            outputSegmentation,
+            outputSegmentationFolder,
+            task,
+            subset
             )
-        else:
-            segmentationNodes = self.readSegmentationFolder(
-                outputSegmentation,
-                outputSegmentationFolder,
-                task,
-                subset
-            )
-            # # Set properties for all nodes
-            # for segNode in segmentationNodes:
-            #     self._setSegmentationNodeProperties(segNode, inputVolume)
-            # return segmentationNodes
+        
+        if not readSegmentationIntoSlicer:
+            return []
     
         # Set source volume - required for DICOM Segmentation export
         outputSegmentation.SetNodeReferenceID(outputSegmentation.GetReferenceImageGeometryReferenceRole(), inputVolume.GetID())
@@ -1276,6 +1360,8 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         studyShItem = shNode.GetItemParent(inputVolumeShItem)
         segmentationShItem = shNode.GetItemByDataNode(outputSegmentation)
         shNode.SetItemParent(segmentationShItem, studyShItem)
+
+        return [outputSegmentation]
 
     def _setSegmentationNodeProperties(self, segmentationNode, inputVolume):
         """Helper method to set common properties for segmentation nodes"""
@@ -1293,61 +1379,18 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         segmentationShItem = shNode.GetItemByDataNode(segmentationNode)
         shNode.SetItemParent(segmentationShItem, studyShItem)
         
-    def readSegmentationFolder(self, outputSegmentation, output_segmentation_dir, task, subset=None):
-        """
-        The method is very slow, but this is the only option for some specialized tasks.
-        """
-
-        import os
-
-        outputSegmentation.GetSegmentation().RemoveAllSegments()
-
-        # Get color node with random colors
-        randomColorsNode = slicer.mrmlScene.GetNodeByID('vtkMRMLColorTableNodeRandom')
-        rgba = [0, 0, 0, 0]
-        # Get label descriptions
-
-        # Get label descriptions if task is provided
-        from totalsegmentator.map_to_binary import class_map  #TODO:
-        labelValueToSegmentName = class_map[int(task)] if task else {}
-
-        def import_labelmap_to_segmentation(labelmapVolumeNode, segmentName, segmentId):
-            updatedSegmentIds = vtk.vtkStringArray()
-            updatedSegmentIds.InsertNextValue(segmentId)
-            slicer.modules.segmentations.logic().ImportLabelmapToSegmentationNode(labelmapVolumeNode, outputSegmentation, updatedSegmentIds)
-            self.setTerminology(outputSegmentation, segmentName, segmentId)
-            slicer.mrmlScene.RemoveNode(labelmapVolumeNode)
-
-        # Read each candidate file
-        for labelValue, segmentName in labelValueToSegmentName.items():
-            self.log(f"Importing candidate {segmentName}")
-            labelVolumePath = os.path.join(output_segmentation_dir, f"{segmentName}.nii.gz")
-            if not os.path.exists(labelVolumePath):
-                self.log(f"Path {segmentName} not exists.")
-                continue
-            labelmapVolumeNode = slicer.util.loadLabelVolume(labelVolumePath, {"name": segmentName})
-            randomColorsNode.GetColor(labelValue, rgba)
-            segmentId = outputSegmentation.GetSegmentation().AddEmptySegment(segmentName, segmentName, rgba[0:3])
-            import_labelmap_to_segmentation(labelmapVolumeNode, segmentName, segmentId)
-
-        # Read each subset file if subset is provided
-        if subset is not None and task is None:
-            for segmentName in subset:
-                self.log(f"Importing subset {segmentName}")
-                labelVolumePath = os.path.join(output_segmentation_dir, f"{segmentName}.nii.gz")
-                if os.path.exists(labelVolumePath):
-                    labelmapVolumeNode = slicer.util.loadLabelVolume(labelVolumePath, {"name": segmentName})
-                    segmentId = outputSegmentation.GetSegmentation().AddEmptySegment(segmentName, segmentName)
-                    import_labelmap_to_segmentation(labelmapVolumeNode, segmentName, segmentId)
-                else:
-                    self.log(f"{segmentName} not found.")
-
-        return [outputSegmentation]  # Return as list for consistency
-
-    def readSegmentation(self, outputSegmentation, outputSegmentationFolder, task):
+    def readSegmentation(self, outputSegmentation, outputSegmentationFolder, task, subset=None):
         # Get label descriptions
         from omaseg.dataset_utils.bodyparts_labelmaps import map_taskid_to_labelmaps
         labelValueToSegmentName = map_taskid_to_labelmaps[int(task)]
+
+        # Filter by subset if provided
+        if subset is not None:
+            labelValueToSegmentName = {k: v for k, v in labelValueToSegmentName.items() if self.getSlicerLabel(v) in subset}
+            if not labelValueToSegmentName:
+                logging.info(f"Task {task}: No selected targets were found in the label map, skipping...")
+                return False
+        
         maxLabelValue = max(labelValueToSegmentName.keys())
         if min(labelValueToSegmentName.keys()) < 0:
             raise RuntimeError("Label values in class_map must be positive")
@@ -1358,11 +1401,11 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
 
         outputSegmentationFile = os.path.join(outputSegmentationFolder, 'segmentation_task_'+task+'.nii.gz')
 
-        # Create color table for this segmentation task
+        # Create color table for this segmentation task (only for selected subset)
         colorTableNode = slicer.vtkMRMLColorTableNode()
         colorTableNode.SetTypeToUser()
         colorTableNode.SetNumberOfColors(maxLabelValue+1)
-        colorTableNode.SetName(str(task))  # TODO:
+        colorTableNode.SetName(str(task))
         for labelValue in labelValueToSegmentName:
             randomColorsNode.GetColor(labelValue,rgba)
             colorTableNode.SetColor(labelValue, rgba[0], rgba[1], rgba[2], rgba[3])
@@ -1376,13 +1419,24 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         storageNode.SetFileName(outputSegmentationFile)
         storageNode.ReadData(outputSegmentation)
 
+        # Remove segments that are not in the subset
+        segmentation = outputSegmentation.GetSegmentation()
+        segmentIDs = vtk.vtkStringArray()
+        segmentation.GetSegmentIDs(segmentIDs)
+        for i in range(segmentIDs.GetNumberOfValues()):
+            segmentID = segmentIDs.GetValue(i)
+            if segmentID not in labelValueToSegmentName.values():
+                segmentation.RemoveSegment(segmentID)
+
         slicer.mrmlScene.RemoveNode(colorTableNode)
 
-        # Set terminology and color
+        # Set terminology and color for remaining segments
         for labelValue in labelValueToSegmentName:
             segmentName = labelValueToSegmentName[labelValue]
             segmentId = segmentName
             self.setTerminology(outputSegmentation, segmentName, segmentId)
+        
+        return True
 
     def setTerminology(self, segmentation, segmentName, segmentId):
         segment = segmentation.GetSegmentation().GetSegment(segmentId)  # check whether file contains segmentId
@@ -1390,7 +1444,7 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
             # Segment is not present in this segmentation
             return
         if segmentName in self.omaSegLabelTerminology:
-            terminologyEntryStr = self.omaSegLabelTerminology[segmentName]
+            terminologyEntryStr = self.omaSegLabelTerminology[segmentName]['terminologyStr']
             segment.SetTag(segment.GetTerminologyEntryTagName(), terminologyEntryStr)
             try:
                 label, color = self.getSegmentLabelColor(terminologyEntryStr)

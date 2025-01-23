@@ -55,7 +55,7 @@
       <item row="1" column="1">
        <widget class="QComboBox" name="taskComboBox">
         <property name="toolTip">
-         <string>Choose &quot;total&quot; for segmenting all structures, or any of the more specialized segmentation tasks (that segment only a handful of specific structures in a certain region).</string>
+         <string>Choose "total" for segmenting all structures, or any of the more specialized segmentation tasks (that segment only a handful of specific structures in a certain region).</string>
         </property>
        </widget>
       </item>
