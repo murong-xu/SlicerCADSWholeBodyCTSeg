@@ -1325,7 +1325,7 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         volumeStorageNode.UnRegister(None)
 
         # Get options
-        options = ["-i", inputFile, "-o", outputSegmentationFolder, "-task", task]
+        options = ["-i", inputFile, "-o", outputSegmentationFolder, "-task", task, "--preprocessing", "--postprocessing", "-np", 4, "-ns", 6]
         if cpu:
             options.extend(["--cpu"])
 
@@ -1399,7 +1399,7 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         randomColorsNode = slicer.mrmlScene.GetNodeByID('vtkMRMLColorTableNodeRandom')
         rgba = [0, 0, 0, 0]
 
-        outputSegmentationFile = os.path.join(outputSegmentationFolder, 'segmentation_task_'+task+'.nii.gz')
+        outputSegmentationFile = os.path.join(outputSegmentationFolder, 'segmentation_part_'+task+'.nii.gz')
 
         # Create color table for this segmentation task (only for selected subset)
         colorTableNode = slicer.vtkMRMLColorTableNode()
