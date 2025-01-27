@@ -429,7 +429,7 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         from collections import OrderedDict
 
         ScriptedLoadableModuleLogic.__init__(self)
-        self.omaSegPythonPackageDownloadUrl = "https://github.com/murong-xu/OMASeg/releases/download/dev/OMASeg_SSH.zip"  #TODO: update this in every release
+        self.omaSegPythonPackageDownloadUrl = "https://drive.switch.ch/index.php/s/vtkGZ5yWuubi7p2/download"  #TODO: update this in every release
 
         # Custom applications can set custom location for weights.
         # For example, it could be set to `sysconfig.get_path('scripts')` to have an independent copy of
@@ -1169,7 +1169,7 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         if not pythonSlicerExecutablePath:
             raise RuntimeError("Python was not found")
         omaSegExecutablePath = os.path.join(sysconfig.get_path('scripts'), 
-                                        self.executableName("OMASegDummy"))
+                                        self.executableName("OMASegSlicer"))
         omaSegCommand = [pythonSlicerExecutablePath, omaSegExecutablePath]
 
         try:
@@ -1276,7 +1276,7 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         if not pythonSlicerExecutablePath:
             raise RuntimeError("Python was not found")
         omaSegExecutablePath = os.path.join(sysconfig.get_path('scripts'), 
-                                        self.executableName("OMASegDummy"))
+                                        self.executableName("OMASegSlicer"))
         omaSegCommand = [pythonSlicerExecutablePath, omaSegExecutablePath]
         
         originalName = outputSegmentation.GetName()
