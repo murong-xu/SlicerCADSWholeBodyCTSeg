@@ -667,9 +667,9 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         versionInfo = subprocess.check_output([shutil.which('PythonSlicer'), "-m", "pip", "show", "OMASeg"]).decode()
 
         # Get download URL, as the version information does not contain the github hash
-        downloadUrl = self.installedOMASegPythonPackageDownloadUrl()
-        if downloadUrl:
-            versionInfo += "Download URL: " + downloadUrl
+        # downloadUrl = self.installedOMASegPythonPackageDownloadUrl()
+        # if downloadUrl:
+        #     versionInfo += "Download URL: " + downloadUrl
 
         return versionInfo
 
