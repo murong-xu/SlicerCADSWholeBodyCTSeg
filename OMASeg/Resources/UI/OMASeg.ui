@@ -59,6 +59,68 @@
         </property>
        </widget>
       </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Target mode:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QWidget" name="targetModeWidget">
+        <layout class="QHBoxLayout" name="targetModeLayout">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QRadioButton" name="allTargetsRadio">
+           <property name="text">
+            <string>All targets</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="subsetTargetsRadio">
+           <property name="text">
+            <string>Select targets</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>Selected targets:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QListWidget" name="targetsList">
+        <property name="minimumHeight">
+         <number>100</number>
+        </property>
+        <property name="selectionMode">
+         <enum>QAbstractItemView::MultiSelection</enum>
+        </property>
+        <property name="toolTip">
+         <string>Select the targets you want to segment.</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -203,6 +265,16 @@
         </property>
        </widget>
       </item>
+      <item row="3" column="1">
+       <widget class="QPushButton" name="setLicenseButton">
+        <property name="toolTip">
+         <string>Set or update OMASeg license key to allow running tasks that require a license. The registration has to be done only once, the license information is stored persistently in the OMASeg configuration.</string>
+        </property>
+        <property name="text">
+         <string>Set license key</string>
+        </property>
+       </widget>
+      </item>
       <item row="5" column="0" colspan="2">
        <widget class="QPushButton" name="packageInfoUpdateButton">
         <property name="toolTip">
@@ -223,16 +295,6 @@
         </property>
         <property name="hideDetailsText">
          <string/>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="QPushButton" name="setLicenseButton">
-        <property name="toolTip">
-         <string>Set or update OMASeg license key to allow running tasks that require a license. The registration has to be done only once, the license information is stored persistently in the OMASeg configuration.</string>
-        </property>
-        <property name="text">
-         <string>Set license key</string>
         </property>
        </widget>
       </item>

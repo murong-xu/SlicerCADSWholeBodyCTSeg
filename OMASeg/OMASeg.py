@@ -2,6 +2,7 @@ import logging
 import os
 import re
 import vtk
+import qt
 
 import slicer
 from slicer.ScriptedLoadableModule import *
@@ -67,6 +68,16 @@ class OMASegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
         self.logic = OMASegLogic()
         self.logic.logCallback = self.addLog
 
+        self.initializeParameterNode()
+        self.addObserver(slicer.mrmlScene, slicer.mrmlScene.StartCloseEvent, self.onSceneStartClose)
+        self.addObserver(slicer.mrmlScene, slicer.mrmlScene.EndCloseEvent, self.onSceneEndClose)
+
+        # Create button group for radio buttons and connect signals
+        self.targetModeGroup = qt.QButtonGroup()
+        self.targetModeGroup.addButton(self.ui.allTargetsRadio)
+        self.targetModeGroup.addButton(self.ui.subsetTargetsRadio)
+        self.targetModeGroup.buttonClicked.connect(self.onTargetModeChanged)
+
         # Add tasks to taskComboBox
         self.ui.taskComboBox.clear()
         try:
@@ -79,37 +90,22 @@ class OMASegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
         except Exception as e:
             print(f"Error adding tasks: {str(e)}")
 
-        # Create a QListWidget for targets
-        from qt import QListWidget, QAbstractItemView, QSizePolicy
-        self.targetsList = QListWidget()
-        self.targetsList.setSelectionMode(QAbstractItemView.MultiSelection)
-        self.targetsList.setMinimumHeight(100)
-        self.targetsList.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        
-        # Add it to the layout after targetsComboBox
-        formLayout = self.ui.inputsCollapsibleButton.layout()
-        formLayout.addRow("Available targets:", self.targetsList)
-
-        # Connections
-        self.addObserver(slicer.mrmlScene, slicer.mrmlScene.StartCloseEvent, self.onSceneStartClose)
-        self.addObserver(slicer.mrmlScene, slicer.mrmlScene.EndCloseEvent, self.onSceneEndClose)
-
-        # Connect UI elements
+        # Connect all buttons and controls to appropriate slots
         self.ui.inputVolumeSelector.connect("currentNodeChanged(vtkMRMLNode*)", self.updateParameterNodeFromGUI)
         self.ui.taskComboBox.currentIndexChanged.connect(self.updateParameterNodeFromGUI)
         self.ui.taskComboBox.currentIndexChanged.connect(self.updateTargetsList)
-        self.targetsList.itemSelectionChanged.connect(self.updateParameterNodeFromGUI)
-
-        # Buttons
-        self.ui.packageInfoUpdateButton.connect('clicked(bool)', self.onPackageInfoUpdate)
+        self.ui.targetsList.itemSelectionChanged.connect(self.updateParameterNodeFromGUI)
+        self.ui.outputSegmentationSelector.connect("currentNodeChanged(vtkMRMLNode*)", self.updateParameterNodeFromGUI)
+        self.ui.useStandardSegmentNamesCheckBox.connect("toggled(bool)", self.updateParameterNodeFromGUI)
+        self.ui.cpuCheckBox.connect("toggled(bool)", self.updateParameterNodeFromGUI)
+        self.ui.applyButton.connect('clicked(bool)', self.onApplyButton)
         self.ui.packageUpgradeButton.connect('clicked(bool)', self.onPackageUpgrade)
         self.ui.setLicenseButton.connect('clicked(bool)', self.onSetLicense)
-        self.ui.applyButton.connect('clicked(bool)', self.onApplyButton)
+        self.ui.packageInfoUpdateButton.connect('clicked(bool)', self.onPackageInfoUpdate)
 
+        # Initial GUI update
+        self.updateGUIFromParameterNode()
         self.updateTargetsList()
-        
-        # Make sure parameter node is initialized (needed for module reload)
-        self.initializeParameterNode()
 
     def cleanup(self):
         """
@@ -241,29 +237,30 @@ class OMASegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
         self._parameterNode.SetParameter("CPU", "true" if self.ui.cpuCheckBox.checked else "false")
         self._parameterNode.SetParameter("UseStandardSegmentNames", "true" if self.ui.useStandardSegmentNamesCheckBox.checked else "false")
         self._parameterNode.SetNodeReferenceID("OutputSegmentation", self.ui.outputSegmentationSelector.currentNodeID)
+        self._parameterNode.SetParameter("TargetMode", "all" if self.ui.allTargetsRadio.isChecked() else "subset")
 
         self._parameterNode.EndModify(wasModified)
 
     def updateTargetsList(self):
         """Update available targets based on selected task"""
-        if not hasattr(self, 'targetsList'):
+        if not hasattr(self, 'ui') or not self.ui.targetsList:
             return
                 
-        self.targetsList.clear()
+        self.ui.targetsList.clear()
         
         # Get current task
         currentTask = self.ui.taskComboBox.currentData
         if not currentTask:
-            self.targetsList.setEnabled(False)
+            self.ui.targetsList.setEnabled(False)
             return
                 
         try:
             from omaseg.dataset_utils.bodyparts_labelmaps import map_taskid_to_labelmaps
+            
             if currentTask == 'all':
-                self.targetsList.setEnabled(True)
+                self.ui.targetsList.setEnabled(True)
                 all_targets = []
-                
-                for subtask in range(551, 560):
+                for subtask in range(551, 560):  # 551-559
                     labelValueToSegmentName = map_taskid_to_labelmaps[subtask]
                     availableTargets = list(labelValueToSegmentName.values())
                     if 'background' in availableTargets:
@@ -271,11 +268,12 @@ class OMASegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
                     for target in availableTargets:
                         all_targets.append(target)
                 
+                # Convert to SNOMED
                 availableTargets_snomed = [
                     self.logic.getSegmentLabelColor(self.logic.omaSegLabelTerminology[i]['terminologyStr'])[0] 
                     for i in all_targets
                 ]
-                
+
             else:
                 labelValueToSegmentName = map_taskid_to_labelmaps[int(currentTask)]
                 availableTargets = list(labelValueToSegmentName.values())
@@ -285,24 +283,45 @@ class OMASegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
                     self.logic.getSegmentLabelColor(self.logic.omaSegLabelTerminology[i]['terminologyStr'])[0] 
                     for i in availableTargets
                 ]
-                
-                self.targetsList.setEnabled(True)
             
             # Add targets to list widget
             for target in availableTargets_snomed:
-                self.targetsList.addItem(str(target))
-                            
+                item = qt.QListWidgetItem(str(target))
+                self.ui.targetsList.addItem(item)
+            
+            # Update 'available targetlist' according to radio button
+            if self.ui.allTargetsRadio.isChecked():
+                # if select 'all': disable the subset selection
+                for i in range(self.ui.targetsList.count):
+                    self.ui.targetsList.item(i).setSelected(True)
+                self.ui.targetsList.setEnabled(False)
+            else:
+                # if select "Select targets" mode: let user select which ones to show
+                self.ui.targetsList.setEnabled(True)
+
         except Exception as e:
             print(f"Error updating targets: {str(e)}")
             import traceback
             traceback.print_exc()
-            self.targetsList.setEnabled(False)
+            self.ui.targetsList.setEnabled(False)
+
+    def onTargetModeChanged(self):
+        """Handle changes in target selection mode"""
+        if self.ui.allTargetsRadio.isChecked():
+            # Select all items in the list
+            for i in range(self.ui.targetsList.count):
+                self.ui.targetsList.item(i).setSelected(True)
+            self.ui.targetsList.setEnabled(False)  # Disable manual selection
+        else:
+            self.ui.targetsList.clearSelection()
+            self.ui.targetsList.setEnabled(True)  # Enable manual selection        
+        self.updateParameterNodeFromGUI()
 
     def getSelectedTargets(self):
         """Get list of currently selected targets"""
         selectedTargets = []
-        if hasattr(self, 'targetsList'):
-            selectedItems = self.targetsList.selectedItems()
+        if hasattr(self.ui, 'targetsList'):
+            selectedItems = self.ui.targetsList.selectedItems()
             selectedTargets = [item.text() for item in selectedItems]
         return selectedTargets
 
@@ -323,7 +342,6 @@ class OMASegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
             targetsStr = self._parameterNode.GetParameter("Targets")
             if targetsStr:
                 subset = targetsStr.split(',')
-        import qt
 
         sequenceBrowserNode = slicer.modules.sequences.logic().GetFirstBrowserNodeForProxyNode(self.ui.inputVolumeSelector.currentNode())
         if sequenceBrowserNode:  #TODO: handle sequence input
@@ -397,7 +415,6 @@ class OMASegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
             slicer.util.restart()
 
     def onSetLicense(self):  #TODO: do we need to set up license?
-        import qt
         licenseText = qt.QInputDialog.getText(slicer.util.mainWindow(), "Set OMASeg license key", "License key:")
 
         success = False
