@@ -1956,35 +1956,18 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              180,
-              105,
-              108
-            ],
-            "CodeMeaning": "Bowel bag",
-            "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "bowel bag",
-            "3dSlicerIntegerLabel": 108,
-            "cid": "7154",
-            "UMLSConceptUID": "C0000000",
-            "CodeValue": "0000",
-            "contextGroupName": "AbdominalSegmentationTypes",
-            "SNOMEDCTConceptID": "0000",
-            "paired": "U"
-          },
-          {
-            "recommendedDisplayRGBValue": [
               170,
               95,
               128
             ],
-            "CodeMeaning": "Sigmoid",
+            "CodeMeaning": "Sigmoid colon",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "sigmoid",
+            "3dSlicerLabel": "sigmoid colon",
             "3dSlicerIntegerLabel": 109,
             "cid": "7154",
-            "CodeValue": "0001",
+            "CodeValue": "60184004",
             "contextGroupName": "AbdominalSegmentationTypes",
-            "SNOMEDCTConceptID": "80891009",
+            "SNOMEDCTConceptID": "60184004",
             "paired": "U"
           },
           {
@@ -2131,12 +2114,12 @@
             "paired": "U"
           },
           {
-            "CodeMeaning": "Psoas major",
+            "CodeMeaning": "Structure of psoas major muscle",
             "CodingSchemeDesignator": "SCT",
             "cid": "7154",
-            "CodeValue": "0002",
+            "CodeValue": "57240007",
             "contextGroupName": "AbdominalSegmentationTypes",
-            "SNOMEDCTConceptID": "41216001",
+            "SNOMEDCTConceptID": "57240007",
             "paired": "Y",
             "Modifier": [
               {
@@ -2392,43 +2375,38 @@
             ]
           },
           {
-            "CodeMeaning": "Carotid artery",
+            "recommendedDisplayRGBValue": [
+              224,
+              97,
+              76
+            ],
+            "CodeMeaning": "Structure of left carotid artery",
             "CodingSchemeDesignator": "SCT",
-            "cid": "3010",
-            "CodeValue": "0004",
-            "contextGroupName": "CardiovascularAnatomicLocations",
-            "SNOMEDCTConceptID": "2748008",
-            "paired": "Y",
-            "Modifier": [
-              {
-                "recommendedDisplayRGBValue": [
-                  224,
-                  97,
-                  76
-                ],
-                "CodeMeaning": "Right",
-                "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "right carotid artery",
-                "3dSlicerIntegerLabel": 130,
-                "cid": "244",
-                "CodeValue": "24028007",
-                "contextGroupName": "Laterality"
-              },
-              {
-                "recommendedDisplayRGBValue": [
-                  224,
-                  97,
-                  76
-                ],
-                "CodeMeaning": "Left",
-                "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "left carotid artery",
-                "3dSlicerIntegerLabel": 129,
-                "cid": "244",
-                "CodeValue": "7771000",
-                "contextGroupName": "Laterality"
-              }
-            ]
+            "3dSlicerLabel": "structure of left carotid artery",
+            "3dSlicerIntegerLabel": 130,
+            "cid": "",
+            "UMLSConceptUID": "",
+            "CodeValue": "721028001",
+            "contextGroupName": "",
+            "SNOMEDCTConceptID": "721028001",
+            "paired": "U"
+          },
+          {
+            "recommendedDisplayRGBValue": [
+              224,
+              97,
+              80
+            ],
+            "CodeMeaning": "Structure of right carotid artery",
+            "CodingSchemeDesignator": "SCT",
+            "3dSlicerLabel": "Structure of right carotid artery",
+            "3dSlicerIntegerLabel": 129,
+            "cid": "",
+            "UMLSConceptUID": "",
+            "CodeValue": "721033002",
+            "contextGroupName": "",
+            "SNOMEDCTConceptID": "721033002",
+            "paired": "U"
           },
           {
             "recommendedDisplayRGBValue": [
@@ -2436,14 +2414,14 @@
               135,
               134
             ],
-            "CodeMeaning": "Arytenoids",
+            "CodeMeaning": "Arytenoid cartilage structure",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "arytenoids",
+            "3dSlicerLabel": "arytenoid cartilage structure",
             "3dSlicerIntegerLabel": 131,
-            "cid": "4028",
-            "CodeValue": "0005",
-            "contextGroupName": "CraniofacialAnatomicRegions",
-            "SNOMEDCTConceptID": "2748008",
+            "cid": "",
+            "CodeValue": "77578007",
+            "contextGroupName": "",
+            "SNOMEDCTConceptID": "77578007",
             "paired": "U"
           },
           {
@@ -2456,10 +2434,10 @@
             "CodingSchemeDesignator": "SCT",
             "3dSlicerLabel": "mandible",
             "3dSlicerIntegerLabel": 132,
-            "cid": "4028",
-            "CodeValue": "0006",
-            "contextGroupName": "CraniofacialAnatomicRegions",
-            "SNOMEDCTConceptID": "2748008",
+            "cid": "",
+            "CodeValue": "91609006",
+            "contextGroupName": "",
+            "SNOMEDCTConceptID": "91609006",
             "paired": "U"
           },
           {
@@ -2468,14 +2446,14 @@
               214,
               49
             ],
-            "CodeMeaning": "Brainstem",
+            "CodeMeaning": "Entire brainstem",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "brainstem",
+            "3dSlicerLabel": "entire brainstem",
             "3dSlicerIntegerLabel": 133,
-            "cid": "7153",
-            "CodeValue": "0007",
-            "contextGroupName": "CNSSegmentationTypes",
-            "SNOMEDCTConceptID": "836432005",
+            "cid": "",
+            "CodeValue": "180925009",
+            "contextGroupName": "",
+            "SNOMEDCTConceptID": "180925009",
             "paired": "U"
           },
           {
@@ -2488,10 +2466,10 @@
             "CodingSchemeDesignator": "SCT",
             "3dSlicerLabel": "buccal mucosa",
             "3dSlicerIntegerLabel": 134,
-            "cid": "4028",
-            "CodeValue": "0008",
-            "contextGroupName": "CraniofacialAnatomicRegions",
-            "SNOMEDCTConceptID": "2748008",
+            "cid": "",
+            "CodeValue": "16811007",
+            "contextGroupName": "",
+            "SNOMEDCTConceptID": "16811007",
             "paired": "U"
           },
           {
@@ -2504,50 +2482,43 @@
             "CodingSchemeDesignator": "SCT",
             "3dSlicerLabel": "oral cavity",
             "3dSlicerIntegerLabel": 135,
-            "cid": "4028",
-            "CodeValue": "0009",
-            "contextGroupName": "CraniofacialAnatomicRegions",
-            "SNOMEDCTConceptID": "2748008",
+            "cid": "",
+            "CodeValue": "74262004",
+            "contextGroupName": "",
+            "SNOMEDCTConceptID": "74262004",
             "paired": "U"
           },
           {
-            "CodeMeaning": "Cochlea",
+            "recommendedDisplayRGBValue": [
+              230,
+              152,
+              110
+            ],
+            "CodeMeaning": "Structure of left cochlear",
             "CodingSchemeDesignator": "SCT",
-            "cid": "4028",
-            "CodeValue": "0010",
-            "contextGroupName": "CraniofacialAnatomicRegions",
-            "SNOMEDCTConceptID": "2748008",
-            "paired": "Y",
-            "Modifier": [
-              {
-                "recommendedDisplayRGBValue": [
-                  230,
-                  152,
-                  110
-                ],
-                "CodeMeaning": "Right",
-                "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "right cochlea",
-                "3dSlicerIntegerLabel": 137,
-                "cid": "244",
-                "CodeValue": "24028007",
-                "contextGroupName": "Laterality"
-              },
-              {
-                "recommendedDisplayRGBValue": [
-                  230,
-                  152,
-                  110
-                ],
-                "CodeMeaning": "Left",
-                "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "left cochlea",
-                "3dSlicerIntegerLabel": 136,
-                "cid": "244",
-                "CodeValue": "7771000",
-                "contextGroupName": "Laterality"
-              }
-            ]
+            "3dSlicerLabel": "structure of left cochlear",
+            "3dSlicerIntegerLabel": 137,
+            "cid": "",
+            "CodeValue": "772064001",
+            "contextGroupName": "",
+            "SNOMEDCTConceptID": "772064001",
+            "paired": "U"
+          },
+          {
+            "recommendedDisplayRGBValue": [
+              230,
+              152,
+              115
+            ],
+            "CodeMeaning": "Structure of right cochlear",
+            "CodingSchemeDesignator": "SCT",
+            "3dSlicerLabel": "structure of right cochlear",
+            "3dSlicerIntegerLabel": 136,
+            "cid": "",
+            "CodeValue": "772065000",
+            "contextGroupName": "",
+            "SNOMEDCTConceptID": "772065000",
+            "paired": "U"
           },
           {
             "recommendedDisplayRGBValue": [
@@ -2555,14 +2526,14 @@
               125,
               120
             ],
-            "CodeMeaning": "Cricopharyngeal inlet",
+            "CodeMeaning": "Cricopharyngeus",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "cricopharyngeal inlet",
+            "3dSlicerLabel": "cricopharyngeus",
             "3dSlicerIntegerLabel": 138,
-            "cid": "4028",
-            "CodeValue": "0012",
-            "contextGroupName": "CraniofacialAnatomicRegions",
-            "SNOMEDCTConceptID": "2748008",
+            "cid": "",
+            "CodeValue": "28276008",
+            "contextGroupName": "",
+            "SNOMEDCTConceptID": "28276008",
             "paired": "U"
           },
           {
@@ -2575,58 +2546,51 @@
             "CodingSchemeDesignator": "SCT",
             "3dSlicerLabel": "cervical esophagus",
             "3dSlicerIntegerLabel": 139,
-            "cid": "4028",
-            "CodeValue": "0013",
-            "contextGroupName": "CraniofacialAnatomicRegions",
-            "SNOMEDCTConceptID": "2748008",
+            "cid": "",
+            "CodeValue": "60075002",
+            "contextGroupName": "",
+            "SNOMEDCTConceptID": "60075002",
             "paired": "U"
           },
           {
-            "CodeMeaning": "Anterior eyeball",
+            "recommendedDisplayRGBValue": [
+              190,
+              178,
+              142
+            ],
+            "CodeMeaning": "Structure of anterior eyeball segment of left eye",
             "CodingSchemeDesignator": "SCT",
-            "cid": "4028",
-            "CodeValue": "0014",
-            "contextGroupName": "CraniofacialAnatomicRegions",
-            "SNOMEDCTConceptID": "2748008",
-            "paired": "Y",
-            "Modifier": [
-              {
-                "recommendedDisplayRGBValue": [
-                  190,
-                  178,
-                  142
-                ],
-                "CodeMeaning": "Right",
-                "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "right anterior eyeball",
-                "3dSlicerIntegerLabel": 141,
-                "cid": "244",
-                "CodeValue": "24028007",
-                "contextGroupName": "Laterality"
-              },
-              {
-                "recommendedDisplayRGBValue": [
-                  190,
-                  178,
-                  142
-                ],
-                "CodeMeaning": "Left",
-                "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "left anterior eyeball",
-                "3dSlicerIntegerLabel": 140,
-                "cid": "244",
-                "CodeValue": "7771000",
-                "contextGroupName": "Laterality"
-              }
-            ]
+            "3dSlicerLabel": "structure of anterior eyeball segment of left eye",
+            "3dSlicerIntegerLabel": 141,
+            "cid": "",
+            "CodeValue": "717762003",
+            "contextGroupName": "",
+            "SNOMEDCTConceptID": "717762003",
+            "paired": "U"
           },
           {
-            "CodeMeaning": "Posterior eyeball",
+            "recommendedDisplayRGBValue": [
+              190,
+              178,
+              146
+            ],
+            "CodeMeaning": "Structure of anterior eyeball segment of right eye",
             "CodingSchemeDesignator": "SCT",
-            "cid": "4028",
-            "CodeValue": "0016",
-            "contextGroupName": "CraniofacialAnatomicRegions",
-            "SNOMEDCTConceptID": "2748008",
+            "3dSlicerLabel": "structure of anterior eyeball segment of right eye",
+            "3dSlicerIntegerLabel": 140,
+            "cid": "",
+            "CodeValue": "722049003",
+            "contextGroupName": "",
+            "SNOMEDCTConceptID": "722049003",
+            "paired": "U"
+          },
+          {
+            "CodeMeaning": "Posterior eyeball segment structure",
+            "CodingSchemeDesignator": "SCT",
+            "cid": "",
+            "CodeValue": "77205005",
+            "contextGroupName": "",
+            "SNOMEDCTConceptID": "77205005",
             "paired": "Y",
             "Modifier": [
               {
@@ -2637,7 +2601,7 @@
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "right posterior eyeball",
+                "3dSlicerLabel": "right posterior eyeball segment structure",
                 "3dSlicerIntegerLabel": 143,
                 "cid": "244",
                 "CodeValue": "24028007",
@@ -2651,7 +2615,7 @@
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "left posterior eyeball",
+                "3dSlicerLabel": "left posterior eyeball segment structure",
                 "3dSlicerIntegerLabel": 142,
                 "cid": "244",
                 "CodeValue": "7771000",
@@ -2660,12 +2624,12 @@
             ]
           },
           {
-            "CodeMeaning": "Lacrimal gland",
+            "CodeMeaning": "Both lacrimal glands",
             "CodingSchemeDesignator": "SCT",
-            "cid": "4028",
-            "CodeValue": "0018",
-            "contextGroupName": "CraniofacialAnatomicRegions",
-            "SNOMEDCTConceptID": "2748008",
+            "cid": "",
+            "CodeValue": "30641009",
+            "contextGroupName": "",
+            "SNOMEDCTConceptID": "30641009",
             "paired": "Y",
             "Modifier": [
               {
@@ -2699,12 +2663,12 @@
             ]
           },
           {
-            "CodeMeaning": "Submandibular gland",
+            "CodeMeaning": "Entire submandibular gland",
             "CodingSchemeDesignator": "SCT",
-            "cid": "4028",
-            "CodeValue": "0020",
-            "contextGroupName": "CraniofacialAnatomicRegions",
-            "SNOMEDCTConceptID": "2748008",
+            "cid": "",
+            "CodeValue": "181235001",
+            "contextGroupName": "",
+            "SNOMEDCTConceptID": "181235001",
             "paired": "Y",
             "Modifier": [
               {
@@ -2743,11 +2707,11 @@
               140,
               130
             ],
-            "CodeMeaning": "Thyroid",
+            "CodeMeaning": "Thyroid structure",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "thyroid",
+            "3dSlicerLabel": "thyroid structure",
             "3dSlicerIntegerLabel": 148,
-            "cid": "4030,6113",
+            "cid": "",
             "CodeValue": "69748006",
             "contextGroupName": "CT,MRandPETAnatomyImaged,MediastinumAnatomyFindingorFeature",
             "SNOMEDCTConceptID": "69748006",
@@ -2759,14 +2723,14 @@
               162,
               114
             ],
-            "CodeMeaning": "Larynx-glottis",
+            "CodeMeaning": "Glottis structure",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "larynx-glottis",
+            "3dSlicerLabel": "glottis structure",
             "3dSlicerIntegerLabel": 149,
-            "cid": "4028",
-            "CodeValue": "0023",
-            "contextGroupName": "CraniofacialAnatomicRegions",
-            "SNOMEDCTConceptID": "2748008",
+            "cid": "",
+            "CodeValue": "1307006",
+            "contextGroupName": "",
+            "SNOMEDCTConceptID": "1307006",
             "paired": "U"
           },
           {
@@ -2775,14 +2739,14 @@
               145,
               135
             ],
-            "CodeMeaning": "Larynx-supraglottic",
+            "CodeMeaning": "Supraglottis structure",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "larynx-supraglottic",
+            "3dSlicerLabel": "supraglottis structure",
             "3dSlicerIntegerLabel": 150,
-            "cid": "4028",
-            "CodeValue": "0024",
-            "contextGroupName": "CraniofacialAnatomicRegions",
-            "SNOMEDCTConceptID": "2748008",
+            "cid": "",
+            "CodeValue": "119255006",
+            "contextGroupName": "",
+            "SNOMEDCTConceptID": "119255006",
             "paired": "U"
           },
           {
@@ -2791,14 +2755,14 @@
               155,
               145
             ],
-            "CodeMeaning": "Lips",
+            "CodeMeaning": "Both lips",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "lips",
+            "3dSlicerLabel": "both lips",
             "3dSlicerIntegerLabel": 151,
-            "cid": "4028",
-            "CodeValue": "0025",
-            "contextGroupName": "CraniofacialAnatomicRegions",
-            "SNOMEDCTConceptID": "2748008",
+            "cid": "",
+            "CodeValue": "81083006",
+            "contextGroupName": "",
+            "SNOMEDCTConceptID": "81083006",
             "paired": "U"
           },
           {
@@ -2811,89 +2775,75 @@
             "CodingSchemeDesignator": "SCT",
             "3dSlicerLabel": "optic chiasm",
             "3dSlicerIntegerLabel": 152,
-            "cid": "7153",
-            "CodeValue": "0026",
-            "contextGroupName": "CNSSegmentationTypes",
-            "SNOMEDCTConceptID": "2748008",
+            "cid": "",
+            "CodeValue": "244453006",
+            "contextGroupName": "",
+            "SNOMEDCTConceptID": "244453006",
             "paired": "U"
           },
           {
-            "CodeMeaning": "Optic nerve",
+            "recommendedDisplayRGBValue": [
+              244,
+              214,
+              49
+            ],
+            "CodeMeaning": "Left optic nerve",
             "CodingSchemeDesignator": "SCT",
-            "cid": "7153",
-            "CodeValue": "0027",
-            "contextGroupName": "CNSSegmentationTypes",
-            "SNOMEDCTConceptID": "2748008",
-            "paired": "Y",
-            "Modifier": [
-              {
-                "recommendedDisplayRGBValue": [
-                  244,
-                  214,
-                  49
-                ],
-                "CodeMeaning": "Right",
-                "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "right optic nerve",
-                "3dSlicerIntegerLabel": 154,
-                "cid": "244",
-                "CodeValue": "24028007",
-                "contextGroupName": "Laterality"
-              },
-              {
-                "recommendedDisplayRGBValue": [
-                  244,
-                  214,
-                  49
-                ],
-                "CodeMeaning": "Left",
-                "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "left optic nerve",
-                "3dSlicerIntegerLabel": 153,
-                "cid": "244",
-                "CodeValue": "7771000",
-                "contextGroupName": "Laterality"
-              }
-            ]
+            "3dSlicerLabel": "left optic nerve",
+            "3dSlicerIntegerLabel": 154,
+            "cid": "",
+            "CodeValue": "724379002",
+            "contextGroupName": "",
+            "SNOMEDCTConceptID": "724379002",
+            "paired": "U"
           },
           {
-            "CodeMeaning": "Parotid gland",
+            "recommendedDisplayRGBValue": [
+              244,
+              214,
+              54
+            ],
+            "CodeMeaning": "Right optic nerve",
             "CodingSchemeDesignator": "SCT",
-            "cid": "4028",
-            "CodeValue": "0029",
-            "contextGroupName": "CraniofacialAnatomicRegions",
-            "SNOMEDCTConceptID": "2748008",
-            "paired": "Y",
-            "Modifier": [
-              {
-                "recommendedDisplayRGBValue": [
-                  249,
-                  186,
-                  150
-                ],
-                "CodeMeaning": "Right",
-                "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "right parotid gland",
-                "3dSlicerIntegerLabel": 156,
-                "cid": "244",
-                "CodeValue": "24028007",
-                "contextGroupName": "Laterality"
-              },
-              {
-                "recommendedDisplayRGBValue": [
-                  249,
-                  186,
-                  150
-                ],
-                "CodeMeaning": "Left",
-                "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "left parotid gland",
-                "3dSlicerIntegerLabel": 155,
-                "cid": "244",
-                "CodeValue": "7771000",
-                "contextGroupName": "Laterality"
-              }
-            ]
+            "3dSlicerLabel": "right optic nerve",
+            "3dSlicerIntegerLabel": 153,
+            "cid": "",
+            "CodeValue": "724380004",
+            "contextGroupName": "",
+            "SNOMEDCTConceptID": "724380004",
+            "paired": "U"
+          },
+          {
+            "recommendedDisplayRGBValue": [
+              249,
+              186,
+              150
+            ],
+            "CodeMeaning": "Left parotid gland",
+            "CodingSchemeDesignator": "SCT",
+            "3dSlicerLabel": "left parotid gland",
+            "3dSlicerIntegerLabel": 156,
+            "cid": "",
+            "CodeValue": "44178003",
+            "contextGroupName": "",
+            "SNOMEDCTConceptID": "44178003",
+            "paired": "U"
+          },
+          {
+            "recommendedDisplayRGBValue": [
+              249,
+              186,
+              155
+            ],
+            "CodeMeaning": "Right parotid gland",
+            "CodingSchemeDesignator": "SCT",
+            "3dSlicerLabel": "Right parotid gland",
+            "3dSlicerIntegerLabel": 155,
+            "cid": "",
+            "CodeValue": "85706002",
+            "contextGroupName": "",
+            "SNOMEDCTConceptID": "85706002",
+            "paired": "U"
           },
           {
             "recommendedDisplayRGBValue": [
@@ -2905,10 +2855,10 @@
             "CodingSchemeDesignator": "SCT",
             "3dSlicerLabel": "pituitary gland",
             "3dSlicerIntegerLabel": 157,
-            "cid": "7153",
-            "CodeValue": "0031",
-            "contextGroupName": "CNSSegmentationTypes",
-            "SNOMEDCTConceptID": "2748008",
+            "cid": "",
+            "CodeValue": "56329008",
+            "contextGroupName": "",
+            "SNOMEDCTConceptID": "56329008",
             "paired": "U"
           },
           {
@@ -2917,14 +2867,14 @@
               104,
               88
             ],
-            "CodeMeaning": "Subcutaneous tissue",
+            "CodeMeaning": "Subcutaneous tissue structure",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "subcutaneous tissue",
+            "3dSlicerLabel": "subcutaneous tissue structure",
             "3dSlicerIntegerLabel": 158,
-            "cid": "7166",
-            "CodeValue": "0032",
-            "contextGroupName": "CommonTissueSegmentationTypes",
-            "SNOMEDCTConceptID": "2748008",
+            "cid": "",
+            "CodeValue": "71966008",
+            "contextGroupName": "",
+            "SNOMEDCTConceptID": "71966008",
             "paired": "U"
           },
           {
@@ -2933,14 +2883,14 @@
               150,
               140
             ],
-            "CodeMeaning": "Abdominal cavity",
+            "CodeMeaning": "Abdominal cavity structure",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "abdominal cavity",
+            "3dSlicerLabel": "abdominal cavity structure",
             "3dSlicerIntegerLabel": 160,
             "cid": "7154",
-            "CodeValue": "0034",
+            "CodeValue": "52731004",
             "contextGroupName": "AbdominalSegmentationTypes",
-            "SNOMEDCTConceptID": "2748008",
+            "SNOMEDCTConceptID": "52731004",
             "paired": "U"
           },
           {
@@ -2949,14 +2899,14 @@
               155,
               145
             ],
-            "CodeMeaning": "Thoracic cavity",
+            "CodeMeaning": "Thoracic cavity structure",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "thoracic cavity",
+            "3dSlicerLabel": "thoracic cavity structure",
             "3dSlicerIntegerLabel": 161,
             "cid": "7155",
-            "CodeValue": "0035",
+            "CodeValue": "43799004",
             "contextGroupName": "ThoracicSegmentationTypes",
-            "SNOMEDCTConceptID": "2748008",
+            "SNOMEDCTConceptID": "43799004",
             "paired": "U"
           },
           {
@@ -2965,14 +2915,14 @@
               186,
               150
             ],
-            "CodeMeaning": "Glands",
+            "CodeMeaning": "Gland structure",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "glands",
+            "3dSlicerLabel": "gland structure",
             "3dSlicerIntegerLabel": 163,
-            "cid": "7166",
-            "CodeValue": "0036",
-            "contextGroupName": "CommonTissueSegmentationTypes",
-            "SNOMEDCTConceptID": "2748008",
+            "cid": "",
+            "CodeValue": "362884007",
+            "contextGroupName": "",
+            "SNOMEDCTConceptID": "362884007",
             "paired": "U"
           },
           {
@@ -3141,6 +3091,50 @@
                 "SNOMEDCTConceptID": "51440002"
               }
             ]
+          }
+        ]
+      },
+      {
+        "CodeMeaning": "Physical object",
+        "CodingSchemeDesignator": "SCT",
+        "showAnatomy": false,
+        "cid": "",
+        "CodeValue": "260787004",
+        "contextGroupName": "",
+        "Type": 
+        [
+          {
+            "recommendedDisplayRGBValue": [
+              200,
+              200,
+              200
+            ],
+            "CodeMeaning": "Prosthetic breast implant",
+            "CodingSchemeDesignator": "SCT",
+            "3dSlicerLabel": "prosthetic breast implant",
+            "3dSlicerIntegerLabel": 8,
+            "cid": "",
+            "UMLSConceptUID": "",
+            "CodeValue": "2282003",
+            "contextGroupName": "",
+            "SNOMEDCTConceptID": "2282003"
+          },
+          {
+            "recommendedDisplayRGBValue": [
+              245,
+              220,
+              190
+            ],
+            "CodeMeaning": "Colostomy bag",
+            "CodingSchemeDesignator": "SCT",
+            "3dSlicerLabel": "colostomy bag",
+            "3dSlicerIntegerLabel": 220,
+            "cid": "",
+            "UMLSConceptUID": "C0018787",
+            "CodeValue": "339648008",
+            "contextGroupName": "",
+            "SNOMEDCTConceptID": "339648008",
+            "paired": "U"
           }
         ]
       }
