@@ -9,33 +9,36 @@ from slicer.ScriptedLoadableModule import *
 from slicer.util import VTKObservationMixin
 
 
-class OMASeg(ScriptedLoadableModule):
+class CADS(ScriptedLoadableModule):
     def __init__(self, parent):
         ScriptedLoadableModule.__init__(self, parent)
-        self.parent.title = "OMASeg"
+        self.parent.title = "CADS"
         self.parent.categories = ["Segmentation"]
         self.parent.dependencies = []
-        self.parent.contributors = ["Murong"]
+        self.parent.contributors = ["Murong Xu (University of Zurich)"]
         self.parent.helpText = """
-        3D Slicer extension for automated whole-body CT segmentation using "OMASeg" AI model.
-        See more information in the <a href="https://github.com/murong-xu/SlicerOMASeg">extension documentation</a>.
+        3D Slicer extension for automated whole-body CT segmentation using "CADS" AI model.
+        See more information in the <a href="https://github.com/murong-xu/SlicerCADS">extension documentation</a>.
         """
-        self.parent.acknowledgementText = """  #TODO: cite
-        This file was originally developed by Andras Lasso (PerkLab, Queen's University).
-        The module uses <a href="https://github.com/murong-xu/OMASeg">OMASeg</a>.
-        If you use the OMASeg from this software in your research, please cite:
-        OMASeg: Open Model for Anatomy Segmentation in Computer Tomography
+        self.parent.acknowledgementText = """#TODO: cite publication
+        This file was developed by Murong Xu (University of Zurich), based on foundational work by Andras Lasso (PerkLab, Queen's University).
+        The module uses <a href="https://github.com/murong-xu/CADS">CADS</a>.
+        If you use the CADS from this software in your research, please cite:
+        CADS: Open Model for Anatomy Segmentation in Computer Tomography
         """
-        slicer.app.connect("startupCompleted()", self.configureDefaultTerminology)
+        slicer.app.connect("startupCompleted()",
+                           self.configureDefaultTerminology)
 
     def configureDefaultTerminology(self):
         moduleDir = os.path.dirname(self.parent.path)
-        omaSegTerminologyFilePath = os.path.join(moduleDir, 'Resources', 'SegmentationCategoryTypeModifier-OMASeg.term.json')
+        cadsTerminologyFilePath = os.path.join(
+            moduleDir, 'Resources', 'SegmentationCategoryTypeModifier-CADS.term.json')
         tlogic = slicer.modules.terminologies.logic()
-        self.terminologyName = tlogic.LoadTerminologyFromFile(omaSegTerminologyFilePath)
+        self.terminologyName = tlogic.LoadTerminologyFromFile(
+            cadsTerminologyFilePath)
 
 
-class OMASegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
+class CADSWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
     def __init__(self, parent=None):
         """
         Called when the user opens the module the first time and the widget is initialized.
@@ -54,7 +57,7 @@ class OMASegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
 
         # Load widget from .ui file (created by Qt Designer).
         # Additional widgets can be instantiated manually and added to self.layout.
-        uiWidget = slicer.util.loadUI(self.resourcePath('UI/OMASeg.ui'))
+        uiWidget = slicer.util.loadUI(self.resourcePath('UI/CADS.ui'))
         self.layout.addWidget(uiWidget)
         self.ui = slicer.util.childWidgetVariables(uiWidget)
 
@@ -65,12 +68,14 @@ class OMASegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
 
         # Create logic class. Logic implements all computations that should be possible to run
         # in batch mode, without a graphical user interface.
-        self.logic = OMASegLogic()
+        self.logic = CADSLogic()
         self.logic.logCallback = self.addLog
 
         self.initializeParameterNode()
-        self.addObserver(slicer.mrmlScene, slicer.mrmlScene.StartCloseEvent, self.onSceneStartClose)
-        self.addObserver(slicer.mrmlScene, slicer.mrmlScene.EndCloseEvent, self.onSceneEndClose)
+        self.addObserver(
+            slicer.mrmlScene, slicer.mrmlScene.StartCloseEvent, self.onSceneStartClose)
+        self.addObserver(slicer.mrmlScene,
+                         slicer.mrmlScene.EndCloseEvent, self.onSceneEndClose)
 
         # Create button group for radio buttons and connect signals
         self.targetModeGroup = qt.QButtonGroup()
@@ -83,25 +88,31 @@ class OMASegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
         try:
             for task in self.logic.tasks:
                 taskTitle = self.logic.tasks[task]['title']
-                if self.logic.isLicenseRequiredForTask(task):
-                    taskTitle += " [license required]"
-                print(f"Adding task: {task} with title: {taskTitle}")
                 self.ui.taskComboBox.addItem(str(taskTitle), str(task))
         except Exception as e:
             print(f"Error adding tasks: {str(e)}")
 
         # Connect all buttons and controls to appropriate slots
-        self.ui.inputVolumeSelector.connect("currentNodeChanged(vtkMRMLNode*)", self.updateParameterNodeFromGUI)
-        self.ui.taskComboBox.currentIndexChanged.connect(self.updateParameterNodeFromGUI)
-        self.ui.taskComboBox.currentIndexChanged.connect(self.updateTargetsList)
-        self.ui.targetsList.itemSelectionChanged.connect(self.updateParameterNodeFromGUI)
-        self.ui.outputSegmentationSelector.connect("currentNodeChanged(vtkMRMLNode*)", self.updateParameterNodeFromGUI)
-        self.ui.useStandardSegmentNamesCheckBox.connect("toggled(bool)", self.updateParameterNodeFromGUI)
-        self.ui.cpuCheckBox.connect("toggled(bool)", self.updateParameterNodeFromGUI)
+        self.ui.inputVolumeSelector.connect(
+            "currentNodeChanged(vtkMRMLNode*)", self.updateParameterNodeFromGUI)
+        self.ui.taskComboBox.currentIndexChanged.connect(
+            self.updateParameterNodeFromGUI)
+        self.ui.taskComboBox.currentIndexChanged.connect(
+            self.updateTargetsList)
+        self.ui.targetsList.itemSelectionChanged.connect(
+            self.updateParameterNodeFromGUI)
+        self.ui.outputSegmentationSelector.connect(
+            "currentNodeChanged(vtkMRMLNode*)", self.updateParameterNodeFromGUI)
+        self.ui.useStandardSegmentNamesCheckBox.connect(
+            "toggled(bool)", self.updateParameterNodeFromGUI)
+        self.ui.cpuCheckBox.connect(
+            "toggled(bool)", self.updateParameterNodeFromGUI)
         self.ui.applyButton.connect('clicked(bool)', self.onApplyButton)
-        self.ui.packageUpgradeButton.connect('clicked(bool)', self.onPackageUpgrade)
+        self.ui.packageUpgradeButton.connect(
+            'clicked(bool)', self.onPackageUpgrade)
         self.ui.setLicenseButton.connect('clicked(bool)', self.onSetLicense)
-        self.ui.packageInfoUpdateButton.connect('clicked(bool)', self.onPackageInfoUpdate)
+        self.ui.packageInfoUpdateButton.connect(
+            'clicked(bool)', self.onPackageInfoUpdate)
 
         # Initial GUI update
         self.updateGUIFromParameterNode()
@@ -125,7 +136,8 @@ class OMASegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
         Called each time the user opens a different module.
         """
         # Do not react to parameter node changes (GUI wlil be updated when the user enters into the module)
-        self.removeObserver(self._parameterNode, vtk.vtkCommand.ModifiedEvent, self.updateGUIFromParameterNode)
+        self.removeObserver(
+            self._parameterNode, vtk.vtkCommand.ModifiedEvent, self.updateGUIFromParameterNode)
 
     def onSceneStartClose(self, caller, event):
         """
@@ -153,9 +165,11 @@ class OMASegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
 
         # Select default input nodes if nothing is selected yet to save a few clicks for the user
         if not self._parameterNode.GetNodeReference("InputVolume"):
-            firstVolumeNode = slicer.mrmlScene.GetFirstNodeByClass("vtkMRMLScalarVolumeNode")
+            firstVolumeNode = slicer.mrmlScene.GetFirstNodeByClass(
+                "vtkMRMLScalarVolumeNode")
             if firstVolumeNode:
-                self._parameterNode.SetNodeReferenceID("InputVolume", firstVolumeNode.GetID())
+                self._parameterNode.SetNodeReferenceID(
+                    "InputVolume", firstVolumeNode.GetID())
 
     def setParameterNode(self, inputParameterNode):
         """
@@ -170,10 +184,12 @@ class OMASegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
         # Changes of parameter node are observed so that whenever parameters are changed by a script or any other module
         # those are reflected immediately in the GUI.
         if self._parameterNode is not None:
-            self.removeObserver(self._parameterNode, vtk.vtkCommand.ModifiedEvent, self.updateGUIFromParameterNode)
+            self.removeObserver(
+                self._parameterNode, vtk.vtkCommand.ModifiedEvent, self.updateGUIFromParameterNode)
         self._parameterNode = inputParameterNode
         if self._parameterNode is not None:
-            self.addObserver(self._parameterNode, vtk.vtkCommand.ModifiedEvent, self.updateGUIFromParameterNode)
+            self.addObserver(
+                self._parameterNode, vtk.vtkCommand.ModifiedEvent, self.updateGUIFromParameterNode)
 
         # Initial GUI update
         self.updateGUIFromParameterNode()
@@ -255,7 +271,7 @@ class OMASegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
             return
                 
         try:
-            from omaseg.dataset_utils.bodyparts_labelmaps import map_taskid_to_labelmaps
+            from cads.dataset_utils.bodyparts_labelmaps import map_taskid_to_labelmaps
             
             if currentTask == 'all':
                 self.ui.targetsList.setEnabled(True)
@@ -270,7 +286,7 @@ class OMASegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
                 
                 # Convert to SNOMED
                 availableTargets_snomed = [
-                    self.logic.getSegmentLabelColor(self.logic.omaSegLabelTerminology[i]['terminologyStr'])[0] 
+                    self.logic.getSegmentLabelColor(self.logic.cadsLabelTerminology[i]['terminologyStr'])[0] 
                     for i in all_targets
                 ]
 
@@ -280,7 +296,7 @@ class OMASegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
                 if 'background' in availableTargets:
                     availableTargets.remove('background')
                 availableTargets_snomed = [
-                    self.logic.getSegmentLabelColor(self.logic.omaSegLabelTerminology[i]['terminologyStr'])[0] 
+                    self.logic.getSegmentLabelColor(self.logic.cadsLabelTerminology[i]['terminologyStr'])[0] 
                     for i in availableTargets
                 ]
             
@@ -402,23 +418,23 @@ class OMASegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
 
     def onPackageInfoUpdate(self):
         self.ui.packageInfoTextBrowser.plainText = ''
-        with slicer.util.tryWithErrorDisplay("Failed to get OMASeg package version information", waitCursor=True):
-            self.ui.packageInfoTextBrowser.plainText = self.logic.installedOMASegPythonPackageInfo().rstrip()
+        with slicer.util.tryWithErrorDisplay("Failed to get CADS package version information", waitCursor=True):
+            self.ui.packageInfoTextBrowser.plainText = self.logic.installedCADSPythonPackageInfo().rstrip()
 
     def onPackageUpgrade(self):
-        with slicer.util.tryWithErrorDisplay("Failed to upgrade OMASeg", waitCursor=True):
+        with slicer.util.tryWithErrorDisplay("Failed to upgrade CADS", waitCursor=True):
             self.logic.setupPythonRequirements(upgrade=True)
         self.onPackageInfoUpdate()
-        if not slicer.util.confirmOkCancelDisplay(f"This OMASeg update requires a 3D Slicer restart.","Press OK to restart."):
+        if not slicer.util.confirmOkCancelDisplay(f"This CADS update requires a 3D Slicer restart.","Press OK to restart."):
             raise ValueError('Restart was cancelled.')
         else:
             slicer.util.restart()
 
     def onSetLicense(self):  #TODO: do we need to set up license?
-        licenseText = qt.QInputDialog.getText(slicer.util.mainWindow(), "Set OMASeg license key", "License key:")
+        licenseText = qt.QInputDialog.getText(slicer.util.mainWindow(), "Set CADS license key", "License key:")
 
         success = False
-        with slicer.util.tryWithErrorDisplay("Failed to set OMASeg license.", waitCursor=True):
+        with slicer.util.tryWithErrorDisplay("Failed to set CADS license.", waitCursor=True):
             if not licenseText:
                 raise ValueError("License is not specified.")
             self.logic.setupPythonRequirements()
@@ -426,7 +442,7 @@ class OMASegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
             success = True
 
         if success:
-            slicer.util.infoDisplay("License key is set. You can now use OMASeg tasks that require a license.")
+            slicer.util.infoDisplay("License key is set. You can now use CADS tasks that require a license.")
 
 
 class InstallError(Exception):
@@ -438,7 +454,7 @@ class InstallError(Exception):
     def __str__(self):
         return self.message
 
-class OMASegLogic(ScriptedLoadableModuleLogic):
+class CADSLogic(ScriptedLoadableModuleLogic):
     def __init__(self):
         """
         Called when the logic class is instantiated. Can be used for initializing member variables.
@@ -446,37 +462,40 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         from collections import OrderedDict
 
         ScriptedLoadableModuleLogic.__init__(self)
-        self.omaSegPythonPackageDownloadUrl = "https://drive.switch.ch/index.php/s/vtkGZ5yWuubi7p2/download"  #TODO: update this in every release
+        #TODO: update this in every release
+        #TODO:test
+        self.cadsPythonPackageDownloadUrl = "https://drive.switch.ch/index.php/s/QO7LBr8XMSmKxJb/download"  # size L TODO:xing
+        # self.cadsPythonPackageDownloadUrl = "https://drive.switch.ch/index.php/s/UBmpya8BXVyiTME/download"  # size M
 
-        # Custom applications can set custom location for weights.
+        # Custom applications can set custom locaßtion for weights.
         # For example, it could be set to `sysconfig.get_path('scripts')` to have an independent copy of
         # the weights for each Slicer installation. However, setting such custom path would result in extra downloads and
         # storage space usage if there were multiple Slicer installations on the same computer.
-        self.omaSegWeightsPath = None  #TODO: what to do with the weight path
+        self.cadsWeightsPath = None  #TODO: what to do with the weight path
 
         self.logCallback = None
         self.clearOutputFolder = True
         self.useStandardSegmentNames = True
         self.pullMaster = False
 
-        # List of property type codes that are specified by in the OMASeg terminology.
+        # List of property type codes that are specified by in the CADS terminology.
         #
         # # Codes are stored as a list of strings containing coding scheme designator and code value of the property type,
         # separated by "^" character. For example "SCT^123456".
         #
-        # If property the code is found in this list then the OMASeg terminology will be used,
+        # If property the code is found in this list then the CADS terminology will be used,
         # otherwise the DICOM terminology will be used. This is necessary because the DICOM terminology
         # does not contain all the necessary items and some items are incomplete (e.g., don't have color or 3D Slicer label).
         #
-        self.omaSegTerminologyPropertyTypes = []
+        self.cadsTerminologyPropertyTypes = []
 
-        # Map from OMASeg structure name to terminology string.
+        # Map from CADS structure name to terminology string.
         # Terminology string uses Slicer terminology entry format - see specification at
         # https://slicer.readthedocs.io/en/latest/developer_guide/modules/segmentations.html#terminologyentry-tag
-        self.omaSegLabelTerminology = {}
+        self.cadsLabelTerminology = {}
 
-        # Segmentation tasks specified by OMASeg
-        # Ideally, this information should be provided by OMASeg itself.
+        # Segmentation tasks specified by CADS
+        # Ideally, this information should be provided by CADS itself.
         self.tasks = OrderedDict()
 
         # Define available tasks
@@ -485,30 +504,30 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
     def _defineAvailableTasks(self):
         """Define all available segmentation tasks"""
         self.tasks = {
-            '551': {'title': 551, },
-            '552': {'title': 552, },
-            '553': {'title': 553, },
-            '554': {'title': 554, },
-            '555': {'title': 555, },
-            '556': {'title': 556, },
-            '557': {'title': 557, },
-            '558': {'title': 558, },
-            '559': {'title': 559, },
-            'all': {'title': 'all', 'subtasks': ['551', '552', '553', '554', '555', '556', '557', '558', '559']}
+            '551': {'title': 'Abdominal Viscera', },
+            '552': {'title': 'Spinal Column', },
+            '553': {'title': 'Cardiac Structures', },
+            '554': {'title': 'Skeleton Muscles', },
+            '555': {'title': 'Rib Cage', },
+            '556': {'title': 'Radiation OARs', },
+            '557': {'title': 'Brain Regions', },
+            '558': {'title': 'Head and Neck OARs', },
+            '559': {'title': 'Body Compartments', },
+            'all': {'title': 'All', 'subtasks': ['551', '552', '553', '554', '555', '556', '557', '558', '559']}
         }
-        self.loadOMASegLabelTerminology()
+        self.loadCADSLabelTerminology()
     
-    def loadOMASegLabelTerminology(self):
-        """Load label terminology from OMASeg_snomed_mapping.csv file.
-        Terminology entries are either in DICOM or OMASeg "Segmentation category and type".
+    def loadCADSLabelTerminology(self):
+        """Load label terminology from CADS_snomed_mapping.csv file.
+        Terminology entries are either in DICOM or CADS "Segmentation category and type".
         """
-        moduleDir = os.path.dirname(slicer.util.getModule('OMASeg').path)
-        omaSegTerminologyMappingFilePath = os.path.join(moduleDir, 'Resources', 'omaseg_snomed_mapping.csv')
-        omaSegTerminologyFilePath = os.path.join(moduleDir, 'Resources', 'SegmentationCategoryTypeModifier-OMASeg.term.json')
+        moduleDir = os.path.dirname(slicer.util.getModule('CADS').path)
+        cadsTerminologyMappingFilePath = os.path.join(moduleDir, 'Resources', 'cads_snomed_mapping.csv')
+        cadsTerminologyFilePath = os.path.join(moduleDir, 'Resources', 'SegmentationCategoryTypeModifier-CADS.term.json')
 
         # load .term.json
         tlogic = slicer.modules.terminologies.logic()
-        terminologyName = tlogic.LoadTerminologyFromFile(omaSegTerminologyFilePath)
+        terminologyName = tlogic.LoadTerminologyFromFile(cadsTerminologyFilePath)
 
         # Helper function to get code string from CSV file row
         def getCodeString(field, columnNames, row):
@@ -524,7 +543,7 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
 
         # Load the terminology mappings from CSV
         import csv
-        with open(omaSegTerminologyMappingFilePath, "r") as f:
+        with open(cadsTerminologyMappingFilePath, "r") as f:
             reader = csv.reader(f)
             columnNames = next(reader)
             
@@ -590,8 +609,8 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
                                     break
                     
                     # Store terminology string and mapping information
-                    self.omaSegLabelTerminology[structure_name] = {
-                        'terminologyStr': "Segmentation category and type - OMASeg" + terminologyEntryStrWithoutCategoryName,
+                    self.cadsLabelTerminology[structure_name] = {
+                        'terminologyStr': "Segmentation category and type - CADS" + terminologyEntryStrWithoutCategoryName,
                         'slicerLabel': slicer_label
                     }
                     
@@ -600,21 +619,21 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
 
     def getSlicerLabel(self, structure_name):
         """Get Slicer display label for a structure"""
-        if structure_name in self.omaSegLabelTerminology:
-            return self.omaSegLabelTerminology[structure_name]['slicerLabel']
+        if structure_name in self.cadsLabelTerminology:
+            return self.cadsLabelTerminology[structure_name]['slicerLabel']
         return structure_name
 
     def getStructureName(self, slicer_label):
         """Get structure name from Slicer display label"""
-        for structure_name, info in self.omaSegLabelTerminology.items():
+        for structure_name, info in self.cadsLabelTerminology.items():
             if info['slicerLabel'] == slicer_label:
                 return structure_name
         return slicer_label
 
     def getTerminologyString(self, structure_name):
         """Get terminology string for a structure"""
-        if structure_name in self.omaSegLabelTerminology:
-            return self.omaSegLabelTerminology[structure_name]['terminologyStr']
+        if structure_name in self.cadsLabelTerminology:
+            return self.cadsLabelTerminology[structure_name]['terminologyStr']
         return None
     
     def isLicenseRequiredForTask(self, task):  # TODO: license in our model?
@@ -665,26 +684,26 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         if self.logCallback:
             self.logCallback(text)
 
-    def installedOMASegPythonPackageDownloadUrl(self):
-        """Get package download URL of the installed OMASeg Python package"""
+    def installedCADSPythonPackageDownloadUrl(self):
+        """Get package download URL of the installed CADS Python package"""
         import importlib.metadata
         import json
         try:
-            metadataPath = [p for p in importlib.metadata.files('OMASeg') if 'direct_url.json' in str(p)][0]
+            metadataPath = [p for p in importlib.metadata.files('CADS') if 'direct_url.json' in str(p)][0]
             with open(metadataPath.locate()) as json_file:
-                data = json.load(json_file)  # 'https://github.com/murong-xu/OMASeg/releases/download/dev/OMASeg_SSH.zip' where 'dev' is identified as the package version
+                data = json.load(json_file)  # 'https://github.com/murong-xu/CADS/releases/download/dev/CADS_SSH.zip' where 'dev' is identified as the package version
             return data['url']
         except:
             # Failed to get version information, probably not installed from download URL
             return None
 
-    def installedOMASegPythonPackageInfo(self):
+    def installedCADSPythonPackageInfo(self):
         import shutil
         import subprocess
-        versionInfo = subprocess.check_output([shutil.which('PythonSlicer'), "-m", "pip", "show", "OMASeg"]).decode()
+        versionInfo = subprocess.check_output([shutil.which('PythonSlicer'), "-m", "pip", "show", "CADS"]).decode()
 
         # Get download URL, as the version information does not contain the github hash
-        # downloadUrl = self.installedOMASegPythonPackageDownloadUrl()
+        # downloadUrl = self.installedCADSPythonPackageDownloadUrl()
         # if downloadUrl:
         #     versionInfo += "Download URL: " + downloadUrl
 
@@ -950,14 +969,14 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         import importlib.util
         import packaging
 
-        # OMASeg requires this, yet it is not listed among its dependencies
+        # CADS requires this, yet it is not listed among its dependencies
         try:
             import pandas
         except ModuleNotFoundError as e:
             slicer.util.pip_install("pandas")
 
         # pillow version that is installed in Slicer (10.1.0) is too new,
-        # it is incompatible with several OMASeg dependencies.
+        # it is incompatible with several CADS dependencies.
         # Attempt to uninstall and install an older version before any of the packages import  it.
         needToInstallPillow = True
         try:
@@ -973,7 +992,7 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         packagesToSkip = [
             'SimpleITK',  # Slicer's SimpleITK uses a special IO class, which should not be replaced
             'torch',  # needs special installation using SlicerPyTorch
-            'requests',  # OMASeg would want to force a specific version of requests, which would require a restart of Slicer and it is unnecessary
+            'requests',  # CADS would want to force a specific version of requests, which would require a restart of Slicer and it is unnecessary
             'rt_utils',  # Only needed for RTSTRUCT export, which is not needed in Slicer; rt_utils depends on opencv-python which is hard to build
             ]
 
@@ -1013,34 +1032,34 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
                                  + f' Minimum required version is {minimumTorchVersion}. You can use "PyTorch Util" module to install PyTorch'
                                  + f' with version requirement set to: >={minimumTorchVersion}')
 
-        # Install OMASeg with selected dependencies only
+        # Install CADS with selected dependencies only
         # (it would replace Slicer's "requests")
         needToInstallSegmenter = False
         try:
-            import omaseg
+            import cads
             if not upgrade:
-                # Check if we need to update OMASeg Python package version
-                downloadUrl = self.installedOMASegPythonPackageDownloadUrl()
-                if downloadUrl and (downloadUrl != self.omaSegPythonPackageDownloadUrl):
-                    # OMASeg have been already installed from GitHub, from a different URL that this module needs
+                # Check if we need to update CADS Python package version
+                downloadUrl = self.installedCADSPythonPackageDownloadUrl()
+                if downloadUrl and (downloadUrl != self.cadsPythonPackageDownloadUrl):
+                    # CADS have been already installed from GitHub, from a different URL that this module needs
                     if not slicer.util.confirmOkCancelDisplay(
-                        f"This module requires OMASeg Python package update.",
-                        detailedText=f"Currently installed: {downloadUrl}\n\nRequired: {self.omaSegPythonPackageDownloadUrl}"):
-                      raise ValueError('OMASeg update was cancelled.')
+                        f"This module requires CADS Python package update.",
+                        detailedText=f"Currently installed: {downloadUrl}\n\nRequired: {self.cadsPythonPackageDownloadUrl}"):
+                      raise ValueError('CADS update was cancelled.')
                     upgrade = True
         except ModuleNotFoundError as e:
             needToInstallSegmenter = True
         if needToInstallSegmenter or upgrade:
-            self.log(f'OMASeg Python package is required. Installing it from {self.omaSegPythonPackageDownloadUrl}... (it may take several minutes)')
+            self.log(f'CADS Python package is required. Installing it from {self.cadsPythonPackageDownloadUrl}... (it may take several minutes)')
 
             if upgrade:
-                # OMASeg version information is usually not updated with each git revision, therefore we must uninstall it to force the upgrade
-                slicer.util.pip_uninstall("OMASeg")
+                # CADS version information is usually not updated with each git revision, therefore we must uninstall it to force the upgrade
+                slicer.util.pip_uninstall("CADS")
 
-            # Update OMASeg and all its dependencies
+            # Update CADS and all its dependencies
             skippedRequirements = self.pipInstallSelectiveFromURL(
-                "OMASeg",
-                self.omaSegPythonPackageDownloadUrl,
+                "CADS",
+                self.cadsPythonPackageDownloadUrl,
                 packagesToSkip + ["nnunetv2"])
 
             # Install nnunetv2 with selected dependencies only
@@ -1048,8 +1067,8 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
             try:
                 nnunetRequirement = next(requirement for requirement in skippedRequirements if requirement.startswith('nnunetv2'))
             except StopIteration:
-                # nnunetv2 requirement was not found in OMASeg - this must be an error, so let's report it
-                raise ValueError("nnunetv2 requirement was not found in OMASeg")
+                # nnunetv2 requirement was not found in CADS - this must be an error, so let's report it
+                raise ValueError("nnunetv2 requirement was not found in CADS")
             # Remove spaces and parentheses from version requirement (convert from "nnunetv2 (==2.1)" to "nnunetv2==2.1")
             nnunetRequirement = re.sub('[ \(\)]', '', nnunetRequirement)
             self.log(f'nnunetv2 Python package is required. Installing {nnunetRequirement} ...')
@@ -1062,7 +1081,7 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
                 self.log(f'dynamic_network_architectures package version is incompatible. Installing working version...')
                 slicer.util.pip_install("dynamic_network_architectures==0.2.0")
 
-            self.log('OMASeg installation completed successfully.')
+            self.log('CADS installation completed successfully.')
 
 
     def setDefaultParameters(self, parameterNode):
@@ -1133,11 +1152,11 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
 
         # Get arguments
         import sysconfig
-        omaSegLicenseToolExecutablePath = os.path.join(sysconfig.get_path('scripts'), OMASegLogic.executableName("totalseg_set_license"))
-        cmd = [pythonSlicerExecutablePath, omaSegLicenseToolExecutablePath, "-l", licenseStr]
+        cadsLicenseToolExecutablePath = os.path.join(sysconfig.get_path('scripts'), CADSLogic.executableName("totalseg_set_license"))
+        cmd = [pythonSlicerExecutablePath, cadsLicenseToolExecutablePath, "-l", licenseStr]
 
         # Launch command
-        logging.debug(f"Launch OMASeg license tool: {cmd}")
+        logging.debug(f"Launch CADS license tool: {cmd}")
         proc = slicer.util.launchConsoleProcess(cmd)
         licenseToolOutput = self.logProcessOutput(proc, returnOutput=True)
         if "ERROR: Invalid license number" in licenseToolOutput:
@@ -1171,23 +1190,23 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         startTime = time.time()
         self.log('Processing started')
 
-        if self.omaSegWeightsPath:
-            os.environ["OMASEG_WEIGHTS_PATH"] = self.omaSegWeightsPath  #TODO: how to integrate weights importing
+        if self.cadsWeightsPath:
+            os.environ["CADS_WEIGHTS_PATH"] = self.cadsWeightsPath  #TODO: how to integrate weights importing
 
         # Create temporary folder - moved here so it can be shared across tasks
         tempFolder = slicer.util.tempDirectory()
-        inputFile = os.path.join(tempFolder, "omaseg-input.nii")
+        inputFile = os.path.join(tempFolder, "cads-input.nii")
         outputSegmentationFolder = os.path.join(tempFolder, "segmentation")
 
-        # Get Python and OMASeg paths
+        # Get Python and CADS paths
         import sysconfig
         import shutil
         pythonSlicerExecutablePath = shutil.which('PythonSlicer')
         if not pythonSlicerExecutablePath:
             raise RuntimeError("Python was not found")
-        omaSegExecutablePath = os.path.join(sysconfig.get_path('scripts'), 
-                                        self.executableName("OMASegSlicer"))
-        omaSegCommand = [pythonSlicerExecutablePath, omaSegExecutablePath]
+        cadsExecutablePath = os.path.join(sysconfig.get_path('scripts'), 
+                                        self.executableName("CADSSlicer"))
+        cadsCommand = [pythonSlicerExecutablePath, cadsExecutablePath]
 
         try:
             # Handle 'all' task specially
@@ -1228,7 +1247,7 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
                     currentNodes = self.processVolume(
                         inputFile, inputVolume,
                         outputSegmentationFolder, outputSegmentation,
-                        task, subset, cpu, omaSegCommand
+                        task, subset, cpu, cadsCommand
                     )
                     if currentNodes:
                         segmentationNodes.extend(currentNodes)
@@ -1248,7 +1267,7 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
                 segmentationNodes = self.processVolume(
                     inputFile, inputVolume,
                     outputSegmentationFolder, outputSegmentation,
-                    task, subset, cpu, omaSegCommand
+                    task, subset, cpu, cadsCommand
                 )
 
             stopTime = time.time()
@@ -1286,15 +1305,15 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         volumeStorageNode.WriteData(inputVolume)
         volumeStorageNode.UnRegister(None)
 
-        # Get Python and OMASeg paths
+        # Get Python and CADS paths
         import sysconfig
         import shutil
         pythonSlicerExecutablePath = shutil.which('PythonSlicer')
         if not pythonSlicerExecutablePath:
             raise RuntimeError("Python was not found")
-        omaSegExecutablePath = os.path.join(sysconfig.get_path('scripts'), 
-                                        self.executableName("OMASegSlicer"))
-        omaSegCommand = [pythonSlicerExecutablePath, omaSegExecutablePath]
+        cadsExecutablePath = os.path.join(sysconfig.get_path('scripts'), 
+                                        self.executableName("CADSSlicer"))
+        cadsCommand = [pythonSlicerExecutablePath, cadsExecutablePath]
         
         originalName = outputSegmentation.GetName()
         for i, subtask in enumerate(subtasks):
@@ -1319,7 +1338,7 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
                 task=subtask,
                 subset=subset,
                 cpu=cpu,
-                omaSegCommand=omaSegCommand
+                cadsCommand=cadsCommand
             )
             
             if isinstance(segNodes, list):
@@ -1329,11 +1348,11 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
 
         return allSegmentationNodes
     
-    def processVolume(self, inputFile, inputVolume, outputSegmentationFolder, outputSegmentation, task, subset, cpu, omaSegCommand):
+    def processVolume(self, inputFile, inputVolume, outputSegmentationFolder, outputSegmentation, task, subset, cpu, cadsCommand):
         """Segment a single volume
         """
         # Write input volume to file
-        # OMASeg requires NIFTI
+        # CADS requires NIFTI
         self.log(f"Writing input file to {inputFile}")
         volumeStorageNode = slicer.mrmlScene.CreateNodeByClass("vtkMRMLVolumeArchetypeStorageNode")
         volumeStorageNode.SetFileName(inputFile)
@@ -1342,17 +1361,17 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         volumeStorageNode.UnRegister(None)
 
         # Get options
-        options = ["-i", inputFile, "-o", outputSegmentationFolder, "-task", task, "--preprocessing", "--postprocessing", "-np", 4, "-ns", 6]
+        options = ["-i", inputFile, "-o", outputSegmentationFolder, "-task", str(task), "--preprocessing", "--postprocessing", "-np", str(4), "-ns", str(6)]  #TODO:test
         if cpu:
             options.extend(["--cpu"])
 
-        # Launch OMASeg
+        # Launch CADS
 
         # When there are many segments then reading each segment from a separate file would be too slow,
         # but we need to do it for some specialized models.
-        self.log('Creating segmentations with OMASeg AI...')
-        self.log(f"OMASeg arguments: {options}")
-        # proc = slicer.util.launchConsoleProcess(omaSegCommand + options) TODO: 
+        self.log('Creating segmentations with CADS AI...')
+        self.log(f"CADS arguments: {options}")
+        # proc = slicer.util.launchConsoleProcess(cadsCommand + options) #TODO:xing
         # self.logProcessOutput(proc)
 
         # Load result
@@ -1398,7 +1417,7 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         
     def readSegmentation(self, outputSegmentation, outputSegmentationFolder, task, subset=None):
         # Get label descriptions
-        from omaseg.dataset_utils.bodyparts_labelmaps import map_taskid_to_labelmaps
+        from cads.dataset_utils.bodyparts_labelmaps import map_taskid_to_labelmaps
         labelValueToSegmentName = map_taskid_to_labelmaps[int(task)]
 
         # Filter by subset if provided
@@ -1460,8 +1479,8 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
         if not segment:
             # Segment is not present in this segmentation
             return
-        if segmentName in self.omaSegLabelTerminology:
-            terminologyEntryStr = self.omaSegLabelTerminology[segmentName]['terminologyStr']
+        if segmentName in self.cadsLabelTerminology:
+            terminologyEntryStr = self.cadsLabelTerminology[segmentName]['terminologyStr']
             segment.SetTag(segment.GetTerminologyEntryTagName(), terminologyEntryStr)
             try:
                 label, color = self.getSegmentLabelColor(terminologyEntryStr)
@@ -1472,10 +1491,10 @@ class OMASegLogic(ScriptedLoadableModuleLogic):
                 self.log(str(e))
 
 #
-# OMASegTest
+# CADSTest
 #
 
-class OMASegTest(ScriptedLoadableModuleTest):
+class CADSTest(ScriptedLoadableModuleTest):
     """
     This is the test case for your scripted module.
     Uses ScriptedLoadableModuleTest base class, available at:
@@ -1491,11 +1510,11 @@ class OMASegTest(ScriptedLoadableModuleTest):
         """Run as few or as many tests as needed here.
         """
         self.setUp()
-        self.test_OMASeg1()
+        self.test_CADS1()
         self.setUp()
-        self.test_OMASegSubset()
+        self.test_CADSSubset()
 
-    def test_OMASeg1(self):
+    def test_CADS1(self):
         """ Ideally you should have several levels of tests.  At the lowest level
         tests should exercise the functionality of the logic with different inputs
         (both valid and invalid).  At higher levels your tests should emulate the
@@ -1524,7 +1543,7 @@ class OMASegTest(ScriptedLoadableModuleTest):
         testLogic = False
 
         if testLogic:
-            logic = OMASegLogic()
+            logic = CADSLogic()
             logic.logCallback = self._mylog
 
             self.delayDisplay('Set up required Python packages')
@@ -1534,14 +1553,14 @@ class OMASegTest(ScriptedLoadableModuleTest):
             logic.process(inputVolume, outputSegmentation)
 
         else:
-            logging.warning("test_OMASeg1 logic testing was skipped")
+            logging.warning("test_CADS1 logic testing was skipped")
 
         self.delayDisplay('Test passed')
 
     def _mylog(self,text):
         print(text)
 
-    def test_OMASegSubset(self):
+    def test_CADSSubset(self):
         """ Ideally you should have several levels of tests.  At the lowest level
         tests should exercise the functionality of the logic with different inputs
         (both valid and invalid).  At higher levels your tests should emulate the
@@ -1570,7 +1589,7 @@ class OMASegTest(ScriptedLoadableModuleTest):
         testLogic = False
 
         if testLogic:
-            logic = OMASegLogic()
+            logic = CADSLogic()
             logic.logCallback = self._mylog
 
             self.delayDisplay('Set up required Python packages')
@@ -1581,6 +1600,6 @@ class OMASegTest(ScriptedLoadableModuleTest):
             logic.process(inputVolume, outputSegmentation, subset = _subset)
 
         else:
-            logging.warning("test_OMASeg1 logic testing was skipped")
+            logging.warning("test_CADS1 logic testing was skipped")
 
         self.delayDisplay('Test passed')

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>OMASeg</class>
- <widget class="qMRMLWidget" name="OMASeg">
+ <class>CADS</class>
+ <widget class="qMRMLWidget" name="CADS">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -214,7 +214,7 @@
       <item row="0" column="1">
        <widget class="QCheckBox" name="useStandardSegmentNamesCheckBox">
         <property name="toolTip">
-         <string>If enabled (default) then segment names are obtained from Slicer standard terminology files. If disabled then OMASeg identifiers are used as segment names.</string>
+         <string>If enabled (default) then segment names are obtained from Slicer standard terminology files. If disabled then CADS identifiers are used as segment names.</string>
         </property>
         <property name="text">
          <string/>
@@ -244,14 +244,14 @@
       <item row="2" column="0">
        <widget class="QLabel" name="label_8">
         <property name="text">
-         <string>OMASeg Python package:</string>
+         <string>CADS Python package:</string>
         </property>
        </widget>
       </item>
       <item row="2" column="1">
        <widget class="QPushButton" name="packageUpgradeButton">
         <property name="toolTip">
-         <string>Force upgrade of OMASeg Python package to the version required by this module.</string>
+         <string>Force upgrade of CADS Python package to the version required by this module.</string>
         </property>
         <property name="text">
          <string>Force reinstall</string>
@@ -261,14 +261,14 @@
       <item row="3" column="0">
        <widget class="QLabel" name="licenseLabel">
         <property name="text">
-         <string>OMASeg license: </string>
+         <string>CADS license: </string>
         </property>
        </widget>
       </item>
       <item row="3" column="1">
        <widget class="QPushButton" name="setLicenseButton">
         <property name="toolTip">
-         <string>Set or update OMASeg license key to allow running tasks that require a license. The registration has to be done only once, the license information is stored persistently in the OMASeg configuration.</string>
+         <string>Set or update CADS license key to allow running tasks that require a license. The registration has to be done only once, the license information is stored persistently in the CADS configuration.</string>
         </property>
         <property name="text">
          <string>Set license key</string>
@@ -278,10 +278,10 @@
       <item row="5" column="0" colspan="2">
        <widget class="QPushButton" name="packageInfoUpdateButton">
         <property name="toolTip">
-         <string>Get metadata information for the OMASeg package currently installed</string>
+         <string>Get metadata information for the CADS package currently installed</string>
         </property>
         <property name="text">
-         <string>Get OMASeg package information</string>
+         <string>Get CADS package information</string>
         </property>
        </widget>
       </item>
@@ -366,7 +366,7 @@
  <resources/>
  <connections>
   <connection>
-   <sender>OMASeg</sender>
+   <sender>CADS</sender>
    <signal>mrmlSceneChanged(vtkMRMLScene*)</signal>
    <receiver>inputVolumeSelector</receiver>
    <slot>setMRMLScene(vtkMRMLScene*)</slot>
@@ -382,7 +382,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>OMASeg</sender>
+   <sender>CADS</sender>
    <signal>mrmlSceneChanged(vtkMRMLScene*)</signal>
    <receiver>outputSegmentationSelector</receiver>
    <slot>setMRMLScene(vtkMRMLScene*)</slot>

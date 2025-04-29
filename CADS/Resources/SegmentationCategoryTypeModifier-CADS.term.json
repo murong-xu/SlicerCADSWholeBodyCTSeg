@@ -1,5 +1,5 @@
 {
-  "SegmentationCategoryTypeContextName": "Segmentation category and type - OMASeg",
+  "SegmentationCategoryTypeContextName": "Segmentation category and type - CADS",
   "@schema": "https://raw.githubusercontent.com/qiicr/dcmqi/master/doc/segment-context-schema.json#",
   "SegmentationCodes": {
     "Category": [

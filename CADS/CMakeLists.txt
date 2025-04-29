@@ -1,5 +1,5 @@
 #-----------------------------------------------------------------------------
-set(MODULE_NAME OMASeg)
+set(MODULE_NAME CADS)
 
 #-----------------------------------------------------------------------------
 set(MODULE_PYTHON_SCRIPTS
@@ -7,10 +7,10 @@ set(MODULE_PYTHON_SCRIPTS
   )
 
 set(MODULE_PYTHON_RESOURCES
-  Resources/SegmentationCategoryTypeModifier-OMASeg.term.json
+  Resources/SegmentationCategoryTypeModifier-CADS.term.json
   Resources/Icons/${MODULE_NAME}.png
   Resources/UI/${MODULE_NAME}.ui
-  Resources/omaseg_snomed_mapping.csv
+  Resources/cads_snomed_mapping.csv
   )
 
 #-----------------------------------------------------------------------------
