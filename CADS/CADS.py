@@ -1289,19 +1289,22 @@ class CADSLogic(ScriptedLoadableModuleLogic):
                                         self.executableName("CADSSlicer"))
         cadsCommand = [pythonSlicerExecutablePath, cadsExecutablePath]
         
-        originalName = outputSegmentation.GetName()
+        baseName = outputSegmentation.GetName().replace(" segmentation", "")
         for i, subtask in enumerate(subtasks):
             self.log(f'Processing task {subtask} ({i+1}/{len(subtasks)})')
-            
-            # Create new segmentation node for each task except first
+            taskTitle = self.tasks[subtask]['title']
+            taskName = f"{baseName}: {taskTitle}"
             if i == 0:
                 currentSegmentation = outputSegmentation
-                currentSegmentation.SetName(f"{originalName}_{subtask}")
+                currentSegmentation.SetName(taskName)
             else:
                 currentSegmentation = slicer.mrmlScene.AddNewNodeByClass(
                     'vtkMRMLSegmentationNode',
-                    f"{originalName}_{subtask}"
+                    taskName
                 )
+                
+            currentSegmentation.SetAttribute("CADS.TaskID", subtask)
+            currentSegmentation.SetAttribute("CADS.TaskTitle", taskTitle)
             
             # Process current task using the same temp folders
             segNodes = self.processVolume(
