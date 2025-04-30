@@ -464,7 +464,7 @@ class CADSLogic(ScriptedLoadableModuleLogic):
         ScriptedLoadableModuleLogic.__init__(self)
 
         #TODO: CADS package (script, setup.py, model weights download...) update this in every release (also remember to update version number in setup.py)
-        self.cadsPythonPackageDownloadUrl = "https://drive.switch.ch/index.php/s/JQiqMoAZkG1QOsM/download"  # size M
+        self.cadsPythonPackageDownloadUrl = "https://github.com/murong-xu/CADS/releases/download/v0.0.1/CADS-package.zip" # "https://drive.switch.ch/index.php/s/JQiqMoAZkG1QOsM/download"
 
         # Custom applications can set custom location for weights.
         # For example, it could be set to `sysconfig.get_path('scripts')` to have an independent copy of
@@ -686,7 +686,7 @@ class CADSLogic(ScriptedLoadableModuleLogic):
         try:
             metadataPath = [p for p in importlib.metadata.files('CADS') if 'direct_url.json' in str(p)][0]
             with open(metadataPath.locate()) as json_file:
-                data = json.load(json_file)  # 'https://github.com/murong-xu/CADS/releases/download/dev/CADS_SSH.zip' where 'dev' is identified as the package version  #TODO: 
+                data = json.load(json_file)
             return data['url']
         except:
             # Failed to get version information, probably not installed from download URL
@@ -908,7 +908,7 @@ class CADSLogic(ScriptedLoadableModuleLogic):
                 skipThisPackage = False
                 requirementPrefix = 'Requires-Dist: '
                 if line.startswith(requirementPrefix):
-                    # Skip dev dependencies  TODO:
+                    # Skip dev dependencies
                     if '; extra == "dev"' in line:
                         continue
                     for packageToSkip in packagesToSkip:
@@ -929,7 +929,6 @@ class CADSLogic(ScriptedLoadableModuleLogic):
         import importlib.metadata
         requirements = importlib.metadata.requires(packageToInstall)
         for requirement in requirements:
-            # Skip dev dependencies  TODO:
             if '; extra == "dev"' in requirement:
                 continue
             skipThisPackage = False
@@ -981,6 +980,7 @@ class CADSLogic(ScriptedLoadableModuleLogic):
         Install correct package version based on Python version
         """
         import sys
+        from packaging import version
         
         version_str, condition = version_info
         python_version = f"{sys.version_info.major}.{sys.version_info.minor}"
