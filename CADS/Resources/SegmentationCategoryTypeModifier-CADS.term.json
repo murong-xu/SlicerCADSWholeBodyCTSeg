@@ -2230,8 +2230,9 @@
             "SNOMEDCTConceptID": "389081007"
           },
           {
-            "CodeMeaning": "Scalp",
+            "CodeMeaning": "Scalp structure",
             "CodingSchemeDesignator": "SCT",
+            "3dSlicerLabel": "scalp structure",
             "cid": "4",
             "UMLSConceptUID": "C0036270",
             "CodeValue": "41695006",
@@ -2240,8 +2241,9 @@
             "paired": "U"
           },
           {
-            "CodeMeaning": "Eye",
+            "CodeMeaning": "Eyeball",
             "CodingSchemeDesignator": "SCT",
+            "3dSlicerLabel": "eyeball",
             "cid": "4031",
             "UMLSConceptUID": "C0015392",
             "CodeValue": "81745001",
@@ -2837,7 +2839,7 @@
             ],
             "CodeMeaning": "Right parotid gland",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "Right parotid gland",
+            "3dSlicerLabel": "right parotid gland",
             "3dSlicerIntegerLabel": 155,
             "cid": "",
             "CodeValue": "85706002",

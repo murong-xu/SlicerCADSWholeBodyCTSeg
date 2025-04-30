@@ -138,8 +138,8 @@
 137,OAR_Cochlea_R,SCT,123037004,Anatomical Structure,SCT,772065000,Structure of right cochlear,,,,,,,,,
 138,OAR_Cricopharyngeus,SCT,123037004,Anatomical Structure,SCT,28276008,Cricopharyngeus,,,,,,,,,
 139,OAR_Esophagus_S,SCT,123037004,Anatomical Structure,SCT,60075002,Cervical esophagus,,,,,,,,,
-140,OAR_Eye_AL,SCT,123037004,Anatomical Structure,SCT,717762003,Structure of anterior eyeball segment of left eye
-141,OAR_Eye_AR,SCT,123037004,Anatomical Structure,SCT,722049003,Structure of anterior eyeball segment of right eye
+140,OAR_Eye_AL,SCT,123037004,Anatomical Structure,SCT,717762003,Structure of anterior eyeball segment of left eye,,,,,,,,,
+141,OAR_Eye_AR,SCT,123037004,Anatomical Structure,SCT,722049003,Structure of anterior eyeball segment of right eye,,,,,,,,,
 142,OAR_Eye_PL,SCT,123037004,Anatomical Structure,SCT,77205005,Posterior eyeball segment structure,SCT,7771000,Left,,,,,,
 143,OAR_Eye_PR,SCT,123037004,Anatomical Structure,SCT,77205005,Posterior eyeball segment structure,SCT,24028007,Right,,,,,,
 144,OAR_Glnd_Lacrimal_L,SCT,123037004,Anatomical Structure,SCT,30641009,Both lacrimal glands,SCT,7771000,Left,,,,,,
