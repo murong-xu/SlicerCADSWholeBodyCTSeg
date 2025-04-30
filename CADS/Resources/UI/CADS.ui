@@ -254,28 +254,11 @@
          <string>Force upgrade of CADS Python package to the version required by this module.</string>
         </property>
         <property name="text">
-         <string>Force reinstall</string>
+         <string>Force install dependencies</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="licenseLabel">
-        <property name="text">
-         <string>CADS license: </string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="QPushButton" name="setLicenseButton">
-        <property name="toolTip">
-         <string>Set or update CADS license key to allow running tasks that require a license. The registration has to be done only once, the license information is stored persistently in the CADS configuration.</string>
-        </property>
-        <property name="text">
-         <string>Set license key</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0" colspan="2">
+      <item row="3" column="0" colspan="2">
        <widget class="QPushButton" name="packageInfoUpdateButton">
         <property name="toolTip">
          <string>Get metadata information for the CADS package currently installed</string>
@@ -285,7 +268,7 @@
         </property>
        </widget>
       </item>
-      <item row="6" column="0" colspan="2">
+      <item row="4" column="0" colspan="2">
        <widget class="ctkFittedTextBrowser" name="packageInfoTextBrowser">
         <property name="collapsed">
          <bool>false</bool>

@@ -1,5 +1,6 @@
 import logging
 import os
+import glob
 import re
 import vtk
 import qt
@@ -20,7 +21,7 @@ class CADS(ScriptedLoadableModule):
         3D Slicer extension that provides automated whole-body CT segmentation powered by CADS AI model.
         See more information in the <a href="https://github.com/murong-xu/SlicerCADS">extension documentation</a>.
         """
-        self.parent.acknowledgementText = """#TODO: cite publication
+        self.parent.acknowledgementText = """#TODO: use most recent cite
         This extension was developed by Murong Xu (University of Zurich), building upon the foundational framework by Andras Lasso (PerkLab, Queen's University).
         The core segmentation functionality is powered by <a href="https://github.com/murong-xu/CADS">CADS</a>.
 
@@ -315,6 +316,15 @@ class CADSWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
                 # if select "Select targets" mode: let user select which ones to show
                 self.ui.targetsList.setEnabled(True)
 
+        except ImportError:
+            # CADS package not installed (when open this extension for the very 1st time)
+            self.ui.targetsList.addItem("CADS package needs to be installed first.")
+            self.ui.targetsList.addItem("You can either:")
+            self.ui.targetsList.addItem("1. Click 'Force install dependencies' to install packages directly")
+            self.ui.targetsList.addItem("2. Upload a CT image and click 'Apply' to install and run")
+            self.ui.targetsList.addItem("(Installation may take a few minutes)")
+            self.ui.targetsList.setEnabled(False)
+            return
         except Exception as e:
             print(f"Error updating targets: {str(e)}")
             import traceback
@@ -453,8 +463,8 @@ class CADSLogic(ScriptedLoadableModuleLogic):
 
         ScriptedLoadableModuleLogic.__init__(self)
 
-        #TODO: CADS github-repo release (script, setup.py, model weights download...) update this in every release
-        self.cadsPythonPackageDownloadUrl = "https://drive.switch.ch/index.php/s/QO7LBr8XMSmKxJb/download"  # size L, "https://drive.switch.ch/index.php/s/UBmpya8BXVyiTME/download"  # size M
+        #TODO: CADS package (script, setup.py, model weights download...) update this in every release (also remember to update version number in setup.py)
+        self.cadsPythonPackageDownloadUrl = "https://drive.switch.ch/index.php/s/JQiqMoAZkG1QOsM/download"  # size M
 
         # Custom applications can set custom location for weights.
         # For example, it could be set to `sysconfig.get_path('scripts')` to have an independent copy of
@@ -685,7 +695,7 @@ class CADSLogic(ScriptedLoadableModuleLogic):
     def installedCADSPythonPackageInfo(self):
         import shutil
         import subprocess
-        versionInfo = subprocess.check_output([shutil.which('PythonSlicer'), "-m", "pip", "show", "CADS"]).decode()
+        versionInfo = subprocess.check_output([shutil.which('PythonSlicer'), "-m", "pip", "show", "CADS"]).decode()  # read the version info from setup.py
 
         # Get download URL, as the version information does not contain the github hash
         # downloadUrl = self.installedCADSPythonPackageDownloadUrl()
@@ -948,6 +958,47 @@ class CADSLogic(ScriptedLoadableModuleLogic):
                 slicer.util.pip_install(requirement)
 
         return skippedRequirements
+    
+    def _parse_version_from_requirements(self, package_name, requirements):
+        """
+        Read package version requirement, this function is mainly used to get info from setup.py with conditial dependencies like 'TPTBox==0.2.2;python_version>="3.10"'
+        """
+        import re
+        versions = []
+        
+        for req in requirements:
+            pattern = rf"{package_name}\s*==([\d\.]+)\s*;\s*python_version\s*([<>=]+\s*\"[\d\.]+\")"
+            match = re.match(pattern, req.strip())
+            if match:
+                version = match.group(1)
+                condition = match.group(2).strip()
+                versions.append((version, condition))
+        
+        return versions
+
+    def _should_install_version(self, version_info):
+        """
+        Install correct package version based on Python version
+        """
+        import sys
+        
+        version_str, condition = version_info
+        python_version = f"{sys.version_info.major}.{sys.version_info.minor}"
+        
+        import re
+        match = re.match(r'([<>=]+)\s*"([\d\.]+)"', condition.strip())
+        if not match:
+            self.log(f"Warning: Invalid version condition format: {condition}")
+            return False
+            
+        operator, version_number = match.groups()        
+        comparison = f"version.parse('{python_version}') {operator} version.parse('{version_number}')"
+        
+        try:
+            return eval(comparison)
+        except Exception as e:
+            self.log(f"Warning: Failed to evaluate version condition: {str(e)}")
+            return False
 
     def setupPythonRequirements(self, upgrade=False):
         import importlib.metadata
@@ -979,12 +1030,13 @@ class CADSLogic(ScriptedLoadableModuleLogic):
             'torch',  # needs special installation using SlicerPyTorch
             'requests',  # CADS would want to force a specific version of requests, which would require a restart of Slicer and it is unnecessary
             'rt_utils',  # Only needed for RTSTRUCT export, which is not needed in Slicer; rt_utils depends on opencv-python which is hard to build
+            'TPTBox', # Version corrected below
+            'acvl-utils' # Version corrected below (acvl-utils is a slightly different name after pip-install's name standarziation)
             ]
 
         # acvl_utils workaround - start
         # Recent versions of acvl_utils are broken (https://github.com/MIC-DKFZ/acvl_utils/issues/2).
         # As a workaround, we install an older version manually. This workaround can be removed after acvl_utils is fixed.
-        packagesToSkip.append("acvl_utils")
         needToInstallAcvlUtils = True
         try:
             if packaging.version.parse(importlib.metadata.version("acvl_utils")) == packaging.version.parse("0.2"):
@@ -1019,12 +1071,12 @@ class CADSLogic(ScriptedLoadableModuleLogic):
 
         # Install CADS with selected dependencies only
         # (it would replace Slicer's "requests")
-        needToInstallSegmenter = False
+        needToInstallSegmenter = False  # initial installation flag of CADS
         try:
             import cads
-            if not upgrade:  #TODO:
+            if not upgrade: # update flag of CADS
                 # Check if we need to update CADS Python package version
-                downloadUrl = self.installedCADSPythonPackageDownloadUrl()
+                downloadUrl = self.installedCADSPythonPackageDownloadUrl()  # 'https://drive.switch.ch/index.php/s/JQiqMoAZkG1QOsM/download'
                 if downloadUrl and (downloadUrl != self.cadsPythonPackageDownloadUrl):
                     # CADS have been already installed from GitHub, from a different URL that this module needs
                     if not slicer.util.confirmOkCancelDisplay(
@@ -1058,6 +1110,29 @@ class CADSLogic(ScriptedLoadableModuleLogic):
             nnunetRequirement = re.sub('[ \(\)]', '', nnunetRequirement)
             self.log(f'nnunetv2 Python package is required. Installing {nnunetRequirement} ...')
             self.pipInstallSelective('nnunetv2', nnunetRequirement, packagesToSkip)
+
+            # Install TPTBox separately 
+            tptbox_versions = self._parse_version_from_requirements('TPTBox', skippedRequirements)            
+            required_version = None
+            for version_info in tptbox_versions:
+                if self._should_install_version(version_info):
+                    required_version = version_info[0]
+                    break
+            
+            if not required_version:
+                raise ValueError("No suitable TPTBox version found for current Python version")
+
+            needToInstallTPTBox = True
+            try:
+                import TPTBox
+                if TPTBox.__version__ == required_version:
+                    needToInstallTPTBox = False
+            except (ImportError, AttributeError):
+                pass
+
+            if needToInstallTPTBox:
+                self.log(f'Installing TPTBox version {required_version}...')
+                slicer.util.pip_install(f"TPTBox=={required_version}")
 
             # Workaround: fix incompatibility of dynamic_network_architectures==0.4 with totalsegmentator==2.0.5.
             # Revert to the last working version: dynamic_network_architectures==0.2
@@ -1134,7 +1209,7 @@ class CADSLogic(ScriptedLoadableModuleLogic):
         # Create temporary folder - moved here so it can be shared across tasks
         tempFolder = slicer.util.tempDirectory()
         inputFile = os.path.join(tempFolder, "cads-input.nii")
-        outputSegmentationFolder = os.path.join(tempFolder, "segmentation")
+        outputSegmentationFolder = os.path.join(tempFolder, "cads-input")
 
         # Get Python and CADS paths
         import sysconfig
@@ -1334,7 +1409,17 @@ class CADSLogic(ScriptedLoadableModuleLogic):
         randomColorsNode = slicer.mrmlScene.GetNodeByID('vtkMRMLColorTableNodeRandom')
         rgba = [0, 0, 0, 0]
 
-        outputSegmentationFile = os.path.join(outputSegmentationFolder, 'segmentation_part_'+task+'.nii.gz')
+        pattern = os.path.join(outputSegmentationFolder, f'*{task}*.nii.gz')
+        matching_files = glob.glob(pattern)
+        if len(matching_files) == 0:
+            self.log(f"Error: No segmentation file found for task {task} in {outputSegmentationFolder}")
+            return False
+        elif len(matching_files) > 1:
+            self.log(f"Warning: Multiple segmentation files found for task {task}:")
+            for f in matching_files:
+                self.log(f"  - {os.path.basename(f)}")
+            self.log(f"Using the first file: {os.path.basename(matching_files[0])}")
+        outputSegmentationFile = matching_files[0]
 
         # Create color table for this segmentation task (only for selected subset)
         colorTableNode = slicer.vtkMRMLColorTableNode()
