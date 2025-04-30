@@ -17,14 +17,15 @@ class CADS(ScriptedLoadableModule):
         self.parent.dependencies = []
         self.parent.contributors = ["Murong Xu (University of Zurich)"]
         self.parent.helpText = """
-        3D Slicer extension for automated whole-body CT segmentation using "CADS" AI model.
+        3D Slicer extension that provides automated whole-body CT segmentation powered by CADS AI model.
         See more information in the <a href="https://github.com/murong-xu/SlicerCADS">extension documentation</a>.
         """
         self.parent.acknowledgementText = """#TODO: cite publication
-        This file was developed by Murong Xu (University of Zurich), based on foundational work by Andras Lasso (PerkLab, Queen's University).
-        The module uses <a href="https://github.com/murong-xu/CADS">CADS</a>.
-        If you use the CADS from this software in your research, please cite:
-        CADS: Open Model for Anatomy Segmentation in Computer Tomography
+        This extension was developed by Murong Xu (University of Zurich), building upon the foundational framework by Andras Lasso (PerkLab, Queen's University).
+        The core segmentation functionality is powered by <a href="https://github.com/murong-xu/CADS">CADS</a>.
+
+        If you use this software in your research, please cite:
+        Xu et al., "CADS: Comprehensive Anatomical Dataset and Segmentation for Whole-body CT"
         """
         slicer.app.connect("startupCompleted()",
                            self.configureDefaultTerminology)
@@ -110,7 +111,6 @@ class CADSWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
         self.ui.applyButton.connect('clicked(bool)', self.onApplyButton)
         self.ui.packageUpgradeButton.connect(
             'clicked(bool)', self.onPackageUpgrade)
-        self.ui.setLicenseButton.connect('clicked(bool)', self.onSetLicense)
         self.ui.packageInfoUpdateButton.connect(
             'clicked(bool)', self.onPackageInfoUpdate)
 
@@ -359,10 +359,17 @@ class CADSWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
             if targetsStr:
                 subset = targetsStr.split(',')
 
-        sequenceBrowserNode = slicer.modules.sequences.logic().GetFirstBrowserNodeForProxyNode(self.ui.inputVolumeSelector.currentNode())
-        if sequenceBrowserNode:  #TODO: handle sequence input
-            if not slicer.util.confirmYesNoDisplay("The input volume you provided are part of a sequence. Do you want to segment all frames of that sequence?"):
-                sequenceBrowserNode = None
+        # Check if input is a sequence/4D data
+        inputIsSequenceData = slicer.modules.sequences.logic().GetFirstBrowserNodeForProxyNode(self.ui.inputVolumeSelector.currentNode())
+        if inputIsSequenceData:
+            slicer.util.messageBox(
+                "Input Data Type Error\n\n"
+                "CADS model is designed for single-phase 3D CT volumes only.\n"
+                "The selected input appears to be a 4D/sequence dataset, which is not supported.\n\n"
+                "Please select a standard 3D CT volume to proceed."
+            )
+            self.ui.inputVolumeSelector.setCurrentNode(None)  # Clear invalid selection
+            return False
 
         try:
             slicer.app.setOverrideCursor(qt.Qt.WaitCursor)
@@ -403,8 +410,6 @@ class CADSWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
                 self.ui.outputSegmentationSelector.currentNode(),
                 self.ui.cpuCheckBox.checked,
                 self.ui.taskComboBox.currentData,
-                interactive=True,
-                sequenceBrowserNode=sequenceBrowserNode,
                 subset=subset
             )
 
@@ -430,21 +435,6 @@ class CADSWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
         else:
             slicer.util.restart()
 
-    def onSetLicense(self):  #TODO: do we need to set up license?
-        licenseText = qt.QInputDialog.getText(slicer.util.mainWindow(), "Set CADS license key", "License key:")
-
-        success = False
-        with slicer.util.tryWithErrorDisplay("Failed to set CADS license.", waitCursor=True):
-            if not licenseText:
-                raise ValueError("License is not specified.")
-            self.logic.setupPythonRequirements()
-            self.logic.setLicense(licenseText)
-            success = True
-
-        if success:
-            slicer.util.infoDisplay("License key is set. You can now use CADS tasks that require a license.")
-
-
 class InstallError(Exception):
     def __init__(self, message, restartRequired=False):
         # Call the base class constructor with the parameters it needs
@@ -462,16 +452,14 @@ class CADSLogic(ScriptedLoadableModuleLogic):
         from collections import OrderedDict
 
         ScriptedLoadableModuleLogic.__init__(self)
-        #TODO: update this in every release
-        #TODO:test
-        self.cadsPythonPackageDownloadUrl = "https://drive.switch.ch/index.php/s/QO7LBr8XMSmKxJb/download"  # size L TODO:xing
-        # self.cadsPythonPackageDownloadUrl = "https://drive.switch.ch/index.php/s/UBmpya8BXVyiTME/download"  # size M
 
-        # Custom applications can set custom locaßtion for weights.
+        #TODO: CADS github-repo release (script, setup.py, model weights download...) update this in every release
+        self.cadsPythonPackageDownloadUrl = "https://drive.switch.ch/index.php/s/QO7LBr8XMSmKxJb/download"  # size L, "https://drive.switch.ch/index.php/s/UBmpya8BXVyiTME/download"  # size M
+
+        # Custom applications can set custom location for weights.
         # For example, it could be set to `sysconfig.get_path('scripts')` to have an independent copy of
         # the weights for each Slicer installation. However, setting such custom path would result in extra downloads and
         # storage space usage if there were multiple Slicer installations on the same computer.
-        self.cadsWeightsPath = None  #TODO: what to do with the weight path
 
         self.logCallback = None
         self.clearOutputFolder = True
@@ -504,15 +492,15 @@ class CADSLogic(ScriptedLoadableModuleLogic):
     def _defineAvailableTasks(self):
         """Define all available segmentation tasks"""
         self.tasks = {
-            '551': {'title': 'Abdominal Viscera', },
-            '552': {'title': 'Spinal Column', },
-            '553': {'title': 'Cardiac Structures', },
-            '554': {'title': 'Skeleton Muscles', },
-            '555': {'title': 'Rib Cage', },
-            '556': {'title': 'Radiation OARs', },
-            '557': {'title': 'Brain Regions', },
-            '558': {'title': 'Head and Neck OARs', },
-            '559': {'title': 'Body Compartments', },
+            '551': {'title': 'Core organs', },
+            '552': {'title': 'Spine complete', },
+            '553': {'title': 'Heart & vessels', },
+            '554': {'title': 'Trunk muscles', },
+            '555': {'title': 'Ribs complete', },
+            '556': {'title': 'RT risk organs', },
+            '557': {'title': 'Brain tissues', },
+            '558': {'title': 'Head-neck organs', },
+            '559': {'title': 'Body regions', },
             'all': {'title': 'All', 'subtasks': ['551', '552', '553', '554', '555', '556', '557', '558', '559']}
         }
         self.loadCADSLabelTerminology()
@@ -635,9 +623,6 @@ class CADSLogic(ScriptedLoadableModuleLogic):
         if structure_name in self.cadsLabelTerminology:
             return self.cadsLabelTerminology[structure_name]['terminologyStr']
         return None
-    
-    def isLicenseRequiredForTask(self, task):  # TODO: license in our model?
-        return (task in self.tasks) and ('requiresLicense' in self.tasks[task]) and self.tasks[task]['requiresLicense']
   
     def getSegmentLabelColor(self, terminologyEntryStr):
         """Get segment label and color from terminology"""
@@ -691,7 +676,7 @@ class CADSLogic(ScriptedLoadableModuleLogic):
         try:
             metadataPath = [p for p in importlib.metadata.files('CADS') if 'direct_url.json' in str(p)][0]
             with open(metadataPath.locate()) as json_file:
-                data = json.load(json_file)  # 'https://github.com/murong-xu/CADS/releases/download/dev/CADS_SSH.zip' where 'dev' is identified as the package version
+                data = json.load(json_file)  # 'https://github.com/murong-xu/CADS/releases/download/dev/CADS_SSH.zip' where 'dev' is identified as the package version  #TODO: 
             return data['url']
         except:
             # Failed to get version information, probably not installed from download URL
@@ -1037,7 +1022,7 @@ class CADSLogic(ScriptedLoadableModuleLogic):
         needToInstallSegmenter = False
         try:
             import cads
-            if not upgrade:
+            if not upgrade:  #TODO:
                 # Check if we need to update CADS Python package version
                 downloadUrl = self.installedCADSPythonPackageDownloadUrl()
                 if downloadUrl and (downloadUrl != self.cadsPythonPackageDownloadUrl):
@@ -1128,49 +1113,7 @@ class CADSLogic(ScriptedLoadableModuleLogic):
     def executableName(name):
         return name + ".exe" if os.name == "nt" else name
 
-    def setLicense(self, licenseStr):
-
-        """
-        Import weights.
-        Weights are provided in ZIP format.
-        This function can be used without GUI widget.
-        """
-
-        # Get totalseg_import_weights command
-        # totalseg_import_weights (.py file, without extension) is installed in Python Scripts folder
-
-        if not licenseStr:
-            raise ValueError(f"The license string is empty.")
-
-        self.log('Setting license...')
-
-        # Get Python executable path
-        import shutil
-        pythonSlicerExecutablePath = shutil.which('PythonSlicer')
-        if not pythonSlicerExecutablePath:
-            raise RuntimeError("Python was not found")
-
-        # Get arguments
-        import sysconfig
-        cadsLicenseToolExecutablePath = os.path.join(sysconfig.get_path('scripts'), CADSLogic.executableName("totalseg_set_license"))
-        cmd = [pythonSlicerExecutablePath, cadsLicenseToolExecutablePath, "-l", licenseStr]
-
-        # Launch command
-        logging.debug(f"Launch CADS license tool: {cmd}")
-        proc = slicer.util.launchConsoleProcess(cmd)
-        licenseToolOutput = self.logProcessOutput(proc, returnOutput=True)
-        if "ERROR: Invalid license number" in licenseToolOutput:
-            raise ValueError('Invalid license number. Please check your license number or contact support.')
-
-        self.log('License has been successfully set.')
-
-        if slicer.util.confirmOkCancelDisplay(f"This license update requires a 3D Slicer restart.","Press OK to restart."):
-            slicer.util.restart()
-        else:
-            raise ValueError('Restart was cancelled.')
-
-
-    def process(self, inputVolume, outputSegmentation, cpu=False, task=None, interactive=False, sequenceBrowserNode=None, subset=None):
+    def process(self, inputVolume, outputSegmentation, cpu=False, task=None, subset=None):
         """
         Run the processing algorithm.
         Parameters:
@@ -1178,8 +1121,6 @@ class CADSLogic(ScriptedLoadableModuleLogic):
             outputSegmentation: Initial segmentation node
             cpu: Whether to use CPU instead of GPU
             task: Task ID to run
-            interactive: Whether running in interactive mode
-            sequenceBrowserNode: Optional sequence browser node for sequence processing
         Returns:
             List of created segmentation nodes
         """
@@ -1189,9 +1130,6 @@ class CADSLogic(ScriptedLoadableModuleLogic):
         import time
         startTime = time.time()
         self.log('Processing started')
-
-        if self.cadsWeightsPath:
-            os.environ["CADS_WEIGHTS_PATH"] = self.cadsWeightsPath  #TODO: how to integrate weights importing
 
         # Create temporary folder - moved here so it can be shared across tasks
         tempFolder = slicer.util.tempDirectory()
@@ -1213,62 +1151,24 @@ class CADSLogic(ScriptedLoadableModuleLogic):
             if task == 'all':
                 segmentationNodes = self._processAllTasks(
                     inputVolume, outputSegmentation, cpu, subset, 
-                    interactive, sequenceBrowserNode,
                     inputFile, outputSegmentationFolder  # Pass the temp folders
                 )
                 return segmentationNodes
 
             # Process single task
-            inputVolumeSequence = None
-            if sequenceBrowserNode:
-                inputVolumeSequence = sequenceBrowserNode.GetSequenceNode(inputVolume)
-
             segmentationNodes = []
+            self.log(f"Writing input file to {inputFile}")
+            volumeStorageNode = slicer.mrmlScene.CreateNodeByClass("vtkMRMLVolumeArchetypeStorageNode")
+            volumeStorageNode.SetFileName(inputFile)
+            volumeStorageNode.UseCompressionOff()
+            volumeStorageNode.WriteData(inputVolume)
+            volumeStorageNode.UnRegister(None)
 
-            if inputVolumeSequence is not None:
-                # Handle sequence data TODO:
-                segmentationSequence = sequenceBrowserNode.GetSequenceNode(outputSegmentation)
-                if not segmentationSequence:
-                    segmentationSequence = slicer.mrmlScene.AddNewNodeByClass(
-                        "vtkMRMLSequenceNode", 
-                        outputSegmentation.GetName()
-                    )
-                    sequenceBrowserNode.AddProxyNode(outputSegmentation, segmentationSequence, False)
-
-                selectedItemNumber = sequenceBrowserNode.GetSelectedItemNumber()
-                sequenceBrowserNode.PlaybackActiveOff()
-                sequenceBrowserNode.SelectFirstItem()
-                sequenceBrowserNode.SetRecording(segmentationSequence, True)
-                sequenceBrowserNode.SetSaveChanges(segmentationSequence, True)
-
-                numberOfItems = sequenceBrowserNode.GetNumberOfItems()
-                for i in range(numberOfItems):
-                    self.log(f"Segmenting item {i+1}/{numberOfItems} of sequence")
-                    currentNodes = self.processVolume(
-                        inputFile, inputVolume,
-                        outputSegmentationFolder, outputSegmentation,
-                        task, subset, cpu, cadsCommand
-                    )
-                    if currentNodes:
-                        segmentationNodes.extend(currentNodes)
-                    sequenceBrowserNode.SelectNextItem()
-                
-                sequenceBrowserNode.SetSelectedItemNumber(selectedItemNumber)
-            
-            else:
-                # Process single volume
-                self.log(f"Writing input file to {inputFile}")
-                volumeStorageNode = slicer.mrmlScene.CreateNodeByClass("vtkMRMLVolumeArchetypeStorageNode")
-                volumeStorageNode.SetFileName(inputFile)
-                volumeStorageNode.UseCompressionOff()
-                volumeStorageNode.WriteData(inputVolume)
-                volumeStorageNode.UnRegister(None)
-
-                segmentationNodes = self.processVolume(
-                    inputFile, inputVolume,
-                    outputSegmentationFolder, outputSegmentation,
-                    task, subset, cpu, cadsCommand
-                )
+            segmentationNodes = self.processVolume(
+                inputFile, inputVolume,
+                outputSegmentationFolder, outputSegmentation,
+                task, subset, cpu, cadsCommand
+            )
 
             stopTime = time.time()
             self.log(f"Processing completed in {stopTime-startTime:.2f} seconds")
@@ -1288,8 +1188,7 @@ class CADSLogic(ScriptedLoadableModuleLogic):
             else:
                 self.log(f"Not cleaning up temporary folder: {tempFolder}")
 
-    def _processAllTasks(self, inputVolume, outputSegmentation, cpu, subset, interactive, 
-                    sequenceBrowserNode, inputFile, outputSegmentationFolder):
+    def _processAllTasks(self, inputVolume, outputSegmentation, cpu, subset, inputFile, outputSegmentationFolder):
         """
         Process all tasks sequentially using the same temporary folders
         Returns list of all created segmentation nodes
