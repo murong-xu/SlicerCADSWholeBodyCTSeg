@@ -1202,6 +1202,27 @@ class CADSLogic(ScriptedLoadableModuleLogic):
         if not inputVolume:
             raise ValueError("Input volume is invalid")
 
+        if not task:
+            raise ValueError("Task ID must be specified")
+        if task != 'all':
+            try:
+                task_id = int(task)
+                if str(task_id) not in self.tasks:
+                    raise ValueError(f"Invalid task ID: {task}")
+            except ValueError:
+                raise ValueError(f"Invalid task ID format: {task}. Must be a number or 'all'")
+        
+        if subset:
+            from cads.dataset_utils.bodyparts_labelmaps import map_taskid_to_labelmaps
+            try:
+                task_id = int(task)
+                labelValueToSegmentName = map_taskid_to_labelmaps[task_id]
+                invalid_organs = [organ for organ in subset if organ not in labelValueToSegmentName.values()]
+                if invalid_organs:
+                    raise ValueError(f"Invalid organs in subset: {invalid_organs}")
+            except (ValueError, KeyError):
+                raise ValueError(f"Cannot validate subset for task: {task}")
+            
         import time
         startTime = time.time()
         self.log('Processing started')
@@ -1480,113 +1501,283 @@ class CADSLogic(ScriptedLoadableModuleLogic):
 #
 # CADSTest
 #
-
 class CADSTest(ScriptedLoadableModuleTest):
     """
-    This is the test case for your scripted module.
-    Uses ScriptedLoadableModuleTest base class, available at:
-    https://github.com/Slicer/Slicer/blob/master/Base/Python/slicer/ScriptedLoadableModule.py
+    Test cases for CADS module.
     """
-
     def setUp(self):
-        """ Do whatever is needed to reset the state - typically a scene clear will be enough.
+        """ 
+        Reset the state - clear scene and initialize test data.
         """
         slicer.mrmlScene.Clear()
+        self.delayDisplay("Setting up test") 
+        self.logic = CADSLogic()
+        self.widget = slicer.modules.cads.widgetRepresentation()
+        
+        import SampleData
+        self.inputVolume = SampleData.downloadSample('CTChest')
+        self.outputSegmentation = slicer.mrmlScene.AddNewNodeByClass('vtkMRMLSegmentationNode')
 
     def runTest(self):
-        """Run as few or as many tests as needed here.
         """
+        Run test suite.
+        """
+        self.delayDisplay("Starting tests")
+        
         self.setUp()
-        self.test_CADS1()
+        self.test_Logic()
+        
         self.setUp()
-        self.test_CADSSubset()
+        self.test_TerminologyLoading()
+        
+        self.setUp()
+        self.test_SegmentationProcessing()
+        
+        self.setUp()
+        self.test_SubsetProcessing()
+        
+        self.setUp()
+        self.test_ErrorHandling()
+        
+        self.setUp()
+        self.test_FileOperations()
 
-    def test_CADS1(self):
-        """ Ideally you should have several levels of tests.  At the lowest level
-        tests should exercise the functionality of the logic with different inputs
-        (both valid and invalid).  At higher levels your tests should emulate the
-        way the user would interact with your code and confirm that it still works
-        the way you intended.
-        One of the most important features of the tests is that it should alert other
-        developers when their changes will have an impact on the behavior of your
-        module.  For example, if a developer removes a feature that you depend on,
-        your test should break so they know that the feature is needed.
+    def test_Logic(self):
         """
-
-        self.delayDisplay("Starting the test")
-
-        # Get/create input data
-
-        import SampleData
-        inputVolume = SampleData.downloadSample('CTACardio')
-        self.delayDisplay('Loaded test data set')
-
-        outputSegmentation = slicer.mrmlScene.AddNewNodeByClass('vtkMRMLSegmentationNode')
-
-        # Test the module logic
-
-        # Logic testing is disabled by default to not overload automatic build machines (pytorch is a huge package and computation
-        # on CPU takes 5-10 minutes). Set testLogic to True to enable testing.
-        testLogic = False
-
-        if testLogic:
-            logic = CADSLogic()
-            logic.logCallback = self._mylog
-
-            self.delayDisplay('Set up required Python packages')
-            logic.setupPythonRequirements()
-
-            self.delayDisplay('Compute output')
-            logic.process(inputVolume, outputSegmentation)
-
-        else:
-            logging.warning("test_CADS1 logic testing was skipped")
-
-        self.delayDisplay('Test passed')
-
-    def _mylog(self,text):
-        print(text)
-
-    def test_CADSSubset(self):
-        """ Ideally you should have several levels of tests.  At the lowest level
-        tests should exercise the functionality of the logic with different inputs
-        (both valid and invalid).  At higher levels your tests should emulate the
-        way the user would interact with your code and confirm that it still works
-        the way you intended.
-        One of the most important features of the tests is that it should alert other
-        developers when their changes will have an impact on the behavior of your
-        module.  For example, if a developer removes a feature that you depend on,
-        your test should break so they know that the feature is needed.
+        Test basic logic functionality.
         """
+        self.delayDisplay("Starting logic test")
 
-        self.delayDisplay("Starting the test")
+        try:
+            # test parameterNode init
+            parameterNode = self.logic.getParameterNode()
+            self.assertIsNotNone(parameterNode)
 
-        # Get/create input data
+            # test input arg setting
+            defaultParameters = {
+                "CPU": "false",
+                "UseStandardSegmentNames": "true",
+                "Task": "551",  # by default
+                "TargetMode": "subset"
+            }            
+            self.assertIn("551", self.logic.tasks)
+            self.assertEqual(self.logic.tasks["551"]["title"], "Core organs")            
+            for parameter, defaultValue in defaultParameters.items():
+                self.assertEqual(
+                    parameterNode.GetParameter(parameter) or "",
+                    defaultValue,
+                    f"Parameter {parameter} default value incorrect"
+                )
 
-        import SampleData
-        inputVolume = SampleData.downloadSample('CTACardio')
-        self.delayDisplay('Loaded test data set')
+            # test task completeness
+            self.assertIsNotNone(self.logic.tasks)
+            self.assertTrue(len(self.logic.tasks) > 0)            
+            for taskId, taskInfo in self.logic.tasks.items():
+                if taskId != 'all':
+                    self.assertTrue(taskId.isdigit())
+                    self.assertIn('title', taskInfo)
+                    self.assertIsInstance(taskInfo['title'], str)
+            self.delayDisplay('Logic test passed')
+            
+        except Exception as e:
+            self.delayDisplay(f'Test failed: {str(e)}', msec=1000)
+            self.fail(f"Logic test failed with error: {str(e)}")
 
-        outputSegmentation = slicer.mrmlScene.AddNewNodeByClass('vtkMRMLSegmentationNode')
+    def test_TerminologyLoading(self):
+        """
+        Test terminology loading and mapping.
+        """
+        self.delayDisplay("Starting terminology loading test")
 
-        # Test the module logic
+        try:
+            # test terminology loading
+            self.assertIsNotNone(self.logic.cadsLabelTerminology)
+            
+            # test mapping
+            testCases = [
+                ("spleen", "78961009"),
+                ("kidney_right", "64033007"),
+                ("kidney_left", "64033007"),
+            ]
+            for structure, expected_code in testCases:
+                self.assertIn(structure, self.logic.cadsLabelTerminology)
+                term_info = self.logic.cadsLabelTerminology[structure]
+                self.assertIn("terminologyStr", term_info)
+                self.assertIn("slicerLabel", term_info)
+            self.delayDisplay('Terminology loading test passed')
+            
+        except Exception as e:
+            self.delayDisplay(f'Test failed: {str(e)}', msec=1000)
+            self.fail(f"Terminology loading test failed with error: {str(e)}")
 
-        # Logic testing is disabled by default to not overload automatic build machines (pytorch is a huge package and computation
-        # on CPU takes 5-10 minutes). Set testLogic to True to enable testing.
-        testLogic = False
+    def test_SegmentationProcessing(self):
+        """
+        Test segmentation algorithm processing pipeline.
+        """
+        import tempfile
+        import shutil
+        self.delayDisplay("Starting segmentation processing test")
 
-        if testLogic:
-            logic = CADSLogic()
-            logic.logCallback = self._mylog
+        try:
+            tempFolder = tempfile.mkdtemp()
+            inputFile = os.path.join(tempFolder, "test_input.nii")
+            outputFolder = os.path.join(tempFolder, "test_output")
+            os.makedirs(outputFolder, exist_ok=True)
 
-            self.delayDisplay('Set up required Python packages')
-            logic.setupPythonRequirements()
+            # write downloaded sample to input file
+            volumeStorageNode = slicer.mrmlScene.CreateNodeByClass("vtkMRMLVolumeArchetypeStorageNode")
+            volumeStorageNode.SetFileName(inputFile)
+            volumeStorageNode.UseCompressionOff()
+            volumeStorageNode.WriteData(self.inputVolume)
+            volumeStorageNode.UnRegister(None)
 
-            self.delayDisplay('Compute output')
-            _subset = ["lung_upper_lobe_left","lung_lower_lobe_right","trachea"]
-            logic.process(inputVolume, outputSegmentation, subset = _subset)
+            # test provessVolume()
+            result = self.logic.processVolume(
+                inputFile=inputFile,
+                inputVolume=self.inputVolume,
+                outputSegmentationFolder=outputFolder,
+                outputSegmentation=self.outputSegmentation,
+                task="551",
+                subset=None,
+                cpu=True,
+                cadsCommand=["echo", "test"]
+            )
+            
+            shutil.rmtree(tempFolder)
+            
+            self.delayDisplay('Segmentation processing test passed')
+            
+        except Exception as e:
+            self.delayDisplay(f'Test failed: {str(e)}', msec=1000)
+            self.fail(f"Segmentation processing test failed with error: {str(e)}")
 
-        else:
-            logging.warning("test_CADS1 logic testing was skipped")
+    def test_SubsetProcessing(self):
+        """
+        Test processing with subset of organs.
+        """
+        import shutil
 
-        self.delayDisplay('Test passed')
+        self.delayDisplay("Starting subset processing test")
+
+        try:
+            subset = ["lung_upper_lobe_left", "lung_lower_lobe_right", "trachea"]
+            
+            # test subset is valid
+            self.assertTrue(all(organ in self.logic.cadsLabelTerminology for organ in subset))
+
+            # test subset handling
+            tempFolder = slicer.util.tempDirectory()
+            inputFile = os.path.join(tempFolder, "test_input.nii")
+            outputFolder = os.path.join(tempFolder, "test_output")
+            os.makedirs(outputFolder, exist_ok=True)
+
+            # write downloaded sample to input file
+            volumeStorageNode = slicer.mrmlScene.CreateNodeByClass("vtkMRMLVolumeArchetypeStorageNode")
+            volumeStorageNode.SetFileName(inputFile)
+            volumeStorageNode.UseCompressionOff()
+            volumeStorageNode.WriteData(self.inputVolume)
+            volumeStorageNode.UnRegister(None)
+
+            result = self.logic.processVolume(
+                inputFile=inputFile,
+                inputVolume=self.inputVolume,
+                outputSegmentationFolder=outputFolder,
+                outputSegmentation=self.outputSegmentation,
+                task="551",
+                subset=subset,
+                cpu=True,
+                cadsCommand=["echo", "test"]
+            )
+
+            shutil.rmtree(tempFolder)
+            
+            self.delayDisplay('Subset processing test passed')
+            
+        except Exception as e:
+            self.delayDisplay(f'Test failed: {str(e)}', msec=1000)
+            self.fail(f"Subset processing test failed with error: {str(e)}")
+
+    def test_ErrorHandling(self):
+        """
+        Test error handling scenarios.
+        """
+        self.delayDisplay("Starting error handling test")
+
+        try:
+            with self.assertRaises(ValueError):
+                self.logic.process(None, self.outputSegmentation)
+
+            invalid_tasks = [
+                "invalid_task",  # not digit
+                "999",          # non-existing task id
+                "-1",          # negative
+                "0"            # invalid id
+            ]
+            
+            for invalid_task in invalid_tasks:
+                try:
+                    self.logic.process(
+                        self.inputVolume,
+                        self.outputSegmentation,
+                        task=invalid_task
+                    )
+                    self.fail(f"Expected ValueError for invalid task: {invalid_task}")
+                except ValueError as e:
+                    self.assertIn("Invalid task", str(e))
+
+            # test invalid subset
+            invalid_subset = ["nonexistent_organ"]
+            try:
+                self.logic.process(
+                    self.inputVolume,
+                    self.outputSegmentation,
+                    task="551",
+                    subset=invalid_subset
+                )
+                self.fail("Expected ValueError for invalid subset")
+            except ValueError as e:
+                expected_messages = [
+                    "Invalid organs in subset",
+                    "Cannot validate subset for task"
+                ]
+                self.assertTrue(
+                    any(msg in str(e) for msg in expected_messages),
+                    f"Error message '{str(e)}' does not match any expected message"
+                )
+
+            self.delayDisplay('Error handling test passed')
+            
+        except Exception as e:
+            self.delayDisplay(f'Test failed: {str(e)}', msec=1000)
+            self.fail(f"Error handling test failed with error: {str(e)}")
+
+    def test_FileOperations(self):
+        """
+        Test file reading and writing operations.
+        """
+        import shutil
+        import os
+        self.delayDisplay("Starting file operations test")
+
+        try:
+            tempFolder = slicer.util.tempDirectory()
+            
+            # test writing an input file
+            inputFile = os.path.join(tempFolder, "test_input.nii")
+            volumeStorageNode = slicer.mrmlScene.CreateNodeByClass("vtkMRMLVolumeArchetypeStorageNode")
+            volumeStorageNode.SetFileName(inputFile)
+            self.assertTrue(volumeStorageNode.WriteData(self.inputVolume))
+            
+            # test reading a segmentation file
+            outputFolder = os.path.join(tempFolder, "test_output")
+            os.makedirs(outputFolder, exist_ok=True)
+            
+            # cleanup
+            volumeStorageNode.UnRegister(None)
+            shutil.rmtree(tempFolder)
+
+            self.delayDisplay('File operations test passed')
+            
+        except Exception as e:
+            self.delayDisplay(f'Test failed: {str(e)}', msec=1000)
+            self.fail(f"File operations test failed with error: {str(e)}")
