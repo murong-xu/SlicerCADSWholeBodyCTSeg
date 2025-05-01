@@ -979,6 +979,7 @@
           {
             "CodeMeaning": "Face",
             "CodingSchemeDesignator": "SCT",
+            "3dSlicerLabel": "face",
             "cid": "4",
             "UMLSConceptUID": "C0015450",
             "CodeValue": "89545001",
@@ -2450,7 +2451,7 @@
             ],
             "CodeMeaning": "Entire brainstem",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "entire brainstem",
+            "3dSlicerLabel": "brainstem",
             "3dSlicerIntegerLabel": 133,
             "cid": "",
             "CodeValue": "180925009",
@@ -2887,7 +2888,7 @@
             ],
             "CodeMeaning": "Abdominal cavity structure",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "abdominal cavity structure",
+            "3dSlicerLabel": "abdominal cavity",
             "3dSlicerIntegerLabel": 160,
             "cid": "7154",
             "CodeValue": "52731004",
@@ -2903,7 +2904,7 @@
             ],
             "CodeMeaning": "Thoracic cavity structure",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "thoracic cavity structure",
+            "3dSlicerLabel": "thoracic cavity",
             "3dSlicerIntegerLabel": 161,
             "cid": "7155",
             "CodeValue": "43799004",
@@ -2925,22 +2926,6 @@
             "CodeValue": "362884007",
             "contextGroupName": "",
             "SNOMEDCTConceptID": "362884007",
-            "paired": "U"
-          },
-          {
-            "recommendedDisplayRGBValue": [
-              200,
-              200,
-              200
-            ],
-            "CodeMeaning": "Breast implant",
-            "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "breast implant",
-            "3dSlicerIntegerLabel": 165,
-            "cid": "7166",
-            "CodeValue": "0037",
-            "contextGroupName": "CommonTissueSegmentationTypes",
-            "SNOMEDCTConceptID": "2748008",
             "paired": "U"
           },
           {
