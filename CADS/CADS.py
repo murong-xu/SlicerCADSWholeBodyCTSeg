@@ -18,15 +18,15 @@ class CADS(ScriptedLoadableModule):
         self.parent.dependencies = []
         self.parent.contributors = ["Murong Xu (University of Zurich)"]
         self.parent.helpText = """
-        3D Slicer extension that provides automated whole-body CT segmentation powered by CADS AI model.
+        CADS is a robust, fully automated framework for segmenting 167 anatomical structures in Computed Tomography (CT), spanning from head to knee regions across diverse anatomical systems.<br>
         See more information in the <a href="https://github.com/murong-xu/SlicerCADS">extension documentation</a>.
         """
-        self.parent.acknowledgementText = """#TODO: use most recent cite
-        This extension was developed by Murong Xu (University of Zurich), building upon the foundational framework by Andras Lasso (PerkLab, Queen's University).
-        The core segmentation functionality is powered by <a href="https://github.com/murong-xu/CADS">CADS</a>.
+        self.parent.acknowledgementText = """
+        This extension was developed by Murong Xu (University of Zurich), with kind support from Andras Lasso (PerkLab, Queen's University).<br>
+        The core segmentation functionality is powered by <a href="https://github.com/murong-xu/CADS">CADS</a>.<br><br>
 
-        If you use this software in your research, please cite:
-        Xu et al., "CADS: Comprehensive Anatomical Dataset and Segmentation for Whole-body CT"
+        If you use this software in your research, please cite:<br>
+        Xu et al. CADS: A Comprehensive Anatomical Dataset and Segmentation for Whole-Body Anatomy in Computed Tomography. arXiv preprint arXiv:2507.22953 (2025).
         """
         slicer.app.connect("startupCompleted()",
                            self.configureDefaultTerminology)
@@ -277,7 +277,7 @@ class CADSWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
             if currentTask == 'all':
                 self.ui.targetsList.setEnabled(True)
                 all_targets = []
-                for subtask in range(551, 560):  # 551-559
+                for subtask in range(551, 560):  # task id: 551-559
                     labelValueToSegmentName = map_taskid_to_labelmaps[subtask]
                     availableTargets = list(labelValueToSegmentName.values())
                     if 'background' in availableTargets:
@@ -374,7 +374,7 @@ class CADSWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
         if inputIsSequenceData:
             slicer.util.messageBox(
                 "Input Data Type Error\n\n"
-                "CADS model is designed for single-phase 3D CT volumes only.\n"
+                "CADS-model is designed for single-phase 3D CT volumes only.\n"
                 "The selected input appears to be a 4D/sequence dataset, which is not supported.\n\n"
                 "Please select a standard 3D CT volume to proceed."
             )
@@ -437,10 +437,10 @@ class CADSWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
             self.ui.packageInfoTextBrowser.plainText = self.logic.installedCADSPythonPackageInfo().rstrip()
 
     def onPackageUpgrade(self):
-        with slicer.util.tryWithErrorDisplay("Failed to upgrade CADS", waitCursor=True):
+        with slicer.util.tryWithErrorDisplay("Failed to upgrade CADS package", waitCursor=True):
             self.logic.setupPythonRequirements(upgrade=True)
         self.onPackageInfoUpdate()
-        if not slicer.util.confirmOkCancelDisplay(f"This CADS update requires a 3D Slicer restart.","Press OK to restart."):
+        if not slicer.util.confirmOkCancelDisplay(f"CADS package update requires a 3D Slicer restart.","Press OK to restart."):
             raise ValueError('Restart was cancelled.')
         else:
             slicer.util.restart()
@@ -461,15 +461,13 @@ class CADSLogic(ScriptedLoadableModuleLogic):
         """
         from collections import OrderedDict
 
-        ScriptedLoadableModuleLogic.__init__(self)
+        _requirements_checked = False  # static variable to ensure that requirements are checked only once
+
+        def __init__(self):
+            ScriptedLoadableModuleLogic.__init__(self)
 
         #TODO: CADS package (script, setup.py, model weights download...) update this in every release (also remember to update version number in setup.py)
-        self.cadsPythonPackageDownloadUrl = "https://github.com/murong-xu/CADS/releases/download/v0.0.1/CADS-package.zip" # "https://drive.switch.ch/index.php/s/JQiqMoAZkG1QOsM/download"
-
-        # Custom applications can set custom location for weights.
-        # For example, it could be set to `sysconfig.get_path('scripts')` to have an independent copy of
-        # the weights for each Slicer installation. However, setting such custom path would result in extra downloads and
-        # storage space usage if there were multiple Slicer installations on the same computer.
+        self.cadsPythonPackageDownloadUrl = "https://github.com/murong-xu/CADS/archive/5269dc62bad5d735b4c6f981c41591805b677125.zip"  # version 1.0. 2025-09-02
 
         self.logCallback = None
         self.clearOutputFolder = True
@@ -477,14 +475,9 @@ class CADSLogic(ScriptedLoadableModuleLogic):
         self.pullMaster = False
 
         # List of property type codes that are specified by in the CADS terminology.
-        #
-        # # Codes are stored as a list of strings containing coding scheme designator and code value of the property type,
-        # separated by "^" character. For example "SCT^123456".
-        #
         # If property the code is found in this list then the CADS terminology will be used,
         # otherwise the DICOM terminology will be used. This is necessary because the DICOM terminology
         # does not contain all the necessary items and some items are incomplete (e.g., don't have color or 3D Slicer label).
-        #
         self.cadsTerminologyPropertyTypes = []
 
         # Map from CADS structure name to terminology string.
@@ -516,7 +509,7 @@ class CADSLogic(ScriptedLoadableModuleLogic):
         self.loadCADSLabelTerminology()
     
     def loadCADSLabelTerminology(self):
-        """Load label terminology from CADS_snomed_mapping.csv file.
+        """Load label terminology from cads_snomed_mapping.csv file.
         Terminology entries are either in DICOM or CADS "Segmentation category and type".
         """
         moduleDir = os.path.dirname(slicer.util.getModule('CADS').path)
@@ -958,62 +951,63 @@ class CADSLogic(ScriptedLoadableModuleLogic):
 
         return skippedRequirements
     
-    def _parse_version_from_requirements(self, package_name, requirements):
+
+    def _parse_version_from_requirements(self, package_name, requirements_list):
         """
-        Read package version requirement, this function is mainly used to get info from setup.py with conditial dependencies like 'TPTBox==0.2.2;python_version>="3.10"'
+        Extract package version declaration such as 'TPTBox==0.3.0', 'TPTBox==0.3.0; python_version<"3.10"'from requirements_list.
         """
-        import re
-        versions = []
-        
-        for req in requirements:
-            pattern = rf"{package_name}\s*==([\d\.]+)\s*;\s*python_version\s*([<>=]+\s*\"[\d\.]+\")"
-            match = re.match(pattern, req.strip())
-            if match:
-                version = match.group(1)
-                condition = match.group(2).strip()
-                versions.append((version, condition))
-        
-        return versions
+        from packaging.requirements import Requirement
+
+        results = []
+        norm = lambda s: re.sub(r'[-_]+', '-', s).lower()
+        target = norm(package_name)
+
+        for raw in requirements_list:
+            try:
+                req = Requirement(raw)
+            except Exception:
+                fixed = raw.replace('(', '').replace(')', '').replace(' ', '')
+                try:
+                    req = Requirement(fixed)
+                except Exception:
+                    continue
+            if norm(req.name) != target:
+                continue
+            ver = None
+            for spec in req.specifier:
+                if spec.operator == '==':
+                    ver = spec.version
+                    break
+            if not ver:
+                continue
+
+            results.append((ver, req.marker))
+        return results
 
     def _should_install_version(self, version_info):
         """
-        Install correct package version based on Python version
+        version_info = (version_str, marker_or_None)
         """
-        import sys
-        from packaging import version
-        
-        version_str, condition = version_info
-        python_version = f"{sys.version_info.major}.{sys.version_info.minor}"
-        
-        import re
-        match = re.match(r'([<>=]+)\s*"([\d\.]+)"', condition.strip())
-        if not match:
-            self.log(f"Warning: Invalid version condition format: {condition}")
-            return False
-            
-        operator, version_number = match.groups()        
-        comparison = f"version.parse('{python_version}') {operator} version.parse('{version_number}')"
-        
+        from packaging.markers import default_environment
+        _, marker = version_info
+        if not marker:
+            return True
         try:
-            return eval(comparison)
-        except Exception as e:
-            self.log(f"Warning: Failed to evaluate version condition: {str(e)}")
+            return marker.evaluate(default_environment())
+        except Exception:
             return False
 
     def setupPythonRequirements(self, upgrade=False):
+        if self.__class__._requirements_checked and not upgrade: # if already checked and not upgrading, then skip
+            return
+        
+        import re
         import importlib.metadata
-        import importlib.util
         import packaging
-
-        # CADS requires this, yet it is not listed among its dependencies
-        try:
-            import pandas
-        except ModuleNotFoundError as e:
-            slicer.util.pip_install("pandas")
 
         # pillow version that is installed in Slicer (10.1.0) is too new,
         # it is incompatible with several CADS dependencies.
-        # Attempt to uninstall and install an older version before any of the packages import  it.
+        # Attempt to uninstall and install an older version before any of the packages import it.
         needToInstallPillow = True
         try:
             if packaging.version.parse(importlib.metadata.version("pillow")) < packaging.version.parse("10.1"):
@@ -1029,9 +1023,8 @@ class CADSLogic(ScriptedLoadableModuleLogic):
             'SimpleITK',  # Slicer's SimpleITK uses a special IO class, which should not be replaced
             'torch',  # needs special installation using SlicerPyTorch
             'requests',  # CADS would want to force a specific version of requests, which would require a restart of Slicer and it is unnecessary
-            'rt_utils',  # Only needed for RTSTRUCT export, which is not needed in Slicer; rt_utils depends on opencv-python which is hard to build
+            'acvl-utils', # Version corrected below (acvl-utils is a slightly different name after pip-install's name standarziation)
             'TPTBox', # Version corrected below
-            'acvl-utils' # Version corrected below (acvl-utils is a slightly different name after pip-install's name standarziation)
             ]
 
         # acvl_utils workaround - start
@@ -1076,7 +1069,7 @@ class CADSLogic(ScriptedLoadableModuleLogic):
             import cads
             if not upgrade: # update flag of CADS
                 # Check if we need to update CADS Python package version
-                downloadUrl = self.installedCADSPythonPackageDownloadUrl()  # 'https://drive.switch.ch/index.php/s/JQiqMoAZkG1QOsM/download'
+                downloadUrl = self.installedCADSPythonPackageDownloadUrl()
                 if downloadUrl and (downloadUrl != self.cadsPythonPackageDownloadUrl):
                     # CADS have been already installed from GitHub, from a different URL that this module needs
                     if not slicer.util.confirmOkCancelDisplay(
@@ -1112,7 +1105,7 @@ class CADSLogic(ScriptedLoadableModuleLogic):
             self.pipInstallSelective('nnunetv2', nnunetRequirement, packagesToSkip)
 
             # Install TPTBox separately 
-            tptbox_versions = self._parse_version_from_requirements('TPTBox', skippedRequirements)            
+            tptbox_versions = self._parse_version_from_requirements('TPTBox', skippedRequirements)    
             required_version = None
             for version_info in tptbox_versions:
                 if self._should_install_version(version_info):
@@ -1143,6 +1136,8 @@ class CADSLogic(ScriptedLoadableModuleLogic):
 
             self.log('CADS installation completed successfully.')
 
+        self.__class__._requirements_checked = True
+
 
     def setDefaultParameters(self, parameterNode):
         """
@@ -1152,6 +1147,12 @@ class CADSLogic(ScriptedLoadableModuleLogic):
             parameterNode.SetParameter("Task", "551")
         if not parameterNode.GetParameter("UseStandardSegmentNames"):
             parameterNode.SetParameter("UseStandardSegmentNames", "true")
+        if not parameterNode.GetParameter("CPU"):
+            parameterNode.SetParameter("CPU", "false")
+        if not parameterNode.GetParameter("TargetMode"):
+            parameterNode.SetParameter("TargetMode", "all")
+        if not parameterNode.GetParameter("Targets"):
+            parameterNode.SetParameter("Targets", "")
 
     def logProcessOutput(self, proc, returnOutput=False):
         # Wait for the process to end and forward output to the log
@@ -1176,13 +1177,6 @@ class CADSLogic(ScriptedLoadableModuleLogic):
         if retcode != 0:
             raise CalledProcessError(retcode, proc.args, output=proc.stdout, stderr=proc.stderr)
         return output if returnOutput else None
-
-
-    def check_zip_extension(self, file_path):
-        _, ext = os.path.splitext(file_path)
-
-        if ext.lower() != '.zip':
-            raise ValueError(f"The selected file '{file_path}' is not a .zip file!")
 
     @staticmethod
     def executableName(name):
@@ -1211,17 +1205,6 @@ class CADSLogic(ScriptedLoadableModuleLogic):
                     raise ValueError(f"Invalid task ID: {task}")
             except ValueError:
                 raise ValueError(f"Invalid task ID format: {task}. Must be a number or 'all'")
-        
-        if subset:
-            from cads.dataset_utils.bodyparts_labelmaps import map_taskid_to_labelmaps
-            try:
-                task_id = int(task)
-                labelValueToSegmentName = map_taskid_to_labelmaps[task_id]
-                invalid_organs = [organ for organ in subset if organ not in labelValueToSegmentName.values()]
-                if invalid_organs:
-                    raise ValueError(f"Invalid organs in subset: {invalid_organs}")
-            except (ValueError, KeyError):
-                raise ValueError(f"Cannot validate subset for task: {task}")
             
         import time
         startTime = time.time()
@@ -1229,8 +1212,8 @@ class CADSLogic(ScriptedLoadableModuleLogic):
 
         # Create temporary folder - moved here so it can be shared across tasks
         tempFolder = slicer.util.tempDirectory()
-        inputFile = os.path.join(tempFolder, "cads-input.nii")
-        outputSegmentationFolder = os.path.join(tempFolder, "cads-input")
+        inputFile = os.path.join(tempFolder, "cads-input.nii.gz")
+        outputSegmentationFolder = os.path.join(tempFolder, "cads-output")
 
         # Get Python and CADS paths
         import sysconfig
@@ -1243,15 +1226,15 @@ class CADSLogic(ScriptedLoadableModuleLogic):
         cadsCommand = [pythonSlicerExecutablePath, cadsExecutablePath]
 
         try:
-            # Handle 'all' task specially
+            # (Case 1) Process 'all' tasks
             if task == 'all':
                 segmentationNodes = self._processAllTasks(
                     inputVolume, outputSegmentation, cpu, subset, 
-                    inputFile, outputSegmentationFolder  # Pass the temp folders
+                    inputFile, outputSegmentationFolder
                 )
                 return segmentationNodes
 
-            # Process single task
+            # (Case 2) Process a single task
             segmentationNodes = []
             self.log(f"Writing input file to {inputFile}")
             volumeStorageNode = slicer.mrmlScene.CreateNodeByClass("vtkMRMLVolumeArchetypeStorageNode")
@@ -1359,7 +1342,7 @@ class CADSLogic(ScriptedLoadableModuleLogic):
         volumeStorageNode.UnRegister(None)
 
         # Get options
-        options = ["-i", inputFile, "-o", outputSegmentationFolder, "-task", str(task), "--preprocessing", "--postprocessing", "-np", str(4), "-ns", str(6)]  #TODO:test
+        options = ["-i", inputFile, "-o", outputSegmentationFolder, "-task", str(task), "-np", str(4), "-ns", str(6)]
         if cpu:
             options.extend(["--cpu"])
 
@@ -1367,7 +1350,7 @@ class CADSLogic(ScriptedLoadableModuleLogic):
 
         # When there are many segments then reading each segment from a separate file would be too slow,
         # but we need to do it for some specialized models.
-        self.log('Creating segmentations with CADS AI...')
+        self.log('CADS-model is segmenting...')
         self.log(f"CADS arguments: {options}")
         # proc = slicer.util.launchConsoleProcess(cadsCommand + options) #TODO:xing
         # self.logProcessOutput(proc)

@@ -6,9 +6,9 @@ project(CADS)
 # Extension meta-information
 set(EXTENSION_HOMEPAGE "https://github.com/murong-xu/SlicerCADS")
 set(EXTENSION_CATEGORY "Segmentation")
-set(EXTENSION_CONTRIBUTORS "Murong Xu")
-set(EXTENSION_DESCRIPTION "Fully automatic whole-body CT segmentation of 167 structures, using CADS AI model.")
-set(EXTENSION_ICONURL "https://raw.githubusercontent.com/lassoan/SlicerTotalSegmentator/main/TotalSegmentator.png")
+set(EXTENSION_CONTRIBUTORS "Murong Xu (University of Zurich)")
+set(EXTENSION_DESCRIPTION "CADS is a robust, fully automated framework for segmenting 167 anatomical structures in Computed Tomography (CT), spanning from head to knee regions across diverse anatomical systems.")
+set(EXTENSION_ICONURL "https://raw.githubusercontent.com/murong-xu/SlicerCADS/main/CADS.png")
 set(EXTENSION_SCREENSHOTURLS "https://raw.githubusercontent.com/lassoan/SlicerTotalSegmentator/main/Screenshot01.jpg")
 set(EXTENSION_DEPENDS "PyTorch")
 
