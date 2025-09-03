@@ -467,7 +467,7 @@ class CADSLogic(ScriptedLoadableModuleLogic):
         from collections import OrderedDict
 
         #TODO: CADS package (script, setup.py, model weights download...) update this in every release (also remember to update version number in setup.py)
-        self.cadsPythonPackageDownloadUrl = "https://github.com/murong-xu/CADS/archive/5269dc62bad5d735b4c6f981c41591805b677125.zip"  # version 1.0. 2025-09-02
+        self.cadsPythonPackageDownloadUrl = "https://github.com/murong-xu/CADS/archive/3555a0e5cb1182c1aae93bf53ef05e198ae3c79c.zip"  # version 1.0. 2025-09-03
 
         self.logCallback = None
         self.clearOutputFolder = True
