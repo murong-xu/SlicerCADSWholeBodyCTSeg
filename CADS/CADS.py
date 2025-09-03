@@ -320,8 +320,8 @@ class CADSWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
             # CADS package not installed (when open this extension for the very 1st time)
             self.ui.targetsList.addItem("CADS package needs to be installed first.")
             self.ui.targetsList.addItem("You can either:")
-            self.ui.targetsList.addItem("1. Click 'Force install dependencies' to install packages directly")
-            self.ui.targetsList.addItem("2. Upload a CT image and click 'Apply' to install and run")
+            self.ui.targetsList.addItem("1. Upload a CT image and click 'Apply' to install and run")
+            self.ui.targetsList.addItem("2. Click 'Force install dependencies' to install packages directly")
             self.ui.targetsList.addItem("(Installation may take a few minutes)")
             self.ui.targetsList.setEnabled(False)
             return
@@ -1023,7 +1023,8 @@ class CADSLogic(ScriptedLoadableModuleLogic):
             'SimpleITK',  # Slicer's SimpleITK uses a special IO class, which should not be replaced
             'torch',  # needs special installation using SlicerPyTorch
             'requests',  # CADS would want to force a specific version of requests, which would require a restart of Slicer and it is unnecessary
-            'acvl-utils', # Version corrected below (acvl-utils is a slightly different name after pip-install's name standarziation)
+            'acvl-utils', # Version corrected below (acvl-utils can have a slightly different name after pip-install's name standarziation, - or _)
+            'acvl_utils',
             'TPTBox', # Version corrected below
             ]
 
