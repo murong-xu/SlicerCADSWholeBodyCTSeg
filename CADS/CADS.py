@@ -1603,7 +1603,7 @@ class CADSTest(ScriptedLoadableModuleTest):
 
         try:
             tempFolder = tempfile.mkdtemp()
-            inputFile = os.path.join(tempFolder, "test_input.nii")
+            inputFile = os.path.join(tempFolder, "test_input.nii.gz")
             outputFolder = os.path.join(tempFolder, "test_output")
             os.makedirs(outputFolder, exist_ok=True)
 
@@ -1650,7 +1650,7 @@ class CADSTest(ScriptedLoadableModuleTest):
 
             # test subset handling
             tempFolder = slicer.util.tempDirectory()
-            inputFile = os.path.join(tempFolder, "test_input.nii")
+            inputFile = os.path.join(tempFolder, "test_input.nii.gz")
             outputFolder = os.path.join(tempFolder, "test_output")
             os.makedirs(outputFolder, exist_ok=True)
 
@@ -1746,7 +1746,7 @@ class CADSTest(ScriptedLoadableModuleTest):
             tempFolder = slicer.util.tempDirectory()
             
             # test writing an input file
-            inputFile = os.path.join(tempFolder, "test_input.nii")
+            inputFile = os.path.join(tempFolder, "test_input.nii.gz")
             volumeStorageNode = slicer.mrmlScene.CreateNodeByClass("vtkMRMLVolumeArchetypeStorageNode")
             volumeStorageNode.SetFileName(inputFile)
             self.assertTrue(volumeStorageNode.WriteData(self.inputVolume))
