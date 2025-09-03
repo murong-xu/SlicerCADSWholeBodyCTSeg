@@ -13,9 +13,7 @@
         "Type": [
           {
             "recommendedDisplayRGBValue": [
-              157,
-              108,
-              162
+              150, 120, 170
             ],
             "CodeMeaning": "Spleen",
             "CodingSchemeDesignator": "SCT",
@@ -40,9 +38,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  185,
-                  102,
-                  83
+                  176, 96, 80
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -56,9 +52,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  185,
-                  102,
-                  83
+                  205, 128, 108
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -73,9 +67,7 @@
             },
           {
             "recommendedDisplayRGBValue": [
-              139,
-              150,
-              98
+              132, 150, 92
             ],
             "CodeMeaning": "Gallbladder",
             "CodingSchemeDesignator": "SCT",
@@ -90,9 +82,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              221,
-              130,
-              101
+              206, 141, 79
             ],
             "CodeMeaning": "Liver",
             "CodingSchemeDesignator": "SCT",
@@ -107,9 +97,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              216,
-              132,
-              105
+              220, 121, 122
             ],
             "CodeMeaning": "Stomach",
             "CodingSchemeDesignator": "SCT",
@@ -124,9 +112,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              224,
-              97,
-              76
+              210, 88, 70
             ],
             "CodeMeaning": "Aorta",
             "CodingSchemeDesignator": "SCT",
@@ -141,9 +127,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              0,
-              151,
-              206
+              20, 140, 190
             ],
             "CodeMeaning": "Inferior vena cava",
             "CodingSchemeDesignator": "SCT",
@@ -163,16 +147,12 @@
             "contextGroupName": "CardiovascularAnatomicLocations",
             "3dSlicerLabel": "portal vein and splenic vein",
             "recommendedDisplayRGBValue": [
-              0,
-              151,
-              206
+              0, 120, 170
             ]
           },
           {
             "recommendedDisplayRGBValue": [
-              249,
-              180,
-              111
+              232, 170, 120
             ],
             "CodeMeaning": "Pancreas",
             "CodingSchemeDesignator": "SCT",
@@ -197,9 +177,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  249,
-                  186,
-                  150
+                  180,140,190
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -213,9 +191,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  249,
-                  186,
-                  150
+                  200,160,210
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -231,9 +207,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              202,
-              164,
-              140
+              198, 162, 140
             ],
             "CodeMeaning": "Middle lobe of right lung",
             "CodingSchemeDesignator": "SCT",
@@ -258,9 +232,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  172,
-                  138,
-                  115
+                  168, 136, 116
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -274,9 +246,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  172,
-                  138,
-                  115
+                  174, 142, 120
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -311,9 +281,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  224,
-                  186,
-                  162
+                  220, 188, 164
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -327,9 +295,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  224,
-                  186,
-                  162
+                  214, 180, 158
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -355,7 +321,7 @@
 
           {
             "recommendedDisplayRGBValue": [
-              48, 232, 191
+              85, 178, 224
             ],
             "CodeMeaning": "C1 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -368,7 +334,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              55, 228, 185
+              209, 151, 100
             ],
             "CodeMeaning": "C2 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -381,7 +347,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              63, 224, 180
+              178, 85, 224
             ],
             "CodeMeaning": "C3 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -394,7 +360,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              71, 220, 175
+              137, 209, 100
             ],
             "CodeMeaning": "C4 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -407,7 +373,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              78, 216, 170
+              224, 85, 108
             ],
             "CodeMeaning": "C5 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -420,7 +386,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              86, 213, 165
+              100, 146, 209
             ],
             "CodeMeaning": "C6 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -433,7 +399,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              94, 209, 160
+              224, 213, 85
             ],
             "CodeMeaning": "C7 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -446,7 +412,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              101, 205, 155
+              209, 100, 173
             ],
             "CodeMeaning": "T1 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -459,7 +425,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              109, 201, 150
+              166, 224, 85
             ],
             "CodeMeaning": "T2 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -472,7 +438,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              117, 198, 145
+              100, 109, 209
             ],
             "CodeMeaning": "T3 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -485,7 +451,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              124, 194, 139
+              224, 120, 85
             ],
             "CodeMeaning": "T4 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -498,7 +464,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              132, 190, 134
+              146, 100, 209
             ],
             "CodeMeaning": "T5 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -511,7 +477,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              140, 186, 129
+              85, 224, 132
             ],
             "CodeMeaning": "T6 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -524,7 +490,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              147, 182, 124
+              209, 109, 100
             ],
             "CodeMeaning": "T7 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -537,7 +503,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              155, 179, 119
+              224, 85, 224
             ],
             "CodeMeaning": "T8 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -550,7 +516,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              163, 175, 114
+              109, 209, 100
             ],
             "CodeMeaning": "T9 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -563,7 +529,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              170, 171, 109
+              224, 166, 85
             ],
             "CodeMeaning": "T10 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -576,7 +542,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              178, 167, 104
+              100, 200, 209
             ],
             "CodeMeaning": "T11 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -589,7 +555,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              186, 164, 99
+              201, 224, 85
             ],
             "CodeMeaning": "T12 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -602,7 +568,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              193, 160, 93
+              100, 100, 209
             ],
             "CodeMeaning": "L1 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -615,7 +581,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              201, 156, 88
+              224, 190, 85
             ],
             "CodeMeaning": "L2 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -628,7 +594,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              209, 152, 83
+              191, 100, 209
             ],
             "CodeMeaning": "L3 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -641,7 +607,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              216, 148, 78
+              85, 224, 166
             ],
             "CodeMeaning": "L4 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -654,7 +620,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              224, 145, 73
+              100, 164, 209
             ],
             "CodeMeaning": "L5 vertebra",
             "CodingSchemeDesignator": "SCT",
@@ -668,9 +634,7 @@
 
           {
             "recommendedDisplayRGBValue": [
-              211,
-              171,
-              143
+              156, 92, 140
             ],
             "CodeMeaning": "Esophagus",
             "CodingSchemeDesignator": "SCT",
@@ -685,9 +649,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              182,
-              228,
-              255
+              60, 200, 210
             ],
             "CodeMeaning": "Trachea",
             "CodingSchemeDesignator": "SCT",
@@ -708,16 +670,12 @@
             "contextGroupName": "AnatomicRegion,CommonAnatomicRegions,MediastinumAnatomyFindingorFeature,CardiacStructureSegmentationTypes",
             "3dSlicerLabel": "myocardium",
             "recommendedDisplayRGBValue": [
-              206,
-              110,
-              84
+              190, 60, 60
             ]
           },
           {
             "recommendedDisplayRGBValue": [
-              203,
-              108,
-              81
+              214, 96, 70
             ],
             "CodeMeaning": "Left atrium",
             "CodingSchemeDesignator": "SCT",
@@ -732,9 +690,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              210,
-              115,
-              89
+              80, 150, 60
             ],
             "CodeMeaning": "Right atrium",
             "CodingSchemeDesignator": "SCT",
@@ -749,9 +705,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              152,
-              55,
-              13
+              150, 40, 40
             ],
             "CodeMeaning": "Left ventricle",
             "CodingSchemeDesignator": "SCT",
@@ -766,9 +720,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              181,
-              85,
-              57
+              200, 130, 40
             ],
             "CodeMeaning": "Right ventricle",
             "CodingSchemeDesignator": "SCT",
@@ -783,9 +735,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              0,
-              122,
-              171
+              30, 120, 210
             ],
             "CodeMeaning": "Pulmonary artery",
             "CodingSchemeDesignator": "SCT",
@@ -829,9 +779,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              250,
-              250,
-              225
+              245, 236, 220
             ],
             "CodeMeaning": "Brain",
             "CodingSchemeDesignator": "SCT",
@@ -855,6 +803,9 @@
             "paired": "Y",
             "Modifier": [
               {
+                "recommendedDisplayRGBValue": [
+                  208, 70, 52
+                ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
                 "cid": "244",
@@ -865,6 +816,9 @@
                 "3dSlicerLabel": "right iliac artery"
               },
               {
+                "recommendedDisplayRGBValue": [
+                  230, 190, 60
+                ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
                 "cid": "244",
@@ -887,6 +841,9 @@
             "paired": "Y",
             "Modifier": [
               {
+                "recommendedDisplayRGBValue": [
+                  40, 90, 160
+                ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
                 "cid": "244",
@@ -897,6 +854,9 @@
                 "3dSlicerLabel": "right iliac vein"
               },
               {
+                "recommendedDisplayRGBValue": [
+                  40, 160, 140
+                ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
                 "cid": "244",
@@ -910,9 +870,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              205,
-              167,
-              142
+              210, 180, 130
             ],
             "CodeMeaning": "Small Intestine",
             "CodingSchemeDesignator": "SCT",
@@ -927,9 +885,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              255,
-              253,
-              229
+              250, 240, 200
             ],
             "CodeMeaning": "Duodenum",
             "CodingSchemeDesignator": "SCT",
@@ -944,9 +900,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              204,
-              168,
-              143
+              178, 142, 118
             ],
             "CodeMeaning": "Colon",
             "CodingSchemeDesignator": "SCT",
@@ -961,9 +915,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              222,
-              154,
-              132
+              230, 120, 160
             ],
             "CodeMeaning": "Bladder",
             "CodingSchemeDesignator": "SCT",
@@ -977,6 +929,9 @@
             "paired": "U"
           },
           {
+            "recommendedDisplayRGBValue": [
+              240, 205, 180
+            ],
             "CodeMeaning": "Face",
             "CodingSchemeDesignator": "SCT",
             "3dSlicerLabel": "face",
@@ -999,6 +954,9 @@
             "paired": "Y",
             "Modifier": [
               {
+                "recommendedDisplayRGBValue": [
+                  80, 160, 255
+                ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
                 "cid": "244",
@@ -1009,6 +967,9 @@
                 "3dSlicerLabel": "right humerus"
               },
               {
+                "recommendedDisplayRGBValue": [
+                  255, 140, 80
+                ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
                 "cid": "244",
@@ -1031,6 +992,9 @@
             "paired": "Y",
             "Modifier": [
               {
+                "recommendedDisplayRGBValue": [
+                  120, 220, 120
+                ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
                 "cid": "244",
@@ -1041,6 +1005,9 @@
                 "3dSlicerLabel": "right scapula"
               },
               {
+                "recommendedDisplayRGBValue": [
+                  230, 100, 200
+                ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
                 "cid": "244",
@@ -1064,9 +1031,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  205,
-                  179,
-                  108
+                  255, 210, 80
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -1080,9 +1045,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  205,
-                  179,
-                  108
+                  160, 120, 255
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -1107,6 +1070,9 @@
             "paired": "Y",
             "Modifier": [
               {
+                "recommendedDisplayRGBValue": [
+                  255, 100, 150
+                ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
                 "cid": "244",
@@ -1117,6 +1083,9 @@
                 "3dSlicerLabel": "right femur"
               },
               {
+                "recommendedDisplayRGBValue": [
+                  100, 200, 255
+                ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
                 "cid": "244",
@@ -1140,9 +1109,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  177,
-                  122,
-                  101
+                  255, 170, 90
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -1156,9 +1123,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  177,
-                  122,
-                  101
+                  120, 240, 160
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -1173,6 +1138,9 @@
             ]
           },
           {
+            "recommendedDisplayRGBValue": [
+              200, 170, 140
+            ],
             "CodeMeaning": "Sacrum",
             "3dSlicerLabel": "sacrum",
             "CodingSchemeDesignator": "SCT",
@@ -1194,9 +1162,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  188,
-                  95,
-                  76
+                  255, 90, 90
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -1209,9 +1175,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  188,
-                  95,
-                  76
+                  90, 140, 255
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -1235,9 +1199,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  178,
-                  105,
-                  76
+                  255, 150, 90
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -1250,9 +1212,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  178,
-                  105,
-                  76
+                  140, 230, 120
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -1276,9 +1236,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  178,
-                  95,
-                  86
+                  240, 110, 200
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -1291,9 +1249,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  178,
-                  95,
-                  86
+                  100, 230, 200
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -1316,9 +1272,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  171,
-                  85,
-                  68
+                  230, 120, 90
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -1331,9 +1285,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  171,
-                  85,
-                  68
+                  120, 180, 255
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -1357,9 +1309,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  188,
-                  95,
-                  76
+                  255, 150, 80
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -1372,9 +1322,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  188,
-                  95,
-                  76
+                  190, 110, 255
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -1405,7 +1353,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  189, 255, 243
+                 0,128,168
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -1418,7 +1366,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  243, 249, 167
+                  96,190,164
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -1448,7 +1396,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  178, 249, 234
+                  182,92,44
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -1461,7 +1409,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  239, 244, 156
+                  214,163,54
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -1491,7 +1439,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  168, 243, 226
+                  142,70,142
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -1504,7 +1452,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  235, 239, 145
+                  115,90,180
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -1534,7 +1482,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  157, 238, 218
+                  95,135,50
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -1547,7 +1495,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  231, 234, 134
+                  140,165,60
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -1577,7 +1525,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  147, 232, 210
+                  168,55,72
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -1590,7 +1538,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  228, 230, 124
+                  190,85,120
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -1620,7 +1568,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  136, 227, 202
+                  70,105,170
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -1633,7 +1581,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  224, 225, 113
+                  110,165,190
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -1663,7 +1611,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  126, 221, 194
+                  175,128,40
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -1676,7 +1624,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  220, 220, 102
+                  200,170,60
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -1706,7 +1654,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  115, 216, 186
+                  155,70,105
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -1719,7 +1667,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  216, 215, 91
+                  185,105,165
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -1749,7 +1697,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  105, 210, 178
+                  100,135,65
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -1762,7 +1710,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  213, 211, 81
+                  140,180,85
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -1792,7 +1740,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  94, 205, 170
+                  75,115,155
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -1805,7 +1753,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  209, 206, 70
+                  120,170,180
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -1835,7 +1783,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  84, 199, 162
+                  155,70,50
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -1848,7 +1796,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  205, 201, 59
+                  195,115,70
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -1878,7 +1826,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  74, 194, 154
+                  85,70,150
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -1891,7 +1839,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  202, 197, 49
+                  145,110,180
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -1907,9 +1855,7 @@
 
           {
             "recommendedDisplayRGBValue": [
-              255,
-              255,
-              207
+              120, 235, 255
             ],
             "CodeMeaning": "Spinal canal",
             "3dSlicerLabel": "spinal canal",
@@ -1923,9 +1869,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              150,
-              208,
-              243
+              170, 160, 255
             ],
             "CodeMeaning": "Larynx",
             "CodingSchemeDesignator": "SCT",
@@ -1940,9 +1884,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              206,
-              110,
-              84
+              220, 50, 80
             ],
             "CodeMeaning": "Heart",
             "CodingSchemeDesignator": "SCT",
@@ -1957,9 +1899,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              170,
-              95,
-              128
+              180, 80, 160
             ],
             "CodeMeaning": "Sigmoid colon",
             "CodingSchemeDesignator": "SCT",
@@ -1972,6 +1912,9 @@
             "paired": "U"
           },
           {
+            "recommendedDisplayRGBValue": [
+              200, 90, 60
+            ],
             "CodeMeaning": "Rectum",
             "3dSlicerLabel": "rectum",
             "CodingSchemeDesignator": "SCT",
@@ -1984,9 +1927,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              230,
-              158,
-              140
+              235, 150, 120
             ],
             "CodeMeaning": "Prostate",
             "CodingSchemeDesignator": "SCT",
@@ -2000,6 +1941,9 @@
             "paired": "U"
           },
           {
+            "recommendedDisplayRGBValue": [
+              240, 120, 160
+            ],
             "CodeMeaning": "Seminal Vesicle",
             "3dSlicerLabel": "seminal vesicle",
             "CodingSchemeDesignator": "SCT",
@@ -2065,9 +2009,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  231,
-                  186,
-                  176
+                  240, 170, 200
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -2081,9 +2023,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  231,
-                  186,
-                  176
+                  245, 200, 175
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -2099,9 +2039,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              244,
-              217,
-              154
+              230, 205, 150
             ],
             "CodeMeaning": "Sternum",
             "CodingSchemeDesignator": "SCT",
@@ -2125,9 +2063,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  160,
-                  120,
-                  90
+                  255, 150, 80
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -2139,9 +2075,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  160,
-                  120,
-                  90
+                  190, 110, 255
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -2165,9 +2099,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  188,
-                  95,
-                  76
+                  101,106,149
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -2181,9 +2113,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  188,
-                  95,
-                  76
+                  219,149,166
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -2200,9 +2130,7 @@
 
           {
             "recommendedDisplayRGBValue": [
-              250,
-              250,
-              210
+              240, 240, 250
             ],
             "CodeMeaning": "White Matter",
             "CodingSchemeDesignator": "SCT",
@@ -2216,9 +2144,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              200,
-              200,
-              235
+              190, 170, 220
             ],
             "CodeMeaning": "Gray Matter",
             "CodingSchemeDesignator": "SCT",
@@ -2231,6 +2157,9 @@
             "SNOMEDCTConceptID": "389081007"
           },
           {
+            "recommendedDisplayRGBValue": [
+              255, 210, 150
+            ],
             "CodeMeaning": "Scalp structure",
             "CodingSchemeDesignator": "SCT",
             "3dSlicerLabel": "scalp structure",
@@ -2242,6 +2171,9 @@
             "paired": "U"
           },
           {
+            "recommendedDisplayRGBValue": [
+              80, 200, 255
+            ],
             "CodeMeaning": "Eyeball",
             "CodingSchemeDesignator": "SCT",
             "3dSlicerLabel": "eyeball",
@@ -2283,9 +2215,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              255,
-              255,
-              207
+              230, 220, 180
             ],
             "CodeMeaning": "Compact bone",
             "CodingSchemeDesignator": "SCT",
@@ -2300,9 +2230,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              255,
-              255,
-              207
+              200, 190, 150
             ],
             "CodeMeaning": "Spongy bone",
             "CodingSchemeDesignator": "SCT",
@@ -2317,9 +2245,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              216,
-              101,
-              79
+              220, 40, 60
             ],
             "CodeMeaning": "Blood",
             "CodingSchemeDesignator": "SCT",
@@ -2333,9 +2259,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              201,
-              121,
-              77
+              255, 120, 120
             ],
             "CodeMeaning": "Muscle of head",
             "CodingSchemeDesignator": "SCT",
@@ -2379,9 +2303,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              224,
-              97,
-              76
+              40,160,190
             ],
             "CodeMeaning": "Structure of left carotid artery",
             "CodingSchemeDesignator": "SCT",
@@ -2396,9 +2318,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              224,
-              97,
-              80
+              206,120,190
             ],
             "CodeMeaning": "Structure of right carotid artery",
             "CodingSchemeDesignator": "SCT",
@@ -2413,9 +2333,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              185,
-              135,
-              134
+              230,195,90
             ],
             "CodeMeaning": "Arytenoid cartilage structure",
             "CodingSchemeDesignator": "SCT",
@@ -2429,9 +2347,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              241,
-              214,
-              145
+              232,184,120
             ],
             "CodeMeaning": "Mandible",
             "CodingSchemeDesignator": "SCT",
@@ -2445,9 +2361,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              244,
-              214,
-              49
+              130,190,120
             ],
             "CodeMeaning": "Entire brainstem",
             "CodingSchemeDesignator": "SCT",
@@ -2461,9 +2375,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              195,
-              144,
-              155
+              230,140,170
             ],
             "CodeMeaning": "Buccal mucosa",
             "CodingSchemeDesignator": "SCT",
@@ -2477,9 +2389,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              205,
-              167,
-              142
+              140,200,185
             ],
             "CodeMeaning": "Oral cavity",
             "CodingSchemeDesignator": "SCT",
@@ -2493,9 +2403,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              230,
-              152,
-              110
+              210,95,95
             ],
             "CodeMeaning": "Structure of left cochlear",
             "CodingSchemeDesignator": "SCT",
@@ -2509,9 +2417,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              230,
-              152,
-              115
+              120,145,220
             ],
             "CodeMeaning": "Structure of right cochlear",
             "CodingSchemeDesignator": "SCT",
@@ -2525,9 +2431,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              175,
-              125,
-              120
+              225,195,90
             ],
             "CodeMeaning": "Cricopharyngeus",
             "CodingSchemeDesignator": "SCT",
@@ -2541,9 +2445,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              216,
-              132,
-              105
+              90,200,160
             ],
             "CodeMeaning": "Cervical esophagus",
             "CodingSchemeDesignator": "SCT",
@@ -2557,9 +2459,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              190,
-              178,
-              142
+              200,120,200
             ],
             "CodeMeaning": "Structure of anterior eyeball segment of left eye",
             "CodingSchemeDesignator": "SCT",
@@ -2573,9 +2473,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              190,
-              178,
-              146
+              120,200,210
             ],
             "CodeMeaning": "Structure of anterior eyeball segment of right eye",
             "CodingSchemeDesignator": "SCT",
@@ -2598,9 +2496,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  190,
-                  178,
-                  142
+                  215,120,150
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -2612,9 +2508,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  190,
-                  178,
-                  142
+                  120,180,220
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -2637,9 +2531,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  249,
-                  186,
-                  150
+                  232,150,170
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -2651,9 +2543,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  249,
-                  186,
-                  150
+                  150,210,150
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -2676,9 +2566,7 @@
             "Modifier": [
               {
                 "recommendedDisplayRGBValue": [
-                  249,
-                  186,
-                  150
+                  175,130,220
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
@@ -2690,9 +2578,7 @@
               },
               {
                 "recommendedDisplayRGBValue": [
-                  249,
-                  186,
-                  150
+                  230,160,110
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
@@ -2706,9 +2592,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              180,
-              140,
-              130
+              225,170,75
             ],
             "CodeMeaning": "Thyroid structure",
             "CodingSchemeDesignator": "SCT",
@@ -2722,9 +2606,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              62,
-              162,
-              114
+              70,160,200
             ],
             "CodeMeaning": "Glottis structure",
             "CodingSchemeDesignator": "SCT",
@@ -2738,9 +2620,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              185,
-              145,
-              135
+              210,110,190
             ],
             "CodeMeaning": "Supraglottis structure",
             "CodingSchemeDesignator": "SCT",
@@ -2754,9 +2634,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              195,
-              155,
-              145
+              220,80,120
             ],
             "CodeMeaning": "Both lips",
             "CodingSchemeDesignator": "SCT",
@@ -2770,9 +2648,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              244,
-              214,
-              49
+              130,90,210
             ],
             "CodeMeaning": "Optic chiasm",
             "CodingSchemeDesignator": "SCT",
@@ -2786,9 +2662,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              244,
-              214,
-              49
+              225,185,60
             ],
             "CodeMeaning": "Left optic nerve",
             "CodingSchemeDesignator": "SCT",
@@ -2802,9 +2676,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              244,
-              214,
-              54
+              70,200,180
             ],
             "CodeMeaning": "Right optic nerve",
             "CodingSchemeDesignator": "SCT",
@@ -2818,9 +2690,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              249,
-              186,
-              150
+              230,150,125
             ],
             "CodeMeaning": "Left parotid gland",
             "CodingSchemeDesignator": "SCT",
@@ -2834,9 +2704,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              249,
-              186,
-              155
+              170,205,135
             ],
             "CodeMeaning": "Right parotid gland",
             "CodingSchemeDesignator": "SCT",
@@ -2850,9 +2718,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              244,
-              214,
-              49
+              230,205,100
             ],
             "CodeMeaning": "Pituitary gland",
             "CodingSchemeDesignator": "SCT",
@@ -2866,9 +2732,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              192,
-              104,
-              88
+              236, 198, 186
             ],
             "CodeMeaning": "Subcutaneous tissue structure",
             "CodingSchemeDesignator": "SCT",
@@ -2882,9 +2746,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              170,
-              150,
-              140
+              190, 205, 210
             ],
             "CodeMeaning": "Abdominal cavity structure",
             "CodingSchemeDesignator": "SCT",
@@ -2898,9 +2760,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              175,
-              155,
-              145
+              195, 200, 205
             ],
             "CodeMeaning": "Thoracic cavity structure",
             "CodingSchemeDesignator": "SCT",
@@ -2914,9 +2774,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              249,
-              186,
-              150
+              232, 196, 186
             ],
             "CodeMeaning": "Gland structure",
             "CodingSchemeDesignator": "SCT",
@@ -2930,9 +2788,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              255,
-              244,
-              209
+              248, 240, 224
             ],
             "CodeMeaning": "Pericardium",
             "CodingSchemeDesignator": "SCT",
@@ -2947,9 +2803,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              255,
-              244,
-              209
+              242, 236, 226
             ],
             "CodeMeaning": "Mediastinum",
             "CodingSchemeDesignator": "SCT",
@@ -2964,9 +2818,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              244,
-              214,
-              49
+              230, 190, 90
             ],
             "CodeMeaning": "Spinal cord",
             "CodingSchemeDesignator": "SCT",
@@ -2992,9 +2844,7 @@
         [
           {
             "recommendedDisplayRGBValue": [
-              241,
-              214,
-              145
+              235, 216, 170
             ],
             "CodeMeaning": "Bone",
             "CodingSchemeDesignator": "SCT",
@@ -3008,9 +2858,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              192,
-              104,
-              88
+              206, 150, 138
             ],
             "CodeMeaning": "Muscle",
             "CodingSchemeDesignator": "SCT",
@@ -3035,9 +2883,7 @@
         [
           {
             "recommendedDisplayRGBValue": [
-              85,
-              188,
-              255
+              150, 210, 245
             ],
             "CodeMeaning": "Cerebrospinal Fluid",
             "CodingSchemeDesignator": "SCT",
@@ -3092,9 +2938,7 @@
         [
           {
             "recommendedDisplayRGBValue": [
-              200,
-              200,
-              200
+              200, 200, 200
             ],
             "CodeMeaning": "Prosthetic breast implant",
             "CodingSchemeDesignator": "SCT",
@@ -3108,9 +2952,7 @@
           },
           {
             "recommendedDisplayRGBValue": [
-              245,
-              220,
-              190
+              245, 220, 190
             ],
             "CodeMeaning": "Colostomy bag",
             "CodingSchemeDesignator": "SCT",

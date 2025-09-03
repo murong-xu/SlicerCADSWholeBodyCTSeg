@@ -9,7 +9,7 @@ set(EXTENSION_CATEGORY "Segmentation")
 set(EXTENSION_CONTRIBUTORS "Murong Xu (University of Zurich)")
 set(EXTENSION_DESCRIPTION "CADS is a robust, fully automated framework for segmenting 167 anatomical structures in Computed Tomography (CT), spanning from head to knee regions across diverse anatomical systems.")
 set(EXTENSION_ICONURL "https://raw.githubusercontent.com/murong-xu/SlicerCADS/main/CADS.png")
-set(EXTENSION_SCREENSHOTURLS "https://raw.githubusercontent.com/lassoan/SlicerTotalSegmentator/main/Screenshot01.jpg")
+set(EXTENSION_SCREENSHOTURLS "https://raw.githubusercontent.com/murong-xu/SlicerCADS/main/Screenshot_01.png")
 set(EXTENSION_DEPENDS "PyTorch")
 
 #-----------------------------------------------------------------------------

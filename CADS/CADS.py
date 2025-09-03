@@ -455,16 +455,16 @@ class InstallError(Exception):
         return self.message
 
 class CADSLogic(ScriptedLoadableModuleLogic):
+    _requirements_checked = False  # static variable to ensure that requirements are checked only once
+   
     def __init__(self):
         """
         Called when the logic class is instantiated. Can be used for initializing member variables.
         """
+        ScriptedLoadableModuleLogic.__init__(self)
+        self.isSingletonParameterNode = True
+
         from collections import OrderedDict
-
-        _requirements_checked = False  # static variable to ensure that requirements are checked only once
-
-        def __init__(self):
-            ScriptedLoadableModuleLogic.__init__(self)
 
         #TODO: CADS package (script, setup.py, model weights download...) update this in every release (also remember to update version number in setup.py)
         self.cadsPythonPackageDownloadUrl = "https://github.com/murong-xu/CADS/archive/5269dc62bad5d735b4c6f981c41591805b677125.zip"  # version 1.0. 2025-09-02
