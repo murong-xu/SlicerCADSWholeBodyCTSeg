@@ -1245,8 +1245,8 @@ class CADSLogic(ScriptedLoadableModuleLogic):
 
         # Create temporary folder - moved here so it can be shared across tasks
         tempFolder = slicer.util.tempDirectory()
-        inputFile = os.path.join(tempFolder, "cads-input.nii.gz")
-        outputSegmentationFolder = os.path.join(tempFolder, "cads-output")
+        inputFile = os.path.join(tempFolder, "cads-ct-image.nii.gz")
+        outputSegmentationFolder = os.path.join(tempFolder, "cads-ct-image")
 
         # Get Python and CADS paths
         import sysconfig
@@ -1376,7 +1376,8 @@ class CADSLogic(ScriptedLoadableModuleLogic):
 
         # Get options
         np_thr, ns_thr = _auto_threads()
-        options = ["-i", inputFile, "-o", outputSegmentationFolder, "-task", str(task), "-np", str(np_thr), "-ns", str(ns_thr)]
+        output_cads_parent_folder = os.path.dirname(outputSegmentationFolder)
+        options = ["-i", inputFile, "-o", output_cads_parent_folder, "-task", str(task), "-np", str(np_thr), "-ns", str(ns_thr)]
         if cpu:
             options.extend(["--cpu"])
 
