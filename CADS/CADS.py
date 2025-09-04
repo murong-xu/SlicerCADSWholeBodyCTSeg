@@ -22,7 +22,7 @@ class CADS(ScriptedLoadableModule):
         See more information in the <a href="https://github.com/murong-xu/SlicerCADS">extension documentation</a>.
         """
         self.parent.acknowledgementText = """
-        This extension was developed by Murong Xu (University of Zurich), with kind support from Andras Lasso (PerkLab, Queen's University).<br>
+        This extension was developed by Murong Xu (University of Zurich), with the codebase foundation established by Andras Lasso (PerkLab, Queen's University).<br>
         The core segmentation functionality is powered by <a href="https://github.com/murong-xu/CADS">CADS</a>.<br><br>
 
         If you use this software in your research, please cite:<br>
@@ -453,6 +453,38 @@ class InstallError(Exception):
         self.restartRequired = restartRequired
     def __str__(self):
         return self.message
+
+
+def _auto_threads():
+    """Determine number of threads to use for processing based on available CPU cores and RAM."""
+    try:
+        import psutil, os
+    except Exception:
+        psutil = None
+
+    cpu_cnt = max(1, (os.cpu_count() or 1))
+    total_ram_gb = None
+    if psutil:
+        total_ram_gb = psutil.virtual_memory().total / (1024**3)
+
+    if total_ram_gb is None:
+        np_thr = min(2, max(1, cpu_cnt // 4))
+        ns_thr = min(4, max(2, cpu_cnt // 3))
+    else:
+        if total_ram_gb < 16:
+            np_thr, ns_thr = 1, 2
+        elif total_ram_gb < 32:
+            np_thr, ns_thr = 2, 4
+        elif total_ram_gb < 64:
+            np_thr, ns_thr = 4, 6
+        else:
+            np_thr, ns_thr = min(8, cpu_cnt//2), min(8, cpu_cnt//2)
+
+    np_thr = int(max(1, min(np_thr, cpu_cnt)))
+    ns_thr = int(max(1, min(ns_thr, cpu_cnt)))
+
+    return np_thr, ns_thr
+
 
 class CADSLogic(ScriptedLoadableModuleLogic):
     _requirements_checked = False  # static variable to ensure that requirements are checked only once
@@ -1343,7 +1375,8 @@ class CADSLogic(ScriptedLoadableModuleLogic):
         volumeStorageNode.UnRegister(None)
 
         # Get options
-        options = ["-i", inputFile, "-o", outputSegmentationFolder, "-task", str(task), "-np", str(4), "-ns", str(6)]
+        np_thr, ns_thr = _auto_threads()
+        options = ["-i", inputFile, "-o", outputSegmentationFolder, "-task", str(task), "-np", str(np_thr), "-ns", str(ns_thr)]
         if cpu:
             options.extend(["--cpu"])
 
@@ -1353,8 +1386,8 @@ class CADSLogic(ScriptedLoadableModuleLogic):
         # but we need to do it for some specialized models.
         self.log('CADS-model is segmenting...')
         self.log(f"CADS arguments: {options}")
-        # proc = slicer.util.launchConsoleProcess(cadsCommand + options) #TODO:xing
-        # self.logProcessOutput(proc)
+        proc = slicer.util.launchConsoleProcess(cadsCommand + options) #TODO:xing
+        self.logProcessOutput(proc)
 
         # Load result
         self.log('Importing segmentation results...')
