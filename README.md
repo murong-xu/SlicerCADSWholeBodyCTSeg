@@ -1,7 +1,7 @@
 # CADS 3D Slicer Plugin
 This repository contains the 3D Slicer tool for the [CADS-model](https://github.com/murong-xu/CADS).
 
-<img src="Screenshot_01.png" alt="overview" width="80%">
+<img src="Screenshot_01.png" alt="overview" width="95%">
 
 
 CADS is a robust, fully automated framework for segmenting 167 anatomical structures in Computed Tomography (CT), spanning from head to knee regions across diverse anatomical systems.
