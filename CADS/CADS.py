@@ -499,7 +499,7 @@ class CADSLogic(ScriptedLoadableModuleLogic):
         from collections import OrderedDict
 
         #TODO: CADS package (script, setup.py, model weights download...) update this in every release (also remember to update version number in setup.py)
-        self.cadsPythonPackageDownloadUrl = "https://github.com/murong-xu/CADS/archive/3555a0e5cb1182c1aae93bf53ef05e198ae3c79c.zip"  # version 1.0. 2025-09-03
+        self.cadsPythonPackageDownloadUrl = "https://github.com/murong-xu/CADS/archive/1cfb5c91ffcb2f74fb897b9405c9338a65408b64.zip"  # version 1.0. 2025-09-05
 
         self.logCallback = None
         self.clearOutputFolder = True
@@ -1367,7 +1367,6 @@ class CADSLogic(ScriptedLoadableModuleLogic):
         """
         # Write input volume to file
         # CADS requires NIFTI
-        self.log(f"Writing input file to {inputFile}")
         volumeStorageNode = slicer.mrmlScene.CreateNodeByClass("vtkMRMLVolumeArchetypeStorageNode")
         volumeStorageNode.SetFileName(inputFile)
         volumeStorageNode.UseCompressionOff()
