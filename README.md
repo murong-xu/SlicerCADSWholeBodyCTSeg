@@ -1,7 +1,7 @@
 # CADS 3D Slicer Plugin
 This repository contains the 3D Slicer tool for the [CADS-model](https://github.com/murong-xu/CADS).
 
-<img src="Screenshot_01.png" alt="overview" width="60%">
+<img src="Screenshot_01.png" alt="overview" width="80%">
 
 
 CADS is a robust, fully automated framework for segmenting 167 anatomical structures in Computed Tomography (CT), spanning from head to knee regions across diverse anatomical systems.
@@ -88,7 +88,7 @@ If you use this software and find this work useful, please cite:
        - `Get package information`: Shows the current CADS package version.  
 4. **Run**: Click `Apply`, the CADS-model will begin segmenting your CT scan.  
 5. **View the results:**  
-   - Once finished, you will be automatically redirected to the `Data` tab where the results appear.  
+   - Once finished, the results will appear automatically. You can then go to the `Data` tab to view the list of structures.
    - You can view the segmentations in the three orthogonal 2D views, or drag them into the 3D viewer.  
    - Hovering over a structure name will show detailed structure information in SNOMED-CT terminology.  
 
