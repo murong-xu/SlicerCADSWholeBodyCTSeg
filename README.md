@@ -130,11 +130,11 @@ Subcutaneous tissue, Muscle, Abdominal cavity, Thoracic cavity, Bones, Gland str
 ## Troubleshooting
 **CUDA Memory Error (torch.OutOfMemoryError)** 
 
-Even though we designed the model to automatically manage available GPU/CPU resources during prediction, you may still run into out-of-memory errors. This usually happens if:
+Even though the model is designed to automatically manage available GPU/CPU resources during prediction, you may still run into out-of-memory errors. This usually happens if:
 1. Your GPU has very limited VRAM (e.g., around 4 GB), or
 2. The input CT image is large.
 
-In these cases, we recommend switching to `Force to use CPU` mode. It will be slower than GPU (CPU-only needs around 10+ minutes for a chest+abdomen CT), but it will run more reliably and avoid memory issues.
+In these cases, I recommend switching to `Force to use CPU` mode. It will be slower than GPU (CPU-only needs around 10+ minutes for a chest+abdomen CT), but it will run more reliably and avoid memory issues.
 
 
 ## Contact
