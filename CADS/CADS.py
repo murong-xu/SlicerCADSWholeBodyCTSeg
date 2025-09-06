@@ -1386,7 +1386,7 @@ class CADSLogic(ScriptedLoadableModuleLogic):
         # but we need to do it for some specialized models.
         self.log('CADS-model is segmenting...')
         self.log(f"CADS arguments: {options}")
-        proc = slicer.util.launchConsoleProcess(cadsCommand + options) #TODO:xing
+        proc = slicer.util.launchConsoleProcess(cadsCommand + options)
         self.logProcessOutput(proc)
 
         # Load result
