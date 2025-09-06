@@ -1,25 +1,11 @@
 # CADS 3D Slicer Plugin
-This repository contains the 3D Slicer tool for the [CADS-model](https://github.com/murong-xu/CADS).
+This repository provides the 3D Slicer extension of the [CADS-model](https://github.com/murong-xu/CADS), enabling one-click, fully automated segmentation of 167 anatomical structures in whole-body CT directly inside 3D Slicer.
 
 <img src="Screenshot_01.png" alt="overview" width="95%">
 
+[CADS-model](https://github.com/murong-xu/CADS) is part of the broader CADS project, which also includes the [CADS-dataset](https://huggingface.co/datasets/mrmrx/CADS-dataset), a comprehensive collection of more than 22,000 CT scans with annotations for 167 anatomical structures.
 
-CADS is a robust, fully automated framework for segmenting 167 anatomical structures in Computed Tomography (CT), spanning from head to knee regions across diverse anatomical systems.
-
-The framework consists of two main components:
-
-1. **CADS-dataset**: 
-   - 22,022 CT volumes with complete annotations for 167 anatomical structures.
-   - Most extensive whole-body CT dataset, exceeding current collections in both scale (18x more CT scans) and anatomical coverage (60% more distinct targets).
-   - Data collected from publicly available datasets and private hospital data, spanning 100+ imaging centers across 16 countries.
-   - Diverse coverage of clinical variability, protocols, and pathological conditions.
-   - Built through an automated pipeline with pseudo-labeling and unsupervised quality control.
-
-2. **CADS-model**: 
-   - An open-source model suite for automated whole-body segmentation.
-   - Performance validated on both public challenges and real-world hospital cohorts.
-   - Available as Python script run (this GitHub repo) for flexible command-line usage.
-   - Also available as a user-friendly 3D Slicer plugin with UI interface, simple installation and one-click inference.
+👉 This repository focuses only on the plugin for [CADS-model](https://github.com/murong-xu/CADS), providing an easy-to-use interface for clinical and research workflows.
 
 ## Useful Links
 - [📄 CADS Paper Preprint](https://arxiv.org/abs/2507.22953)
