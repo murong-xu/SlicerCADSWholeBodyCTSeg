@@ -10,16 +10,16 @@ from slicer.ScriptedLoadableModule import *
 from slicer.util import VTKObservationMixin
 
 
-class CADS(ScriptedLoadableModule):
+class CADSWholeBodyCTSeg(ScriptedLoadableModule):
     def __init__(self, parent):
         ScriptedLoadableModule.__init__(self, parent)
-        self.parent.title = "CADS"
+        self.parent.title = "CADSWholeBodyCTSeg"
         self.parent.categories = ["Segmentation"]
         self.parent.dependencies = []
         self.parent.contributors = ["Murong Xu (University of Zurich)"]
         self.parent.helpText = """
         CADS is a robust, fully automated framework for segmenting 167 anatomical structures in Computed Tomography (CT), spanning from head to knee regions across diverse anatomical systems.<br>
-        See more information in the <a href="https://github.com/murong-xu/SlicerCADS">extension documentation</a>.
+        See more information in the <a href="https://github.com/murong-xu/SlicerCADSWholeBodyCTSeg">extension documentation</a>.
         """
         self.parent.acknowledgementText = """
         This extension was developed by Murong Xu (University of Zurich), with the codebase foundation established by Andras Lasso (PerkLab, Queen's University).<br>
@@ -40,7 +40,7 @@ class CADS(ScriptedLoadableModule):
             cadsTerminologyFilePath)
 
 
-class CADSWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
+class CADSWholeBodyCTSegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
     def __init__(self, parent=None):
         """
         Called when the user opens the module the first time and the widget is initialized.
@@ -59,7 +59,7 @@ class CADSWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
 
         # Load widget from .ui file (created by Qt Designer).
         # Additional widgets can be instantiated manually and added to self.layout.
-        uiWidget = slicer.util.loadUI(self.resourcePath('UI/CADS.ui'))
+        uiWidget = slicer.util.loadUI(self.resourcePath('UI/CADSWholeBodyCTSeg.ui'))
         self.layout.addWidget(uiWidget)
         self.ui = slicer.util.childWidgetVariables(uiWidget)
 
@@ -70,7 +70,7 @@ class CADSWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
 
         # Create logic class. Logic implements all computations that should be possible to run
         # in batch mode, without a graphical user interface.
-        self.logic = CADSLogic()
+        self.logic = CADSWholeBodyCTSegLogic()
         self.logic.logCallback = self.addLog
 
         self.initializeParameterNode()
@@ -317,8 +317,8 @@ class CADSWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
                 self.ui.targetsList.setEnabled(True)
 
         except ImportError:
-            # CADS package not installed (when open this extension for the very 1st time)
-            self.ui.targetsList.addItem("CADS package needs to be installed first.")
+            # CADSWholeBodyCTSeg package not installed (when open this extension for the very 1st time)
+            self.ui.targetsList.addItem("CADSWholeBodyCTSeg package needs to be installed first.")
             self.ui.targetsList.addItem("You can either:")
             self.ui.targetsList.addItem("1. Upload a CT image and click 'Apply' to install and run")
             self.ui.targetsList.addItem("2. Click 'Force install dependencies' to install packages directly")
@@ -433,14 +433,14 @@ class CADSWidget(ScriptedLoadableModuleWidget, VTKObservationMixin):
 
     def onPackageInfoUpdate(self):
         self.ui.packageInfoTextBrowser.plainText = ''
-        with slicer.util.tryWithErrorDisplay("Failed to get CADS package version information", waitCursor=True):
-            self.ui.packageInfoTextBrowser.plainText = self.logic.installedCADSPythonPackageInfo().rstrip()
+        with slicer.util.tryWithErrorDisplay("Failed to get CADSWholeBodyCTSeg package version information", waitCursor=True):
+            self.ui.packageInfoTextBrowser.plainText = self.logic.installedCADSWholeBodyCTSegPythonPackageInfo().rstrip()
 
     def onPackageUpgrade(self):
-        with slicer.util.tryWithErrorDisplay("Failed to upgrade CADS package", waitCursor=True):
+        with slicer.util.tryWithErrorDisplay("Failed to upgrade CADSWholeBodyCTSeg package", waitCursor=True):
             self.logic.setupPythonRequirements(upgrade=True)
         self.onPackageInfoUpdate()
-        if not slicer.util.confirmOkCancelDisplay(f"CADS package update requires a 3D Slicer restart.","Press OK to restart."):
+        if not slicer.util.confirmOkCancelDisplay(f"CADSWholeBodyCTSeg package update requires a 3D Slicer restart.","Press OK to restart."):
             raise ValueError('Restart was cancelled.')
         else:
             slicer.util.restart()
@@ -486,7 +486,7 @@ def _auto_threads():
     return np_thr, ns_thr
 
 
-class CADSLogic(ScriptedLoadableModuleLogic):
+class CADSWholeBodyCTSegLogic(ScriptedLoadableModuleLogic):
     _requirements_checked = False  # static variable to ensure that requirements are checked only once
    
     def __init__(self):
@@ -544,7 +544,7 @@ class CADSLogic(ScriptedLoadableModuleLogic):
         """Load label terminology from cads_snomed_mapping.csv file.
         Terminology entries are either in DICOM or CADS "Segmentation category and type".
         """
-        moduleDir = os.path.dirname(slicer.util.getModule('CADS').path)
+        moduleDir = os.path.dirname(slicer.util.getModule('CADSWholeBodyCTSeg').path)
         cadsTerminologyMappingFilePath = os.path.join(moduleDir, 'Resources', 'cads_snomed_mapping.csv')
         cadsTerminologyFilePath = os.path.join(moduleDir, 'Resources', 'SegmentationCategoryTypeModifier-CADS.term.json')
 
@@ -1516,11 +1516,11 @@ class CADSLogic(ScriptedLoadableModuleLogic):
                 self.log(str(e))
 
 #
-# CADSTest
+# CADSWholeBodyCTSegTest
 #
-class CADSTest(ScriptedLoadableModuleTest):
+class CADSWholeBodyCTSegTest(ScriptedLoadableModuleTest):
     """
-    Test cases for CADS module.
+    Test cases for CADSWholeBodyCTSeg module.
     """
     def setUp(self):
         """ 
@@ -1528,8 +1528,8 @@ class CADSTest(ScriptedLoadableModuleTest):
         """
         slicer.mrmlScene.Clear()
         self.delayDisplay("Setting up test") 
-        self.logic = CADSLogic()
-        self.widget = slicer.modules.cads.widgetRepresentation()
+        self.logic = CADSWholeBodyCTSegLogic()
+        self.widget = slicer.modules.cadswholebodyctseg.widgetRepresentation()
         
         import SampleData
         self.inputVolume = SampleData.downloadSample('CTChest')

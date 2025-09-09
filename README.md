@@ -78,6 +78,8 @@ If you use this software and find this work useful, please cite:
    - You can view the segmentations in the three orthogonal 2D views, or drag them into the 3D viewer.  
    - Hovering over a structure name will show detailed structure information in SNOMED-CT terminology.  
 
+<img src="Screenshot_02.png" alt="overview" width="95%">
+
 ## Target Structures in Each Task
 Each task represents a specific anatomical group.
 

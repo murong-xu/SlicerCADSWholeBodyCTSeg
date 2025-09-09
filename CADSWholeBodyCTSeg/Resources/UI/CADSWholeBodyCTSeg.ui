@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>CADS</class>
- <widget class="qMRMLWidget" name="CADS">
+ <class>CADSWholeBodyCTSeg</class>
+ <widget class="qMRMLWidget" name="CADSWholeBodyCTSeg">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -244,14 +244,14 @@
       <item row="2" column="0">
        <widget class="QLabel" name="label_8">
         <property name="text">
-         <string>CADS Python package:</string>
+         <string>CADSWholeBodyCTSeg Python package:</string>
         </property>
        </widget>
       </item>
       <item row="2" column="1">
        <widget class="QPushButton" name="packageUpgradeButton">
         <property name="toolTip">
-         <string>Force upgrade of CADS Python package to the version required by this module.</string>
+         <string>Force upgrade of CADSWholeBodyCTSeg Python package to the version required by this module.</string>
         </property>
         <property name="text">
          <string>Force install dependencies</string>
@@ -261,10 +261,10 @@
       <item row="3" column="0" colspan="2">
        <widget class="QPushButton" name="packageInfoUpdateButton">
         <property name="toolTip">
-         <string>Get metadata information for the CADS package currently installed</string>
+         <string>Get metadata information for the CADSWholeBodyCTSeg package currently installed</string>
         </property>
         <property name="text">
-         <string>Get CADS package information</string>
+         <string>Get CADSWholeBodyCTSeg package information</string>
         </property>
        </widget>
       </item>
@@ -349,7 +349,7 @@
  <resources/>
  <connections>
   <connection>
-   <sender>CADS</sender>
+   <sender>CADSWholeBodyCTSeg</sender>
    <signal>mrmlSceneChanged(vtkMRMLScene*)</signal>
    <receiver>inputVolumeSelector</receiver>
    <slot>setMRMLScene(vtkMRMLScene*)</slot>
@@ -365,7 +365,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>CADS</sender>
+   <sender>CADSWholeBodyCTSeg</sender>
    <signal>mrmlSceneChanged(vtkMRMLScene*)</signal>
    <receiver>outputSegmentationSelector</receiver>
    <slot>setMRMLScene(vtkMRMLScene*)</slot>
