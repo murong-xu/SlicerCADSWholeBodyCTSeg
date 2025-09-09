@@ -12,7 +12,7 @@ This repository provides the 3D Slicer extension of the [CADS-model](https://git
 - [🤗 CADS-dataset](https://huggingface.co/datasets/mrmrx/CADS-dataset)
 - [📦 CADS-model Weights](https://github.com/murong-xu/CADS/releases/tag/cads-model_v1.0.0)
 - [🔧 CADS-model Codebase](https://github.com/murong-xu/CADS)
-- [🛠 CADS-model 3D Slicer Plugin](https://github.com/murong-xu/SlicerCADS)
+- [🛠 CADS-model 3D Slicer Plugin](https://github.com/murong-xu/SlicerCADSWholeBodyCTSeg)
 
 If you use this software and find this work useful, please cite:
 
@@ -37,28 +37,28 @@ If you use this software and find this work useful, please cite:
    - After restarting, go to the `PyTorch Utils` module.  
      In the `Torch version requirement` box, type `<2.6`, then click `Install PyTorch`. A PyTorch version (>= 2.0.0 and <2.6.0) compatible with your machine should be installed.
 
-3. **Install CADS Extension**  
-   - ~~Open `Extension Manager` → search for `CADS` → click `Install`.
+3. **Install CADSWholeBodyCTSeg Extension**  
+   - ~~Open `Extension Manager` → search for `CADSWholeBodyCTSeg` → click `Install`.
      (Again, restart Slicer after installation.)~~
-   - ~~Once restarted, open the `CADS` module in Slicer and you should see the CADS user interface ready to use.~~
+   - ~~Once restarted, open the `CADSWholeBodyCTSeg` module in Slicer and you should see the user interface ready to use.~~
 
-   🚧 **In progress**: Installing CADS directly through the 3D Slicer Extension Manager is in progress and will be available soon!  
+   🚧 **In progress**: Installing CADSWholeBodyCTSeg directly through the 3D Slicer Extension Manager is in progress and will be available soon!  
 
    In the meantime, please use the manual installation described below:
 
    - Clone this repository to your machine: 
-      - `git clone git@github.com:murong-xu/SlicerCADS.git`
-      - Or simply download it from https://github.com/murong-xu/SlicerCADS
+      - `git clone git@github.com:murong-xu/SlicerCADSWholeBodyCTSeg.git`
+      - Or simply download it from https://github.com/murong-xu/SlicerCADSWholeBodyCTSeg
    - Tell Slicer where to find it:
       - Open 3D Slicer
       - Go to `Edit`(the very top-left corner) → `Application Settings` → `Modules`.
       - Under `Additional module paths`, click the `arrow` on the right, then hit `Add`.
-      - Navigate to the **SlicerCADS** folder you just downloaded, open it, and select the **CADS** subfolder.
+      - Navigate to the **SlicerCADSWholeBodyCTSeg** folder you just downloaded, open it, and select the **CADSWholeBodyCTSeg** subfolder.
       - Press OK and restart Slicer.
-   - Once restarted, open the `CADS` module in Slicer and you should see the user interface ready to use.
+   - Once restarted, open the `CADSWholeBodyCTSeg` module in Slicer and you should see the user interface ready to use.
 
 ## Quick Start
-1. **Open the CADS extension** in 3D Slicer.  
+1. **Open the CADSWholeBodyCTSeg extension** in 3D Slicer.  
 2. **Load your CT image file.**  
 3. **Set the input parameters:**  
    - `Input volume`: The CT image you want to segment.  
@@ -69,9 +69,9 @@ If you use this software and find this work useful, please cite:
    - `Advanced options`: 
      - `Use standard segment names` (default: *Yes*): Displays segmentation results using SNOMED-CT terminology.  
      - `Force to use CPU` (default: *No*): Runs inference on CPU if you don’t have a GPU. (Note: CPU is slower and will take longer.)  
-     - `CADS Python package`:  
-       - `Force install dependencies`: Re-installs the CADS package.  
-       - `Get package information`: Shows the current CADS package version.  
+     - `CADSWholeBodyCTSeg Python package`:  
+       - `Force install dependencies`: Re-installs the CADSWholeBodyCTSeg package.  
+       - `Get package information`: Shows the current CADSWholeBodyCTSeg package version.  
 4. **Run**: Click `Apply`, the CADS-model will begin segmenting your CT scan.  
 5. **View the results:**  
    - Once finished, the results will appear automatically. You can then go to the `Data` tab to view the list of structures.
