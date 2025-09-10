@@ -323,7 +323,7 @@ class CADSWholeBodyCTSegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin
             self.ui.targetsList.addItem("1. Upload a CT image and click 'Apply' to install and run")
             self.ui.targetsList.addItem("2. Click 'Force install dependencies' to install packages directly")
             self.ui.targetsList.addItem("(Installation may take a few minutes)")
-            self.ui.targetsList.setEnabled(False)
+            self.ui.targetsList.setEnabled(True)
             return
         except Exception as e:
             print(f"Error updating targets: {str(e)}")
