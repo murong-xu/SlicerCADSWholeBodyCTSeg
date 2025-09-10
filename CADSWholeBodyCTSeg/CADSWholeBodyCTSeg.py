@@ -1078,6 +1078,13 @@ class CADSWholeBodyCTSegLogic(ScriptedLoadableModuleLogic):
                                 + f' Required version is {required_version}.')
         except ImportError:
             raise InstallError("This module requires nnUNet. Please install it from the Extensions Manager.")
+        
+        # Step 6) Workaround: fix incompatibility of dynamic_network_architectures==0.4 with totalsegmentator==2.0.5.
+        # Revert to the last working version: dynamic_network_architectures==0.2
+        from packaging import version
+        if version.parse(importlib.metadata.version("dynamic_network_architectures")) == version.parse("0.4"):
+            self.log(f'dynamic_network_architectures package version is incompatible. Installing working version...')
+            slicer.util.pip_install("dynamic_network_architectures==0.2.0")
 
         self.log('CADS installation completed successfully.')
         self.__class__._requirements_checked = True
