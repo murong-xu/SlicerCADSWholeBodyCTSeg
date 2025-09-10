@@ -434,7 +434,7 @@ class CADSWholeBodyCTSegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin
     def onPackageInfoUpdate(self):
         self.ui.packageInfoTextBrowser.plainText = ''
         with slicer.util.tryWithErrorDisplay("Failed to get CADSWholeBodyCTSeg package version information", waitCursor=True):
-            self.ui.packageInfoTextBrowser.plainText = self.logic.installedCADSWholeBodyCTSegPythonPackageInfo().rstrip()
+            self.ui.packageInfoTextBrowser.plainText = self.logic.installedCADSPythonPackageInfo().rstrip()
 
     def onPackageUpgrade(self):
         with slicer.util.tryWithErrorDisplay("Failed to upgrade CADSWholeBodyCTSeg package", waitCursor=True):
@@ -881,7 +881,7 @@ class CADSWholeBodyCTSegLogic(ScriptedLoadableModuleLogic):
                             pkg, extra = re.match(r"([\S]+)[\s]*; extra == '([^']+)'", requirement).groups()
                             requirement = f"{pkg}[{extra}]"
                         else:
-                            match = re.match("([\S]+)[\s](.+)", requirement)
+                            match = re.match(r"([\S]+)[\s](.+)", requirement)
                             if match:
                                 requirement = f"{match.group(1)}{match.group(2)}"
                                 
@@ -911,78 +911,6 @@ class CADSWholeBodyCTSegLogic(ScriptedLoadableModuleLogic):
             except Exception as e:
                 self.log(f'Unexpected error during installation: {str(e)}')
                 raise RuntimeError(f"Failed to install package: {str(e)}") from e
-    
-
-    def pipInstallSelective(self, packageToInstall, installCommand, packagesToSkip):
-        """Installs a Python package, skipping a list of packages.
-        Return the list of skipped requirements (package name with version requirement).
-        """
-        slicer.util.pip_install(f"{installCommand} --no-deps")
-        skippedRequirements = []  # list of all missed packages and their version
-
-        # Get path to site-packages\nnunetv2-2.2.dist-info\METADATA
-        import importlib.metadata
-        metadataPath = [p for p in importlib.metadata.files(packageToInstall) if 'METADATA' in str(p)][0]
-        metadataPath.locate()
-
-        # Remove line: `Requires-Dist: SimpleITK (==2.0.2)`
-        # User Latin-1 encoding to read the file, as it may contain non-ASCII characters and not necessarily in UTF-8 encoding.
-        filteredMetadata = ""
-        with open(metadataPath.locate(), "r+", encoding="latin1") as file:
-            for line in file:
-                skipThisPackage = False
-                requirementPrefix = 'Requires-Dist: '
-                if line.startswith(requirementPrefix):
-                    # Skip dev dependencies
-                    if '; extra == "dev"' in line:
-                        continue
-                    for packageToSkip in packagesToSkip:
-                        if packageToSkip in line:
-                            skipThisPackage = True
-                            break
-                if skipThisPackage:
-                    # skip SimpleITK requirement
-                    skippedRequirements.append(line.removeprefix(requirementPrefix))
-                    continue
-                filteredMetadata += line
-            # Update file content with filtered result
-            file.seek(0)
-            file.write(filteredMetadata)
-            file.truncate()
-
-        # Install all dependencies but the ones listed in packagesToSkip
-        import importlib.metadata
-        requirements = importlib.metadata.requires(packageToInstall)
-        for requirement in requirements:
-            if '; extra == "dev"' in requirement:
-                continue
-            skipThisPackage = False
-            for packageToSkip in packagesToSkip:
-                if requirement.startswith(packageToSkip):
-                    # Do not install
-                    skipThisPackage = True
-                    break
-
-            match = False
-            if not match:
-                # ruff ; extra == 'dev' -> rewrite to: ruff[extra]
-                match = re.match(r"([\S]+)[\s]*; extra == '([^']+)'", requirement)
-                if match:
-                    requirement = f"{match.group(1)}[{match.group(2)}]"
-            if not match:
-                # nibabel >=2.3.0 -> rewrite to: nibabel>=2.3.0
-                match = re.match("([\S]+)[\s](.+)", requirement)
-                if match:
-                    requirement = f"{match.group(1)}{match.group(2)}"
-
-            if skipThisPackage:
-                self.log(f'- Skip {requirement}')
-            else:
-                self.log(f'- Installing {requirement}...')
-                slicer.util.pip_install(requirement)
-
-        return skippedRequirements
-    
 
     def _parse_version_from_requirements(self, package_name, requirements_list):
         """
@@ -1037,30 +965,17 @@ class CADSWholeBodyCTSegLogic(ScriptedLoadableModuleLogic):
         import importlib.metadata
         import packaging
 
-        # pillow version that is installed in Slicer (10.1.0) is too new,
-        # it is incompatible with several CADS dependencies.
-        # Attempt to uninstall and install an older version before any of the packages import it.
-        needToInstallPillow = True
-        try:
-            if packaging.version.parse(importlib.metadata.version("pillow")) < packaging.version.parse("10.1"):
-                # A suitable pillow version is already installed
-                needToInstallPillow = False
-        except Exception as e:
-            pass
-        if needToInstallPillow:
-            slicer.util.pip_install("pillow<10.1")
+        # Step 1) Install base dependencies first
+        # To avoid repeated uninstall/install of packages, we specify exact versions of some packages
+        base_packages = [
+            "numpy==1.26.4",
+            "scikit-image==0.22.0",
+        ]
+        for package in base_packages:
+            self.log(f'Installing {package}...')
+            slicer.util.pip_install(package)
 
-        # These packages come preinstalled with Slicer and should remain unchanged
-        packagesToSkip = [
-            'SimpleITK',  # Slicer's SimpleITK uses a special IO class, which should not be replaced
-            'torch',  # needs special installation using SlicerPyTorch
-            'requests',  # CADS would want to force a specific version of requests, which would require a restart of Slicer and it is unnecessary
-            'acvl-utils', # Version corrected below (acvl-utils can have a slightly different name after pip-install's name standarziation, - or _)
-            'acvl_utils',
-            'TPTBox', # Version corrected below
-            ]
-
-        # acvl_utils workaround - start
+        # Step 2) acvl_utils workaround
         # Recent versions of acvl_utils are broken (https://github.com/MIC-DKFZ/acvl_utils/issues/2).
         # As a workaround, we install an older version manually. This workaround can be removed after acvl_utils is fixed.
         needToInstallAcvlUtils = True
@@ -1072,31 +987,30 @@ class CADSWholeBodyCTSegLogic(ScriptedLoadableModuleLogic):
             pass
         if needToInstallAcvlUtils:
             slicer.util.pip_install("acvl_utils==0.2")
-        # acvl_utils workaround - end
 
-        # Install PyTorch
+        # Step 3) Check PyTorch
         try:
-          import PyTorchUtils
-        except ModuleNotFoundError as e:
-          raise InstallError("This module requires PyTorch extension. Install it from the Extensions Manager.")
-
-        minimumTorchVersion = "1.12"
-        torchLogic = PyTorchUtils.PyTorchUtilsLogic()
-        if not torchLogic.torchInstalled():
-            self.log('PyTorch Python package is required. Installing... (it may take several minutes)')
-            torch = torchLogic.installTorch(askConfirmation=True, torchVersionRequirement = f">={minimumTorchVersion}")
-            if torch is None:
-                raise InstallError("This module requires PyTorch extension. Install it from the Extensions Manager.")
-        else:
-            # torch is installed, check version
+            import torch
             from packaging import version
-            if version.parse(torchLogic.torch.__version__) < version.parse(minimumTorchVersion):
-                raise InstallError(f'PyTorch version {torchLogic.torch.__version__} is not compatible with this module.'
-                                 + f' Minimum required version is {minimumTorchVersion}. You can use "PyTorch Util" module to install PyTorch'
-                                 + f' with version requirement set to: >={minimumTorchVersion}')
+            minimumTorchVersion = "1.12"
+            if version.parse(torch.__version__) < version.parse(minimumTorchVersion):
+                raise InstallError(f'PyTorch version {torch.__version__} is not compatible with this module.'
+                                + f' Minimum required version is {minimumTorchVersion}.')
+        except ImportError:
+            raise InstallError("This module requires PyTorch. Please install it from the Extensions Manager.")
 
-        # Install CADS with selected dependencies only
-        # (it would replace Slicer's "requests")
+        # Step 4) Install CADS and its dependencies
+        # Some packages are pre-installed in Slicer, or we need to manually install
+        packagesToSkip = [
+            'SimpleITK',  # Slicer's SimpleITK uses a special IO class, which should not be replaced
+            'torch',  # needs special installation using SlicerPyTorch
+            'requests',  # CADS would want to force a specific version of requests, which would require a restart of Slicer and it is unnecessary
+            'acvl-utils', # Version corrected below (acvl-utils can have a slightly different name after pip-install's name standarziation, - or _)
+            'acvl_utils',
+            'nnunetv2', # needs special installation using nnUNet module
+            'TPTBox', # Version corrected below
+            ]
+
         needToInstallSegmenter = False  # initial installation flag of CADS
         try:
             import cads
@@ -1123,19 +1037,7 @@ class CADSWholeBodyCTSegLogic(ScriptedLoadableModuleLogic):
             skippedRequirements = self.pipInstallSelectiveFromURL(
                 "CADS",
                 self.cadsPythonPackageDownloadUrl,
-                packagesToSkip + ["nnunetv2"])
-
-            # Install nnunetv2 with selected dependencies only
-            # (it would replace Slicer's "SimpleITK")
-            try:
-                nnunetRequirement = next(requirement for requirement in skippedRequirements if requirement.startswith('nnunetv2'))
-            except StopIteration:
-                # nnunetv2 requirement was not found in CADS - this must be an error, so let's report it
-                raise ValueError("nnunetv2 requirement was not found in CADS")
-            # Remove spaces and parentheses from version requirement (convert from "nnunetv2 (==2.1)" to "nnunetv2==2.1")
-            nnunetRequirement = re.sub('[ \(\)]', '', nnunetRequirement)
-            self.log(f'nnunetv2 Python package is required. Installing {nnunetRequirement} ...')
-            self.pipInstallSelective('nnunetv2', nnunetRequirement, packagesToSkip)
+                packagesToSkip)
 
             # Install TPTBox separately 
             tptbox_versions = self._parse_version_from_requirements('TPTBox', skippedRequirements)    
@@ -1160,15 +1062,24 @@ class CADSWholeBodyCTSegLogic(ScriptedLoadableModuleLogic):
                 self.log(f'Installing TPTBox version {required_version}...')
                 slicer.util.pip_install(f"TPTBox=={required_version}")
 
-            # Workaround: fix incompatibility of dynamic_network_architectures==0.4 with totalsegmentator==2.0.5.
-            # Revert to the last working version: dynamic_network_architectures==0.2
+        # Step 5) Check nnUNet
+        try:
+            import nnunetv2
             from packaging import version
-            if version.parse(importlib.metadata.version("dynamic_network_architectures")) == version.parse("0.4"):
-                self.log(f'dynamic_network_architectures package version is incompatible. Installing working version...')
-                slicer.util.pip_install("dynamic_network_architectures==0.2.0")
+            nnunet_versions = self._parse_version_from_requirements('nnunetv2', skippedRequirements)    
+            required_version = None
+            for version_info in nnunet_versions:
+                if self._should_install_version(version_info):
+                    required_version = version_info[0]
+                    break
+            installed_version = importlib.metadata.version("nnunetv2")
+            if version.parse(installed_version) != version.parse(required_version):
+                raise InstallError(f'nnUNet version {installed_version} is not compatible with this module.'
+                                + f' Required version is {required_version}.')
+        except ImportError:
+            raise InstallError("This module requires nnUNet. Please install it from the Extensions Manager.")
 
-            self.log('CADS installation completed successfully.')
-
+        self.log('CADS installation completed successfully.')
         self.__class__._requirements_checked = True
 
 
