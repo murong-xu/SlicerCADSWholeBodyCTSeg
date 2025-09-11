@@ -317,13 +317,14 @@ class CADSWholeBodyCTSegWidget(ScriptedLoadableModuleWidget, VTKObservationMixin
                 self.ui.targetsList.setEnabled(True)
 
         except ImportError:
+            self.ui.allTargetsRadio.setEnabled(False)
+            self.ui.targetsList.setEnabled(True)
             # CADSWholeBodyCTSeg package not installed (when open this extension for the very 1st time)
             self.ui.targetsList.addItem("CADSWholeBodyCTSeg package needs to be installed first.")
             self.ui.targetsList.addItem("You can either:")
             self.ui.targetsList.addItem("1. Upload a CT image and click 'Apply' to install and run")
             self.ui.targetsList.addItem("2. Click 'Force install dependencies' to install packages directly")
             self.ui.targetsList.addItem("(Installation may take a few minutes)")
-            self.ui.targetsList.setEnabled(True)
             return
         except Exception as e:
             print(f"Error updating targets: {str(e)}")
