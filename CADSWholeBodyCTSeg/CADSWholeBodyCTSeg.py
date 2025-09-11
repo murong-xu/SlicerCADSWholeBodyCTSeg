@@ -890,6 +890,14 @@ class CADSWholeBodyCTSegLogic(ScriptedLoadableModuleLogic):
                     else:
                         self.log(f'Skipping dependency: {requirement}')
 
+                try:
+                    cads_path = importlib.metadata.files('cads')[0].locate().parent
+                    json_path = os.path.join(cads_path, 'skipped_requirements.json')
+                    with open(json_path, 'w') as f:
+                        json.dump(skippedRequirements, f)
+                except Exception as e:
+                    print(f"Failed to save skipped requirements: {e}")
+
                 return skippedRequirements
 
             except urllib.error.URLError as e:
@@ -956,6 +964,20 @@ class CADSWholeBodyCTSegLogic(ScriptedLoadableModuleLogic):
             return marker.evaluate(default_environment())
         except Exception:
             return False
+        
+    def load_skipped_requirements(self):
+        import importlib.metadata
+        import json
+        # Get the path to the installed 'cads' package
+        cads_path = importlib.metadata.files('cads')[0].locate().parent
+        json_path = os.path.join(cads_path, 'skipped_requirements.json')
+        
+        # Read the skipped requirements from the JSON file
+        if os.path.exists(json_path):
+            with open(json_path, 'r') as f:
+                return json.load(f)
+        else:
+            raise FileNotFoundError("Skipped requirements file not found.")
 
     def setupPythonRequirements(self, upgrade=False):
         if self.__class__._requirements_checked and not upgrade: # if already checked and not upgrading, then skip
@@ -963,7 +985,7 @@ class CADSWholeBodyCTSegLogic(ScriptedLoadableModuleLogic):
         
         import re
         import importlib.metadata
-        import packaging
+        from packaging import version
 
         # Step 1) Install base dependencies first
         # To avoid repeated uninstall/install of packages, we specify exact versions of some packages
@@ -980,7 +1002,7 @@ class CADSWholeBodyCTSegLogic(ScriptedLoadableModuleLogic):
         # As a workaround, we install an older version manually. This workaround can be removed after acvl_utils is fixed.
         needToInstallAcvlUtils = True
         try:
-            if packaging.version.parse(importlib.metadata.version("acvl_utils")) == packaging.version.parse("0.2"):
+            if version.parse(importlib.metadata.version("acvl_utils")) == version.parse("0.2"):
                 # A suitable version is already installed
                 needToInstallAcvlUtils = False
         except Exception as e:
@@ -991,7 +1013,6 @@ class CADSWholeBodyCTSegLogic(ScriptedLoadableModuleLogic):
         # Step 3) Check PyTorch
         try:
             import torch
-            from packaging import version
             minimumTorchVersion = "1.12"
             if version.parse(torch.__version__) < version.parse(minimumTorchVersion):
                 raise InstallError(f'PyTorch version {torch.__version__} is not compatible with this module.'
@@ -1065,7 +1086,7 @@ class CADSWholeBodyCTSegLogic(ScriptedLoadableModuleLogic):
         # Step 5) Check nnUNet
         try:
             import nnunetv2
-            from packaging import version
+            skippedRequirements = self.load_skipped_requirements()
             nnunet_versions = self._parse_version_from_requirements('nnunetv2', skippedRequirements)    
             required_version = None
             for version_info in nnunet_versions:
@@ -1079,11 +1100,14 @@ class CADSWholeBodyCTSegLogic(ScriptedLoadableModuleLogic):
         except ImportError:
             raise InstallError("This module requires nnUNet. Please install it from the Extensions Manager.")
         
-        # Step 6) Workaround: fix incompatibility of dynamic_network_architectures==0.4 with totalsegmentator==2.0.5.
-        # Revert to the last working version: dynamic_network_architectures==0.2
-        from packaging import version
-        if version.parse(importlib.metadata.version("dynamic_network_architectures")) == version.parse("0.4"):
-            self.log(f'dynamic_network_architectures package version is incompatible. Installing working version...')
+        # Step 6) Workaround: fix incompatibility or package not found of dynamic_network_architectures
+        # Revert to the last working version: dynamic_network_architectures==0.2.0 (or can be 0.3.1 I think)
+        try:
+            installed_version = importlib.metadata.version("dynamic_network_architectures")
+            if version.parse(installed_version) == version.parse("0.4"):
+                raise importlib.metadata.PackageNotFoundError
+        except importlib.metadata.PackageNotFoundError:
+            self.log(f'dynamic_network_architectures package version is incompatible or not installed. Installing working version...')
             slicer.util.pip_install("dynamic_network_architectures==0.2.0")
 
         self.log('CADS installation completed successfully.')

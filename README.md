@@ -37,7 +37,15 @@ If you use this software and find this work useful, please cite:
    - After restarting, go to the `PyTorch Utils` module.  
      In the `Torch version requirement` box, type `<2.6`, then click `Install PyTorch`. A PyTorch version (>= 2.0.0 and <2.6.0) compatible with your machine should be installed.
 
-3. **Install CADSWholeBodyCTSeg Extension**  
+3. **Install nnUNet**  
+   Slicer makes it easy to set up the correct nnUNet:  
+   - Open `Extension Manager` in Slicer → search for `NNUNet` → click `Install`.  
+     (Slicer will ask you to restart after installation.)  
+   - After restarting, go to the `nnUNet` module.  
+     In the `To install` box, type `==2.5.1`, then click `Install`.  
+       A nnUNet version (==2.5.1) should be installed.
+
+4. **Install CADSWholeBodyCTSeg Extension**  
    - ~~Open `Extension Manager` → search for `CADSWholeBodyCTSeg` → click `Install`.
      (Again, restart Slicer after installation.)~~
    - ~~Once restarted, open the `CADSWholeBodyCTSeg` module in Slicer and you should see the user interface ready to use.~~
