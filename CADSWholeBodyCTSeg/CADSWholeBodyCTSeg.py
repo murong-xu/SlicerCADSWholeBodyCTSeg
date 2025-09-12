@@ -1268,10 +1268,24 @@ class CADSWholeBodyCTSegLogic(ScriptedLoadableModuleLogic):
         cadsExecutablePath = os.path.join(sysconfig.get_path('scripts'), 
                                         self.executableName("CADSSlicer"))
         cadsCommand = [pythonSlicerExecutablePath, cadsExecutablePath]
+
+        # Get options
+        np_thr, ns_thr = _auto_threads()
+        output_cads_parent_folder = os.path.dirname(outputSegmentationFolder)
+        options = ["-i", inputFile, "-o", output_cads_parent_folder, "-task", "all", "-np", str(np_thr), "-ns", str(ns_thr)]
+        if cpu:
+            options.extend(["--cpu"])
+
+        # Launch CADS once for all tasks
+        self.log(f'CADS-model is segmenting...')
+        self.log(f"CADS arguments: {options}")
+        proc = slicer.util.launchConsoleProcess(cadsCommand + options)
+        self.logProcessOutput(proc)
         
+        # Create segmentation nodes and load results for each task
         baseName = outputSegmentation.GetName().replace(" segmentation", "")
         for i, subtask in enumerate(subtasks):
-            self.log(f'Processing task {subtask} ({i+1}/{len(subtasks)})')
+            self.log(f'Importing segmentation results for task {subtask} ({i+1}/{len(subtasks)})')
             taskTitle = self.tasks[subtask]['title']
             taskName = f"{baseName}: {taskTitle}"
             if i == 0:
@@ -1286,22 +1300,29 @@ class CADSWholeBodyCTSegLogic(ScriptedLoadableModuleLogic):
             currentSegmentation.SetAttribute("CADS.TaskID", subtask)
             currentSegmentation.SetAttribute("CADS.TaskTitle", taskTitle)
             
-            # Process current task using the same temp folders
-            segNodes = self.processVolume(
-                inputFile=inputFile,
-                inputVolume=inputVolume,
-                outputSegmentationFolder=outputSegmentationFolder,
-                outputSegmentation=currentSegmentation,
-                task=subtask,
-                subset=subset,
-                cpu=cpu,
-                cadsCommand=cadsCommand
+            # Load segmentation results for this task
+            readSegmentationIntoSlicer = self.readSegmentation(
+                currentSegmentation,
+                outputSegmentationFolder,
+                subtask,
+                subset
             )
             
-            if isinstance(segNodes, list):
-                allSegmentationNodes.extend(segNodes)
+            if readSegmentationIntoSlicer:
+                # Set source volume - required for DICOM Segmentation export
+                currentSegmentation.SetNodeReferenceID(currentSegmentation.GetReferenceImageGeometryReferenceRole(), inputVolume.GetID())
+                currentSegmentation.SetReferenceImageGeometryParameterFromVolumeNode(inputVolume)
+
+                # Place segmentation node in the same place as the input volume
+                shNode = slicer.vtkMRMLSubjectHierarchyNode.GetSubjectHierarchyNode(slicer.mrmlScene)
+                inputVolumeShItem = shNode.GetItemByDataNode(inputVolume)
+                studyShItem = shNode.GetItemParent(inputVolumeShItem)
+                segmentationShItem = shNode.GetItemByDataNode(currentSegmentation)
+                shNode.SetItemParent(segmentationShItem, studyShItem)
+                
+                allSegmentationNodes.append(currentSegmentation)
             else:
-                allSegmentationNodes.append(segNodes)
+                self.log(f"Warning: Failed to load segmentation for task {subtask}")
 
         return allSegmentationNodes
     
