@@ -8,7 +8,7 @@ set(EXTENSION_HOMEPAGE "https://github.com/murong-xu/SlicerCADSWholeBodyCTSeg")
 set(EXTENSION_CATEGORY "Segmentation")
 set(EXTENSION_CONTRIBUTORS "Murong Xu (University of Zurich)")
 set(EXTENSION_DESCRIPTION "CADS is a fully automated framework for segmenting 167 anatomical structures in Computed Tomography (CT), spanning from head to knee regions across diverse anatomical systems.")
-set(EXTENSION_ICONURL "https://raw.githubusercontent.com/murong-xu/SlicerCADSWholeBodyCTSeg/main/CADS.png")
+set(EXTENSION_ICONURL "https://raw.githubusercontent.com/murong-xu/SlicerCADSWholeBodyCTSeg/main/CADSWholeBodyCTSeg.png")
 set(EXTENSION_SCREENSHOTURLS "https://raw.githubusercontent.com/murong-xu/SlicerCADSWholeBodyCTSeg/main/Screenshot_01.png")
 set(EXTENSION_DEPENDS "PyTorch NNUNet")
 
@@ -25,3 +25,4 @@ add_subdirectory(CADSWholeBodyCTSeg)
 #-----------------------------------------------------------------------------
 include(${Slicer_EXTENSION_GENERATE_CONFIG})
 include(${Slicer_EXTENSION_CPACK})
+
