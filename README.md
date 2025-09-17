@@ -46,23 +46,8 @@ If you use this software and find this work useful, please cite:
        A nnUNet version (==2.5.1) should be installed.
 
 4. **Install CADSWholeBodyCTSeg Extension**  
-   - ~~Open `Extension Manager` → search for `CADSWholeBodyCTSeg` → click `Install`.
-     (Again, restart Slicer after installation.)~~
-   - ~~Once restarted, open the `CADSWholeBodyCTSeg` module in Slicer and you should see the user interface ready to use.~~
-
-   🚧 **In progress**: Installing CADSWholeBodyCTSeg directly through the 3D Slicer Extension Manager is in progress and will be available soon!  
-
-   In the meantime, please use the manual installation described below:
-
-   - Clone this repository to your machine: 
-      - `git clone git@github.com:murong-xu/SlicerCADSWholeBodyCTSeg.git`
-      - Or simply download it from https://github.com/murong-xu/SlicerCADSWholeBodyCTSeg
-   - Tell Slicer where to find it:
-      - Open 3D Slicer
-      - Go to `Edit`(the very top-left corner) → `Application Settings` → `Modules`.
-      - Under `Additional module paths`, click the `arrow` on the right, then hit `Add`.
-      - Navigate to the **SlicerCADSWholeBodyCTSeg** folder you just downloaded, open it, and select the **CADSWholeBodyCTSeg** subfolder.
-      - Press OK and restart Slicer.
+   - Open `Extension Manager` → search for `CADSWholeBodyCTSeg` → click `Install`.
+     (Again, restart Slicer after installation.)
    - Once restarted, open the `CADSWholeBodyCTSeg` module in Slicer and you should see the user interface ready to use.
 
 ## Quick Start
