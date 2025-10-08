@@ -109,13 +109,20 @@ Subcutaneous tissue, Muscle, Abdominal cavity, Thoracic cavity, Bones, Gland str
 - **Model weights** released in the [Releases](https://github.com/murong-xu/CADS/releases) section are licensed under [CC BY 4.0](MODEL_LICENSE).  
 
 ## Troubleshooting
-**CUDA Memory Error (torch.OutOfMemoryError)** 
+### CUDA Memory Error (torch.OutOfMemoryError)
 
 Even though the model is designed to automatically manage available GPU/CPU resources during prediction, you may still run into out-of-memory errors. This usually happens if:
 1. Your GPU has very limited VRAM (e.g., around 4 GB), or
 2. The input CT image is large.
 
 In these cases, I recommend switching to `Force to use CPU` mode. It will be slower than GPU (CPU-only needs around 10+ minutes for a chest+abdomen CT), but it will run more reliably and avoid memory issues.
+
+### Disk Space Issues
+Each task requires downloading a pre-trained model of about **727 MB**.
+If you plan to use several or all nine tasks, make sure there’s enough free space (**around 7 GB** recommended) on the drive where 3D Slicer is installed.
+
+If your disk runs out of space, you might see error messages during model download or loading.
+If that happens, pls try freeing up some space and run the setup again.
 
 
 ## Contact
