@@ -1899,6 +1899,21 @@
           },
           {
             "recommendedDisplayRGBValue": [
+              245, 220, 190
+            ],
+            "CodeMeaning": "Peritoneal cavity",
+            "CodingSchemeDesignator": "SCT",
+            "3dSlicerLabel": "peritoneal cavity",
+            "3dSlicerIntegerLabel": 220,
+            "cid": "7154",
+            "UMLSConceptUID": "C0018787",
+            "CodeValue": "83670000",
+            "contextGroupName": "Abdominal Segmentation Types",
+            "SNOMEDCTConceptID": "83670000",
+            "paired": "U"
+          },
+          {
+            "recommendedDisplayRGBValue": [
               180, 80, 160
             ],
             "CodeMeaning": "Sigmoid colon",
@@ -2949,21 +2964,6 @@
             "CodeValue": "2282003",
             "contextGroupName": "",
             "SNOMEDCTConceptID": "2282003"
-          },
-          {
-            "recommendedDisplayRGBValue": [
-              245, 220, 190
-            ],
-            "CodeMeaning": "Colostomy bag",
-            "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "colostomy bag",
-            "3dSlicerIntegerLabel": 220,
-            "cid": "",
-            "UMLSConceptUID": "C0018787",
-            "CodeValue": "339648008",
-            "contextGroupName": "",
-            "SNOMEDCTConceptID": "339648008",
-            "paired": "U"
           }
         ]
       }

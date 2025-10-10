@@ -106,7 +106,7 @@
 105,spinal_canal,SCT,123037004,Anatomical Structure,SCT,61853006,Spinal canal,,,,,,,,,
 106,larynx,SCT,123037004,Anatomical Structure,SCT,4596009,Larynx,,,,,,,,,
 107,heart,SCT,123037004,Anatomical Structure,SCT,80891009,Heart,,,,,,,,,
-108,bowel_bag,SCT,260787004,Physical object,SCT,339648008,Colostomy bag,,,,,,,,,
+108,bowel_bag,SCT,123037004,Anatomical Structure,SCT,83670000,Peritoneal cavity,,,,,,,,,
 109,sigmoid,SCT,123037004,Anatomical Structure,SCT,60184004,Sigmoid colon,,,,,,,,,
 110,rectum,SCT,123037004,Anatomical Structure,SCT,34402009,Rectum,,,,,,,,,
 111,prostate,SCT,123037004,Anatomical Structure,SCT,41216001,Prostate,,,,,,,,,
