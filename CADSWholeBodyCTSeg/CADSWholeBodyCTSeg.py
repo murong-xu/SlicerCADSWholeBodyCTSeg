@@ -756,6 +756,7 @@ class CADSWholeBodyCTSegLogic(ScriptedLoadableModuleLogic):
         Records original source URL in package metadata.
         """
         import os
+        import pathlib
         import zipfile
         import tempfile
         import urllib.request
@@ -794,7 +795,8 @@ class CADSWholeBodyCTSegLogic(ScriptedLoadableModuleLogic):
 
                 # First install the package without dependencies
                 self.log(f'Installing {packageToInstall}...')
-                slicer.util.pip_install(f"{package_dir} --no-deps")
+                install_path = pathlib.Path(package_dir).as_posix()
+                slicer.util.pip_install(f"{install_path} --no-deps")
 
                 # Now create and add direct_url.json to the installed package's dist-info
                 try:
