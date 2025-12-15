@@ -500,7 +500,7 @@ class CADSWholeBodyCTSegLogic(ScriptedLoadableModuleLogic):
         from collections import OrderedDict
 
         #TODO: CADS package (script, setup.py, model weights download...) update this in every release (also remember to update version number in setup.py)
-        self.cadsPythonPackageDownloadUrl = "https://github.com/murong-xu/CADS/archive/6e8373c593ab1d2db9454a45bd5b9d739eeab676.zip"  # version 1.1. 2025-10-04
+        self.cadsPythonPackageDownloadUrl = "https://github.com/murong-xu/CADS/archive/29d90ca04216cd2ea8782a5dfb9e4893b54ba829.zip"  # version 1.02 2025-12-15
 
         self.logCallback = None
         self.clearOutputFolder = True
@@ -756,6 +756,7 @@ class CADSWholeBodyCTSegLogic(ScriptedLoadableModuleLogic):
         Records original source URL in package metadata.
         """
         import os
+        import pathlib
         import zipfile
         import tempfile
         import urllib.request
@@ -794,7 +795,8 @@ class CADSWholeBodyCTSegLogic(ScriptedLoadableModuleLogic):
 
                 # First install the package without dependencies
                 self.log(f'Installing {packageToInstall}...')
-                slicer.util.pip_install(f"{package_dir} --no-deps")
+                install_path = pathlib.Path(package_dir).as_posix()
+                slicer.util.pip_install(f"{install_path} --no-deps")
 
                 # Now create and add direct_url.json to the installed package's dist-info
                 try:
