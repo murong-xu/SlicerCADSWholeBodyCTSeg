@@ -500,7 +500,7 @@ class CADSWholeBodyCTSegLogic(ScriptedLoadableModuleLogic):
         from collections import OrderedDict
 
         #TODO: CADS package (script, setup.py, model weights download...) update this in every release (also remember to update version number in setup.py)
-        self.cadsPythonPackageDownloadUrl = "https://github.com/murong-xu/CADS/archive/6e8373c593ab1d2db9454a45bd5b9d739eeab676.zip"  # version 1.1. 2025-10-04
+        self.cadsPythonPackageDownloadUrl = "https://github.com/murong-xu/CADS/archive/29d90ca04216cd2ea8782a5dfb9e4893b54ba829.zip"  # version 1.02 2025-12-15
 
         self.logCallback = None
         self.clearOutputFolder = True
