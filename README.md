@@ -135,6 +135,41 @@ If you plan to use several or all nine tasks, make sure there’s enough free sp
 If your disk runs out of space, you might see error messages during model download or loading.
 If that happens, pls try freeing up some space and run the setup again.
 
+### Windows Installation Issue (Slicer ≤5.10.0)
+
+Windows users running **3D Slicer 5.10.0 (stable release) or earlier versions (e.g., 5.9.0)** may encounter errors during the CADS package installation process (in Step 4: Install CADSWholeBodyCTSeg Extension). This is caused by backslash path escaping issues on Windows.
+
+**Recommended Solution:**  
+Upgrade to the latest **3D Slicer 5.11.0 preview release**, which already includes the bug-fixed version of the extension code.
+
+**Alternative Solution (if you prefer to keep your current Slicer version):**  
+Please manually apply the fix by modifying the `CADSWholeBodyCTSeg.py` file:
+
+1. **Locate the file:**  
+   Open 3D Slicer, go to the Python Console (`View` → `Python Console`) and run:
+   ```
+   import slicer
+   print(slicer.util.getModule('CADSWholeBodyCTSeg').path)
+   ```
+      This will print the full path to the file you need to edit.
+
+2. **Apply the following changes** to the file (see [commit 2240640](https://github.com/murong-xu/SlicerCADSWholeBodyCTSeg/commit/2240640447aef61dff34c91bf4f0f3c0f27301c2) for details):
+
+   - Around **line 759**, add:
+     ```
+     import pathlib
+     ``` 
+        
+   - Around **lines 797-799**, replace:
+     ```
+     slicer.util.pip_install(f"{package_dir} --no-deps")
+     ```
+     with:
+     ```
+     install_path = pathlib.Path(package_dir).as_posix()
+     slicer.util.pip_install(f"{install_path} --no-deps")
+     ```
+3. **Restart 3D Slicer** and retry the installation.
 
 ## Contact
 If you encounter any issues or have suggestions, please open an issue in this GitHub repository.  
