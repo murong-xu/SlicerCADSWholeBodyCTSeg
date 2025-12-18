@@ -28,7 +28,7 @@ If you use this software and find this work useful, please cite:
 ## Installation
 1. **Install 3D Slicer**  
    Download and install the latest version of [3D Slicer](https://download.slicer.org/).  
-   Compatibility note (verified on 2025-10-03): Our extension has been tested with preview release **5.9.0**.
+   Compatibility note (verified on 2025-12-18): Our extension has been tested with stable release **5.10.0** and preview release **5.11.0**.
 
 2. **Install PyTorch**  
    Slicer makes it easy to set up the correct PyTorch version:  
