@@ -17,7 +17,7 @@
             ],
             "CodeMeaning": "Spleen",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "spleen",
+            "3dSlicerLabel": "Spleen",
             "3dSlicerIntegerLabel": 220,
             "cid": "4030,7154",
             "UMLSConceptUID": "C0037993",
@@ -42,7 +42,7 @@
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "right kidney",
+                "3dSlicerLabel": "Kidney Right",
                 "3dSlicerIntegerLabel": 222,
                 "cid": "244",
                 "UMLSConceptUID": "C0205090",
@@ -56,7 +56,7 @@
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "left kidney",
+                "3dSlicerLabel": "Kidney Left",
                 "3dSlicerIntegerLabel": 223,
                 "cid": "244",
                 "UMLSConceptUID": "C0205091",
@@ -71,7 +71,7 @@
             ],
             "CodeMeaning": "Gallbladder",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "gallbladder",
+            "3dSlicerLabel": "Gallbladder",
             "3dSlicerIntegerLabel": 218,
             "cid": "4031,4040",
             "UMLSConceptUID": "C0016976",
@@ -86,7 +86,7 @@
             ],
             "CodeMeaning": "Liver",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "liver",
+            "3dSlicerLabel": "Liver",
             "3dSlicerIntegerLabel": 216,
             "cid": "4030,7154",
             "UMLSConceptUID": "C0023884",
@@ -101,7 +101,7 @@
             ],
             "CodeMeaning": "Stomach",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "stomach",
+            "3dSlicerLabel": "Stomach",
             "3dSlicerIntegerLabel": 211,
             "cid": "4031",
             "UMLSConceptUID": "C0038351",
@@ -116,7 +116,7 @@
             ],
             "CodeMeaning": "Aorta",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "aorta",
+            "3dSlicerLabel": "Aorta",
             "3dSlicerIntegerLabel": 191,
             "cid": "3010,7152",
             "UMLSConceptUID": "C0003483",
@@ -131,7 +131,7 @@
             ],
             "CodeMeaning": "Inferior vena cava",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "inferior vena cava",
+            "3dSlicerLabel": "Inferior vena cava",
             "cid": "3010,6117,7154",
             "UMLSConceptUID": "C0042458",
             "CodeValue": "64131007",
@@ -145,7 +145,7 @@
             "CodeValue": "110765007",
             "SNOMEDCTConceptID": "110765007",
             "contextGroupName": "CardiovascularAnatomicLocations",
-            "3dSlicerLabel": "portal vein and splenic vein",
+            "3dSlicerLabel": "Portal vein and splenic vein",
             "recommendedDisplayRGBValue": [
               0, 120, 170
             ]
@@ -156,7 +156,7 @@
             ],
             "CodeMeaning": "Pancreas",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "pancreas",
+            "3dSlicerLabel": "Pancreas",
             "3dSlicerIntegerLabel": 219,
             "cid": "4030",
             "UMLSConceptUID": "C0030274",
@@ -181,7 +181,7 @@
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "right adrenal gland",
+                "3dSlicerLabel": "Adrenal gland Right",
                 "3dSlicerIntegerLabel": 228,
                 "cid": "244",
                 "UMLSConceptUID": "C0205090",
@@ -195,7 +195,7 @@
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "left adrenal gland",
+                "3dSlicerLabel": "Adrenal gland Left",
                 "3dSlicerIntegerLabel": 229,
                 "cid": "244",
                 "UMLSConceptUID": "C0205091",
@@ -211,7 +211,7 @@
             ],
             "CodeMeaning": "Middle lobe of right lung",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "middle lobe of right lung",
+            "3dSlicerLabel": "Middle lobe of right lung",
             "3dSlicerIntegerLabel": 176,
             "cid": "7155",
             "UMLSConceptUID": "C0225757",
@@ -236,7 +236,7 @@
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "superior lobe of right lung",
+                "3dSlicerLabel": "Upper lobe of lung Right",
                 "3dSlicerIntegerLabel": 174,
                 "cid": "244",
                 "UMLSConceptUID": "C0205090",
@@ -250,7 +250,7 @@
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "superior lobe of left lung",
+                "3dSlicerLabel": "Upper lobe of lung Left",
                 "3dSlicerIntegerLabel": 175,
                 "cid": "244",
                 "UMLSConceptUID": "C0205091",
@@ -285,7 +285,7 @@
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "inferior lobe of right lung",
+                "3dSlicerLabel": "Lower lobe of lung right",
                 "3dSlicerIntegerLabel": 177,
                 "cid": "244",
                 "UMLSConceptUID": "C0205090",
@@ -299,7 +299,7 @@
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "inferior lobe of left lung",
+                "3dSlicerLabel": "Lower lobe of lung Left",
                 "3dSlicerIntegerLabel": 178,
                 "cid": "244",
                 "UMLSConceptUID": "C0205091",
@@ -638,7 +638,7 @@
             ],
             "CodeMeaning": "Esophagus",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "esophagus",
+            "3dSlicerLabel": "Esophagus",
             "3dSlicerIntegerLabel": 194,
             "cid": "4,4031,6113,7155",
             "UMLSConceptUID": "C0014876",
@@ -653,7 +653,7 @@
             ],
             "CodeMeaning": "Trachea",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "trachea",
+            "3dSlicerLabel": "Trachea",
             "3dSlicerIntegerLabel": 170,
             "cid": "4028,4031,6113,7155",
             "UMLSConceptUID": "C0040578",
@@ -668,7 +668,7 @@
             "CodeValue": "74281007",
             "SNOMEDCTConceptID": "74281007",
             "contextGroupName": "AnatomicRegion,CommonAnatomicRegions,MediastinumAnatomyFindingorFeature,CardiacStructureSegmentationTypes",
-            "3dSlicerLabel": "myocardium",
+            "3dSlicerLabel": "Myocardium",
             "recommendedDisplayRGBValue": [
               190, 60, 60
             ]
@@ -679,7 +679,7 @@
             ],
             "CodeMeaning": "Left atrium",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "left atrium",
+            "3dSlicerLabel": "Left atrium",
             "3dSlicerIntegerLabel": 182,
             "cid": "3010",
             "UMLSConceptUID": "C0225860",
@@ -694,7 +694,7 @@
             ],
             "CodeMeaning": "Right atrium",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "right atrium",
+            "3dSlicerLabel": "Right atrium",
             "3dSlicerIntegerLabel": 181,
             "cid": "3010",
             "UMLSConceptUID": "C0225844",
@@ -707,9 +707,9 @@
             "recommendedDisplayRGBValue": [
               150, 40, 40
             ],
-            "CodeMeaning": "Left ventricle",
+            "CodeMeaning": "Left ventricle of heart",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "left ventricle of heart",
+            "3dSlicerLabel": "Left ventricle of heart",
             "3dSlicerIntegerLabel": 186,
             "cid": "3010,7152",
             "UMLSConceptUID": "C0225897",
@@ -722,9 +722,9 @@
             "recommendedDisplayRGBValue": [
               200, 130, 40
             ],
-            "CodeMeaning": "Right ventricle",
+            "CodeMeaning": "Right ventricle of heart",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "right ventricle of heart",
+            "3dSlicerLabel": "Right ventricle of heart",
             "3dSlicerIntegerLabel": 185,
             "cid": "3010,7152",
             "UMLSConceptUID": "C0225883",
@@ -739,7 +739,7 @@
             ],
             "CodeMeaning": "Pulmonary artery",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "pulmonary arterial system",
+            "3dSlicerLabel": "Pulmonary artery",
             "3dSlicerIntegerLabel": 288,
             "cid": "3010,4030,6117",
             "UMLSConceptUID": "C0034052",
@@ -783,7 +783,7 @@
             ],
             "CodeMeaning": "Brain",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "brain",
+            "3dSlicerLabel": "Brain",
             "3dSlicerIntegerLabel": 38,
             "cid": "4030,7153",
             "UMLSConceptUID": "C0006104",
@@ -813,7 +813,7 @@
                 "CodeValue": "24028007",
                 "contextGroupName": "Laterality",
                 "SNOMEDCTConceptID": "24028007",
-                "3dSlicerLabel": "right iliac artery"
+                "3dSlicerLabel": "Common iliac artery Right"
               },
               {
                 "recommendedDisplayRGBValue": [
@@ -826,7 +826,7 @@
                 "CodeValue": "7771000",
                 "contextGroupName": "Laterality",
                 "SNOMEDCTConceptID": "7771000",
-                "3dSlicerLabel": "left iliac artery"
+                "3dSlicerLabel": "Common iliac artery Left"
               }
             ]
           },
@@ -851,7 +851,7 @@
                 "CodeValue": "24028007",
                 "contextGroupName": "Laterality",
                 "SNOMEDCTConceptID": "24028007",
-                "3dSlicerLabel": "right iliac vein"
+                "3dSlicerLabel": "Common iliac vein Right"
               },
               {
                 "recommendedDisplayRGBValue": [
@@ -864,7 +864,7 @@
                 "CodeValue": "7771000",
                 "contextGroupName": "Laterality",
                 "SNOMEDCTConceptID": "7771000",
-                "3dSlicerLabel": "left iliac vein"
+                "3dSlicerLabel": "Common iliac vein Left"
               }
             ]
           },
@@ -874,7 +874,7 @@
             ],
             "CodeMeaning": "Small Intestine",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "small bowel",
+            "3dSlicerLabel": "Small Intestine",
             "3dSlicerIntegerLabel": 213,
             "cid": "4031,7154",
             "UMLSConceptUID": "C0021852",
@@ -889,7 +889,7 @@
             ],
             "CodeMeaning": "Duodenum",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "duodenum",
+            "3dSlicerLabel": "Duodenum",
             "3dSlicerIntegerLabel": 212,
             "cid": "4031",
             "UMLSConceptUID": "C0013303",
@@ -904,7 +904,7 @@
             ],
             "CodeMeaning": "Colon",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "colon",
+            "3dSlicerLabel": "Colon",
             "3dSlicerIntegerLabel": 214,
             "cid": "4031",
             "UMLSConceptUID": "C0009368",
@@ -917,9 +917,9 @@
             "recommendedDisplayRGBValue": [
               230, 120, 160
             ],
-            "CodeMeaning": "Bladder",
+            "CodeMeaning": "Urinary bladder",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "urinary bladder",
+            "3dSlicerLabel": "Urinary bladder",
             "3dSlicerIntegerLabel": 226,
             "cid": "4031,4040,7160",
             "UMLSConceptUID": "C0005682",
@@ -934,7 +934,7 @@
             ],
             "CodeMeaning": "Face",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "face",
+            "3dSlicerLabel": "Face",
             "cid": "4",
             "UMLSConceptUID": "C0015450",
             "CodeValue": "89545001",
@@ -964,7 +964,7 @@
                 "CodeValue": "24028007",
                 "contextGroupName": "Laterality",
                 "SNOMEDCTConceptID": "24028007",
-                "3dSlicerLabel": "right humerus"
+                "3dSlicerLabel": "Humerus Right"
               },
               {
                 "recommendedDisplayRGBValue": [
@@ -977,7 +977,7 @@
                 "CodeValue": "7771000",
                 "contextGroupName": "Laterality",
                 "SNOMEDCTConceptID": "7771000",
-                "3dSlicerLabel": "left humerus"
+                "3dSlicerLabel": "Humerus Left"
               }
             ]
           },
@@ -1002,7 +1002,7 @@
                 "CodeValue": "24028007",
                 "contextGroupName": "Laterality",
                 "SNOMEDCTConceptID": "24028007",
-                "3dSlicerLabel": "right scapula"
+                "3dSlicerLabel": "Scapula Right"
               },
               {
                 "recommendedDisplayRGBValue": [
@@ -1015,7 +1015,7 @@
                 "CodeValue": "7771000",
                 "contextGroupName": "Laterality",
                 "SNOMEDCTConceptID": "7771000",
-                "3dSlicerLabel": "left scapula"
+                "3dSlicerLabel": "Scapula Left"
               }
             ]
           },
@@ -1035,7 +1035,7 @@
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "right clavicle",
+                "3dSlicerLabel": "Clavicle Right",
                 "3dSlicerIntegerLabel": 203,
                 "cid": "244",
                 "UMLSConceptUID": "C0205090",
@@ -1049,7 +1049,7 @@
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "left clavicle",
+                "3dSlicerLabel": "Clavicle Left",
                 "3dSlicerIntegerLabel": 204,
                 "cid": "244",
                 "UMLSConceptUID": "C0205091",
@@ -1080,7 +1080,7 @@
                 "CodeValue": "24028007",
                 "contextGroupName": "Laterality",
                 "SNOMEDCTConceptID": "24028007",
-                "3dSlicerLabel": "right femur"
+                "3dSlicerLabel": "Femur Right"
               },
               {
                 "recommendedDisplayRGBValue": [
@@ -1093,12 +1093,12 @@
                 "CodeValue": "7771000",
                 "contextGroupName": "Laterality",
                 "SNOMEDCTConceptID": "7771000",
-                "3dSlicerLabel": "left femur"
+                "3dSlicerLabel": "Femur Left"
               }
             ]
           },
           {
-            "CodeMeaning": "Hip joint",
+            "CodeMeaning": "Hip",
             "CodingSchemeDesignator": "SCT",
             "cid": "4,4031",
             "UMLSConceptUID": "C0019558",
@@ -1113,7 +1113,7 @@
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "right hip",
+                "3dSlicerLabel": "Hip Right",
                 "3dSlicerIntegerLabel": 269,
                 "cid": "244",
                 "UMLSConceptUID": "C0205090",
@@ -1127,7 +1127,7 @@
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "left hip",
+                "3dSlicerLabel": "Hip Left",
                 "3dSlicerIntegerLabel": 270,
                 "cid": "244",
                 "UMLSConceptUID": "C0205091",
@@ -1141,8 +1141,8 @@
             "recommendedDisplayRGBValue": [
               200, 170, 140
             ],
-            "CodeMeaning": "Sacrum",
-            "3dSlicerLabel": "sacrum",
+            "CodeMeaning": "Bone structure of sacrum",
+            "3dSlicerLabel": "Bone structure of sacrum",
             "CodingSchemeDesignator": "SCT",
             "cid": "4031",
             "UMLSConceptUID": "C0036037",
@@ -1155,9 +1155,9 @@
             "CodeMeaning": "Gluteus maximus muscle",
             "CodingSchemeDesignator": "SCT",
             "cid": "6116",
-            "CodeValue": "181674001",
+            "CodeValue": "206007",
             "contextGroupName": "MuscularAnatomy",
-            "SNOMEDCTConceptID": "181674001",
+            "SNOMEDCTConceptID": "206007",
             "paired": "Y",
             "Modifier": [
               {
@@ -1166,7 +1166,7 @@
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "right gluteus maximus",
+                "3dSlicerLabel": "Gluteus maximus muscle Right",
                 "cid": "244",
                 "UMLSConceptUID": "C0205090",
                 "CodeValue": "24028007",
@@ -1179,7 +1179,7 @@
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "left gluteus maximus",
+                "3dSlicerLabel": "Gluteus maximus muscle Left",
                 "cid": "244",
                 "UMLSConceptUID": "C0205091",
                 "CodeValue": "7771000",
@@ -1203,7 +1203,7 @@
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "right gluteus medius",
+                "3dSlicerLabel": "Gluteus medius muscle Right",
                 "cid": "244",
                 "UMLSConceptUID": "C0205090",
                 "CodeValue": "24028007",
@@ -1216,7 +1216,7 @@
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "left gluteus medius",
+                "3dSlicerLabel": "Gluteus medius muscle Left",
                 "cid": "244",
                 "UMLSConceptUID": "C0205091",
                 "CodeValue": "7771000",
@@ -1240,7 +1240,7 @@
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "right gluteus minimus",
+                "3dSlicerLabel": "Gluteus minimus muscle Right",
                 "cid": "244",
                 "UMLSConceptUID": "C0205090",
                 "CodeValue": "24028007",
@@ -1253,7 +1253,7 @@
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "left gluteus minimus",
+                "3dSlicerLabel": "Gluteus minimus muscle Left",
                 "cid": "244",
                 "UMLSConceptUID": "C0205091",
                 "CodeValue": "7771000",
@@ -1277,7 +1277,7 @@
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
                 "cid": "244",
-                "3dSlicerLabel": "right deep back muscle",
+                "3dSlicerLabel": "Deep muscle of back Right",
                 "UMLSConceptUID": "C0205090",
                 "CodeValue": "24028007",
                 "contextGroupName": "Laterality",
@@ -1289,7 +1289,7 @@
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "left deep back muscle",
+                "3dSlicerLabel": "Deep muscle of back Left",
                 "cid": "244",
                 "UMLSConceptUID": "C0205091",
                 "CodeValue": "7771000",
@@ -1313,7 +1313,7 @@
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "right iliopsoas muscle",
+                "3dSlicerLabel": "Iliopsoas muscle Right",
                 "cid": "244",
                 "UMLSConceptUID": "C0205090",
                 "CodeValue": "24028007",
@@ -1326,7 +1326,7 @@
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "left iliopsoas muscle",
+                "3dSlicerLabel": "Iliopsoas muscle Leftß",
                 "cid": "244",
                 "UMLSConceptUID": "C0205091",
                 "CodeValue": "7771000",
@@ -1357,7 +1357,7 @@
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "right rib 1",
+                "3dSlicerLabel": "Rib 1 Right",
                 "cid": "244",
                 "UMLSConceptUID": "C0205090",
                 "CodeValue": "24028007",
@@ -1370,7 +1370,7 @@
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "left rib 1",
+                "3dSlicerLabel": "Rib 1 Left",
                 "cid": "244",
                 "UMLSConceptUID": "C0205091",
                 "CodeValue": "7771000",
@@ -1400,7 +1400,7 @@
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "right rib 2",
+                "3dSlicerLabel": "Rib 2 Right",
                 "cid": "244",
                 "UMLSConceptUID": "C0205090",
                 "CodeValue": "24028007",
@@ -1413,7 +1413,7 @@
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "left rib 2",
+                "3dSlicerLabel": "Rib 2 Left",
                 "cid": "244",
                 "UMLSConceptUID": "C0205091",
                 "CodeValue": "7771000",
@@ -1443,7 +1443,7 @@
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "right rib 3",
+                "3dSlicerLabel": "Rib 3 Right",
                 "cid": "244",
                 "UMLSConceptUID": "C0205090",
                 "CodeValue": "24028007",
@@ -1456,7 +1456,7 @@
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "left rib 3",
+                "3dSlicerLabel": "Rib 3 Left",
                 "cid": "244",
                 "UMLSConceptUID": "C0205091",
                 "CodeValue": "7771000",
@@ -1486,7 +1486,7 @@
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "right rib 4",
+                "3dSlicerLabel": "Rib 4 Right",
                 "cid": "244",
                 "UMLSConceptUID": "C0205090",
                 "CodeValue": "24028007",
@@ -1499,7 +1499,7 @@
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "left rib 4",
+                "3dSlicerLabel": "Rib 4 Left",
                 "cid": "244",
                 "UMLSConceptUID": "C0205091",
                 "CodeValue": "7771000",
@@ -1529,7 +1529,7 @@
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "right rib 5",
+                "3dSlicerLabel": "Rib 5 Right",
                 "cid": "244",
                 "UMLSConceptUID": "C0205090",
                 "CodeValue": "24028007",
@@ -1542,7 +1542,7 @@
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "left rib 5",
+                "3dSlicerLabel": "Rib 5 Left",
                 "cid": "244",
                 "UMLSConceptUID": "C0205091",
                 "CodeValue": "7771000",
@@ -1572,7 +1572,7 @@
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "right rib 6",
+                "3dSlicerLabel": "Rib 6 Right",
                 "cid": "244",
                 "UMLSConceptUID": "C0205090",
                 "CodeValue": "24028007",
@@ -1585,7 +1585,7 @@
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "left rib 6",
+                "3dSlicerLabel": "Rib 6 Left",
                 "cid": "244",
                 "UMLSConceptUID": "C0205091",
                 "CodeValue": "7771000",
@@ -1615,7 +1615,7 @@
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "right rib 7",
+                "3dSlicerLabel": "Rib 7 Right",
                 "cid": "244",
                 "UMLSConceptUID": "C0205090",
                 "CodeValue": "24028007",
@@ -1628,7 +1628,7 @@
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "left rib 7",
+                "3dSlicerLabel": "Rib 7 Left",
                 "cid": "244",
                 "UMLSConceptUID": "C0205091",
                 "CodeValue": "7771000",
@@ -1658,7 +1658,7 @@
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "right rib 8",
+                "3dSlicerLabel": "Rib 8 Right",
                 "cid": "244",
                 "UMLSConceptUID": "C0205090",
                 "CodeValue": "24028007",
@@ -1671,7 +1671,7 @@
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "left rib 8",
+                "3dSlicerLabel": "Rib 8 Left",
                 "cid": "244",
                 "UMLSConceptUID": "C0205091",
                 "CodeValue": "7771000",
@@ -1701,7 +1701,7 @@
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "right rib 9",
+                "3dSlicerLabel": "Rib 9 Right",
                 "cid": "244",
                 "UMLSConceptUID": "C0205090",
                 "CodeValue": "24028007",
@@ -1714,7 +1714,7 @@
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "left rib 9",
+                "3dSlicerLabel": "Rib 9 Left",
                 "cid": "244",
                 "UMLSConceptUID": "C0205091",
                 "CodeValue": "7771000",
@@ -1744,7 +1744,7 @@
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "right rib 10",
+                "3dSlicerLabel": "Rib 10 Right",
                 "cid": "244",
                 "UMLSConceptUID": "C0205090",
                 "CodeValue": "24028007",
@@ -1757,7 +1757,7 @@
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "left rib 10",
+                "3dSlicerLabel": "Rib 10 Left",
                 "cid": "244",
                 "UMLSConceptUID": "C0205091",
                 "CodeValue": "7771000",
@@ -1787,7 +1787,7 @@
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "right rib 11",
+                "3dSlicerLabel": "Rib 11 Right",
                 "cid": "244",
                 "UMLSConceptUID": "C0205090",
                 "CodeValue": "24028007",
@@ -1800,7 +1800,7 @@
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "left rib 11",
+                "3dSlicerLabel": "Rib 11 Left",
                 "cid": "244",
                 "UMLSConceptUID": "C0205091",
                 "CodeValue": "7771000",
@@ -1830,7 +1830,7 @@
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "right rib 12",
+                "3dSlicerLabel": "Rib 12 Right",
                 "cid": "244",
                 "UMLSConceptUID": "C0205090",
                 "CodeValue": "24028007",
@@ -1843,7 +1843,7 @@
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "left rib 12",
+                "3dSlicerLabel": "Rib 12 Left",
                 "cid": "244",
                 "UMLSConceptUID": "C0205091",
                 "CodeValue": "7771000",
@@ -1858,7 +1858,7 @@
               120, 235, 255
             ],
             "CodeMeaning": "Spinal canal",
-            "3dSlicerLabel": "spinal canal",
+            "3dSlicerLabel": "Spinal canal",
             "CodingSchemeDesignator": "SCT",
             "cid": "4031,7153",
             "UMLSConceptUID": "C0037925",
@@ -1873,7 +1873,7 @@
             ],
             "CodeMeaning": "Larynx",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "larynx",
+            "3dSlicerLabel": "Larynx",
             "3dSlicerIntegerLabel": 162,
             "cid": "4028,4031,4040",
             "UMLSConceptUID": "C0023078",
@@ -1886,30 +1886,30 @@
             "recommendedDisplayRGBValue": [
               220, 50, 80
             ],
-            "CodeMeaning": "Heart",
+            "CodeMeaning": "Heart part",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "heart",
+            "3dSlicerLabel": "Heart part",
             "3dSlicerIntegerLabel": 180,
             "cid": "4,4031,6113,7152",
             "UMLSConceptUID": "C0018787",
-            "CodeValue": "80891009",
+            "CodeValue": "119202000",
             "contextGroupName": "AnatomicRegion,CommonAnatomicRegions,MediastinumAnatomyFindingorFeature,CardiacStructureSegmentationTypes",
-            "SNOMEDCTConceptID": "80891009",
+            "SNOMEDCTConceptID": "119202000",
             "paired": "U"
           },
           {
             "recommendedDisplayRGBValue": [
               245, 220, 190
             ],
-            "CodeMeaning": "Peritoneal cavity",
+            "CodeMeaning": "Abdominal intestinal region",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "peritoneal cavity",
+            "3dSlicerLabel": "Abdominal intestinal region",
             "3dSlicerIntegerLabel": 220,
             "cid": "7154",
             "UMLSConceptUID": "C0018787",
-            "CodeValue": "83670000",
+            "CodeValue": "113276009",
             "contextGroupName": "Abdominal Segmentation Types",
-            "SNOMEDCTConceptID": "83670000",
+            "SNOMEDCTConceptID": "113276009",
             "paired": "U"
           },
           {
@@ -1918,7 +1918,7 @@
             ],
             "CodeMeaning": "Sigmoid colon",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "sigmoid colon",
+            "3dSlicerLabel": "Sigmoid colon",
             "3dSlicerIntegerLabel": 109,
             "cid": "7154",
             "CodeValue": "60184004",
@@ -1931,7 +1931,7 @@
               200, 90, 60
             ],
             "CodeMeaning": "Rectum",
-            "3dSlicerLabel": "rectum",
+            "3dSlicerLabel": "Rectum",
             "CodingSchemeDesignator": "SCT",
             "cid": "4,4031,4040,7160",
             "UMLSConceptUID": "C0034896",
@@ -1946,7 +1946,7 @@
             ],
             "CodeMeaning": "Prostate",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "prostate",
+            "3dSlicerLabel": "Prostate",
             "3dSlicerIntegerLabel": 238,
             "cid": "7160",
             "UMLSConceptUID": "C0033572",
@@ -1960,7 +1960,7 @@
               240, 120, 160
             ],
             "CodeMeaning": "Seminal Vesicle",
-            "3dSlicerLabel": "seminal vesicle",
+            "3dSlicerLabel": "Seminal vesicle",
             "CodingSchemeDesignator": "SCT",
             "cid": "7160",
             "UMLSConceptUID": "C0036628",
@@ -1977,7 +1977,7 @@
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "right seminal vesicle",
+                "3dSlicerLabel": "Seminal vesicle Right",
                 "3dSlicerIntegerLabel": 239,
                 "cid": "244",
                 "UMLSConceptUID": "C0205090",
@@ -1993,7 +1993,7 @@
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "left seminal vesicle",
+                "3dSlicerLabel": "Seminal vesicle Left",
                 "3dSlicerIntegerLabel": 240,
                 "cid": "244",
                 "UMLSConceptUID": "C0205091",
@@ -2028,7 +2028,7 @@
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "right mammary gland",
+                "3dSlicerLabel": "Mammary gland Right",
                 "3dSlicerIntegerLabel": 114,
                 "cid": "244",
                 "UMLSConceptUID": "C0205090",
@@ -2042,7 +2042,7 @@
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "left mammary gland",
+                "3dSlicerLabel": "Mammary gland Left",
                 "3dSlicerIntegerLabel": 113,
                 "cid": "244",
                 "UMLSConceptUID": "C0205091",
@@ -2058,7 +2058,7 @@
             ],
             "CodeMeaning": "Sternum",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "sternum",
+            "3dSlicerLabel": "Sternum",
             "3dSlicerIntegerLabel": 202,
             "cid": "4031,6114,7155",
             "UMLSConceptUID": "C0038293",
@@ -2068,7 +2068,7 @@
             "paired": "U"
           },
           {
-            "CodeMeaning": "Structure of psoas major muscle",
+            "CodeMeaning": "Psoas major muscle",
             "CodingSchemeDesignator": "SCT",
             "cid": "7154",
             "CodeValue": "57240007",
@@ -2082,7 +2082,7 @@
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "right psoas major",
+                "3dSlicerLabel": "Psoas major muscle Right",
                 "3dSlicerIntegerLabel": 116,
                 "cid": "244",
                 "CodeValue": "24028007",
@@ -2094,7 +2094,7 @@
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "left psoas major",
+                "3dSlicerLabel": "Psoas major muscle Left",
                 "3dSlicerIntegerLabel": 117,
                 "cid": "244",
                 "CodeValue": "7771000",
@@ -2118,7 +2118,7 @@
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "right rectus abdominis",
+                "3dSlicerLabel": "Rectus abdominis muscle Right",
                 "3dSlicerIntegerLabel": 118,
                 "cid": "244",
                 "UMLSConceptUID": "C0205090",
@@ -2132,7 +2132,7 @@
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "left rectus abdominis",
+                "3dSlicerLabel": "Rectus abdominis muscle Left",
                 "3dSlicerIntegerLabel": 119,
                 "cid": "244",
                 "UMLSConceptUID": "C0205091",
@@ -2147,37 +2147,37 @@
             "recommendedDisplayRGBValue": [
               240, 240, 250
             ],
-            "CodeMeaning": "White Matter",
+            "CodeMeaning": "Structure of white matter of brain",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "white matter",
+            "3dSlicerLabel": "Structure of white matter of brain",
             "3dSlicerIntegerLabel": 14,
             "cid": "7153",
             "UMLSConceptUID": "C1300311",
-            "CodeValue": "389080008",
+            "CodeValue": "1295387002",
             "contextGroupName": "CNSSegmentationTypes",
-            "SNOMEDCTConceptID": "389080008"
+            "SNOMEDCTConceptID": "1295387002"
           },
           {
             "recommendedDisplayRGBValue": [
               190, 170, 220
             ],
-            "CodeMeaning": "Gray Matter",
+            "CodeMeaning": "Structure of gray matter of brain",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "gray matter",
+            "3dSlicerLabel": "Structure of gray matter of brain",
             "3dSlicerIntegerLabel": 13,
             "cid": "7153",
             "UMLSConceptUID": "C1300312",
-            "CodeValue": "389081007",
+            "CodeValue": "1295386006",
             "contextGroupName": "CNSSegmentationTypes",
-            "SNOMEDCTConceptID": "389081007"
+            "SNOMEDCTConceptID": "1295386006"
           },
           {
             "recommendedDisplayRGBValue": [
               255, 210, 150
             ],
-            "CodeMeaning": "Scalp structure",
+            "CodeMeaning": "Scalp",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "scalp structure",
+            "3dSlicerLabel": "Scalp",
             "cid": "4",
             "UMLSConceptUID": "C0036270",
             "CodeValue": "41695006",
@@ -2191,7 +2191,7 @@
             ],
             "CodeMeaning": "Eyeball",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "eyeball",
+            "3dSlicerLabel": "Eyeball",
             "cid": "4031",
             "UMLSConceptUID": "C0015392",
             "CodeValue": "81745001",
@@ -2234,7 +2234,7 @@
             ],
             "CodeMeaning": "Compact bone",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "compact bone",
+            "3dSlicerLabel": "Compact bone",
             "3dSlicerIntegerLabel": 125,
             "cid": "6114",
             "UMLSConceptUID": "C0262950",
@@ -2249,7 +2249,7 @@
             ],
             "CodeMeaning": "Spongy bone",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "spongy bone",
+            "3dSlicerLabel": "Spongy bone",
             "3dSlicerIntegerLabel": 126,
             "cid": "6114",
             "UMLSConceptUID": "C0262951",
@@ -2262,29 +2262,29 @@
             "recommendedDisplayRGBValue": [
               220, 40, 60
             ],
-            "CodeMeaning": "Blood",
+            "CodeMeaning": "Vascular structure of head",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "blood",
+            "3dSlicerLabel": "Vascular structure of head",
             "3dSlicerIntegerLabel": 5,
             "cid": "7166",
             "UMLSConceptUID": "C0005767",
-            "CodeValue": "87612001",
+            "CodeValue": "281231009",
             "contextGroupName": "CommonTissueSegmentationTypes",
-            "SNOMEDCTConceptID": "87612001"
+            "SNOMEDCTConceptID": "281231009"
           },
           {
             "recommendedDisplayRGBValue": [
               255, 120, 120
             ],
-            "CodeMeaning": "Muscle of head",
+            "CodeMeaning": "Rectus eye muscle structure",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "muscles of head",
+            "3dSlicerLabel": "Rectus eye muscle structure",
             "3dSlicerIntegerLabel": 126,
             "cid": "4028",
             "UMLSConceptUID": "C0224097",
-            "CodeValue": "22688005",
+            "CodeValue": "307707009",
             "contextGroupName": "CraniofacialAnatomicRegions",
-            "SNOMEDCTConceptID": "22688005",
+            "SNOMEDCTConceptID": "307707009",
             "paired": "Y",
             "Modifier": [
               {
@@ -2320,39 +2320,52 @@
             "recommendedDisplayRGBValue": [
               40,160,190
             ],
-            "CodeMeaning": "Structure of left carotid artery",
+            "CodeMeaning": "Carotid artery",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "left carotid artery",
+            "3dSlicerLabel": "Carotid artery",
             "3dSlicerIntegerLabel": 130,
             "cid": "",
             "UMLSConceptUID": "",
-            "CodeValue": "721028001",
+            "CodeValue": "69105007",
             "contextGroupName": "",
-            "SNOMEDCTConceptID": "721028001",
-            "paired": "U"
-          },
-          {
-            "recommendedDisplayRGBValue": [
-              206,120,190
-            ],
-            "CodeMeaning": "Structure of right carotid artery",
-            "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "right carotid artery",
-            "3dSlicerIntegerLabel": 129,
-            "cid": "",
-            "UMLSConceptUID": "",
-            "CodeValue": "721033002",
-            "contextGroupName": "",
-            "SNOMEDCTConceptID": "721033002",
-            "paired": "U"
+            "SNOMEDCTConceptID": "69105007",
+            "paired": "Y",
+            "Modifier": [
+              {
+                "recommendedDisplayRGBValue": [
+                  206,120,190
+                ],
+                "CodeMeaning": "Right",
+                "CodingSchemeDesignator": "SCT",
+                "3dSlicerLabel": "Carotid artery Right",
+                "cid": "",
+                "UMLSConceptUID": "",
+                "CodeValue": "24028007",
+                "contextGroupName": "Laterality",
+                "SNOMEDCTConceptID": "24028007"
+              },
+              {
+                "recommendedDisplayRGBValue": [
+                  40,160,190
+                ],
+                "CodeMeaning": "Left",
+                "CodingSchemeDesignator": "SCT",
+                "3dSlicerLabel": "Carotid artery Left",
+                "cid": "",
+                "UMLSConceptUID": "",
+                "CodeValue": "7771000",
+                "contextGroupName": "Laterality",
+                "SNOMEDCTConceptID": "7771000"
+              }
+            ]
           },
           {
             "recommendedDisplayRGBValue": [
               230,195,90
             ],
-            "CodeMeaning": "Arytenoid cartilage structure",
+            "CodeMeaning": "Arytenoid cartilage",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "arytenoid cartilage structure",
+            "3dSlicerLabel": "Arytenoid cartilage",
             "3dSlicerIntegerLabel": 131,
             "cid": "",
             "CodeValue": "77578007",
@@ -2366,7 +2379,7 @@
             ],
             "CodeMeaning": "Mandible",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "mandible",
+            "3dSlicerLabel": "Mandible",
             "3dSlicerIntegerLabel": 132,
             "cid": "",
             "CodeValue": "91609006",
@@ -2378,14 +2391,14 @@
             "recommendedDisplayRGBValue": [
               130,190,120
             ],
-            "CodeMeaning": "Entire brainstem",
+            "CodeMeaning": "Brain stem",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "brainstem",
+            "3dSlicerLabel": "Brain stem",
             "3dSlicerIntegerLabel": 133,
             "cid": "",
-            "CodeValue": "180925009",
+            "CodeValue": "15926001",
             "contextGroupName": "",
-            "SNOMEDCTConceptID": "180925009",
+            "SNOMEDCTConceptID": "15926001",
             "paired": "U"
           },
           {
@@ -2394,7 +2407,7 @@
             ],
             "CodeMeaning": "Buccal mucosa",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "buccal mucosa",
+            "3dSlicerLabel": "Buccal mucosa",
             "3dSlicerIntegerLabel": 134,
             "cid": "",
             "CodeValue": "16811007",
@@ -2408,7 +2421,7 @@
             ],
             "CodeMeaning": "Oral cavity",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "oral cavity",
+            "3dSlicerLabel": "Oral cavity",
             "3dSlicerIntegerLabel": 135,
             "cid": "",
             "CodeValue": "74262004",
@@ -2420,29 +2433,43 @@
             "recommendedDisplayRGBValue": [
               210,95,95
             ],
-            "CodeMeaning": "Structure of left cochlear",
+            "CodeMeaning": "Cochlea",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "left cochlear",
+            "3dSlicerLabel": "Cochlea",
             "3dSlicerIntegerLabel": 137,
             "cid": "",
-            "CodeValue": "772064001",
+            "CodeValue": "80169004",
             "contextGroupName": "",
-            "SNOMEDCTConceptID": "772064001",
-            "paired": "U"
-          },
-          {
-            "recommendedDisplayRGBValue": [
-              120,145,220
-            ],
-            "CodeMeaning": "Structure of right cochlear",
-            "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "right cochlear",
-            "3dSlicerIntegerLabel": 136,
-            "cid": "",
-            "CodeValue": "772065000",
-            "contextGroupName": "",
-            "SNOMEDCTConceptID": "772065000",
-            "paired": "U"
+            "SNOMEDCTConceptID": "80169004",
+            "paired": "Y",
+            "Modifier": [
+              {
+                "recommendedDisplayRGBValue": [
+                  120,145,220
+                ],
+                "CodeMeaning": "Right",
+                "CodingSchemeDesignator": "SCT",
+                "3dSlicerLabel": "Cochlea Right",
+                "cid": "",
+                "UMLSConceptUID": "",
+                "CodeValue": "24028007",
+                "contextGroupName": "Laterality",
+                "SNOMEDCTConceptID": "24028007"
+              },
+              {
+                "recommendedDisplayRGBValue": [
+                  210,95,95
+                ],
+                "CodeMeaning": "Left",
+                "CodingSchemeDesignator": "SCT",
+                "3dSlicerLabel": "Cochlea Left",
+                "cid": "",
+                "UMLSConceptUID": "",
+                "CodeValue": "7771000",
+                "contextGroupName": "Laterality",
+                "SNOMEDCTConceptID": "7771000"
+              }
+            ]
           },
           {
             "recommendedDisplayRGBValue": [
@@ -2450,7 +2477,7 @@
             ],
             "CodeMeaning": "Cricopharyngeus",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "cricopharyngeus",
+            "3dSlicerLabel": "Cricopharyngeus",
             "3dSlicerIntegerLabel": 138,
             "cid": "",
             "CodeValue": "28276008",
@@ -2464,7 +2491,7 @@
             ],
             "CodeMeaning": "Cervical esophagus",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "cervical esophagus",
+            "3dSlicerLabel": "Cervical esophagus",
             "3dSlicerIntegerLabel": 139,
             "cid": "",
             "CodeValue": "60075002",
@@ -2476,29 +2503,43 @@
             "recommendedDisplayRGBValue": [
               200,120,200
             ],
-            "CodeMeaning": "Structure of anterior eyeball segment of left eye",
+            "CodeMeaning": "Anterior eyeball segment structure",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "left anterior eyeball segment",
+            "3dSlicerLabel": "Anterior eyeball segment structure",
             "3dSlicerIntegerLabel": 141,
             "cid": "",
-            "CodeValue": "717762003",
+            "CodeValue": "32259006",
             "contextGroupName": "",
-            "SNOMEDCTConceptID": "717762003",
-            "paired": "U"
-          },
-          {
-            "recommendedDisplayRGBValue": [
-              120,200,210
-            ],
-            "CodeMeaning": "Structure of anterior eyeball segment of right eye",
-            "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "right anterior eyeball segment",
-            "3dSlicerIntegerLabel": 140,
-            "cid": "",
-            "CodeValue": "722049003",
-            "contextGroupName": "",
-            "SNOMEDCTConceptID": "722049003",
-            "paired": "U"
+            "SNOMEDCTConceptID": "32259006",
+            "paired": "Y",
+            "Modifier": [
+              {
+                "recommendedDisplayRGBValue": [
+                  120,145,220
+                ],
+                "CodeMeaning": "Right",
+                "CodingSchemeDesignator": "SCT",
+                "3dSlicerLabel": "Anterior eyeball segment structure Right",
+                "cid": "",
+                "UMLSConceptUID": "",
+                "CodeValue": "24028007",
+                "contextGroupName": "Laterality",
+                "SNOMEDCTConceptID": "24028007"
+              },
+              {
+                "recommendedDisplayRGBValue": [
+                  210,95,95
+                ],
+                "CodeMeaning": "Left",
+                "CodingSchemeDesignator": "SCT",
+                "3dSlicerLabel": "Anterior eyeball segment structure Left",
+                "cid": "",
+                "UMLSConceptUID": "",
+                "CodeValue": "7771000",
+                "contextGroupName": "Laterality",
+                "SNOMEDCTConceptID": "7771000"
+              }
+            ]
           },
           {
             "CodeMeaning": "Posterior eyeball segment structure",
@@ -2515,7 +2556,7 @@
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "right posterior eyeball segment",
+                "3dSlicerLabel": "Posterior eyeball segment Right",
                 "3dSlicerIntegerLabel": 143,
                 "cid": "244",
                 "CodeValue": "24028007",
@@ -2527,7 +2568,7 @@
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "left posterior eyeball segment",
+                "3dSlicerLabel": "Posterior eyeball segment Left",
                 "3dSlicerIntegerLabel": 142,
                 "cid": "244",
                 "CodeValue": "7771000",
@@ -2536,12 +2577,12 @@
             ]
           },
           {
-            "CodeMeaning": "Both lacrimal glands",
+            "CodeMeaning": "Lacrimal glands",
             "CodingSchemeDesignator": "SCT",
             "cid": "",
-            "CodeValue": "30641009",
+            "CodeValue": "13561001",
             "contextGroupName": "",
-            "SNOMEDCTConceptID": "30641009",
+            "SNOMEDCTConceptID": "13561001",
             "paired": "Y",
             "Modifier": [
               {
@@ -2550,7 +2591,7 @@
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "right lacrimal gland",
+                "3dSlicerLabel": "Lacrimal glands Right",
                 "3dSlicerIntegerLabel": 145,
                 "cid": "244",
                 "CodeValue": "24028007",
@@ -2562,7 +2603,7 @@
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "left lacrimal gland",
+                "3dSlicerLabel": "Lacrimal glands Left",
                 "3dSlicerIntegerLabel": 144,
                 "cid": "244",
                 "CodeValue": "7771000",
@@ -2571,12 +2612,12 @@
             ]
           },
           {
-            "CodeMeaning": "Entire submandibular gland",
+            "CodeMeaning": "Submandibular gland",
             "CodingSchemeDesignator": "SCT",
             "cid": "",
-            "CodeValue": "181235001",
+            "CodeValue": "385296007",
             "contextGroupName": "",
-            "SNOMEDCTConceptID": "181235001",
+            "SNOMEDCTConceptID": "385296007",
             "paired": "Y",
             "Modifier": [
               {
@@ -2585,7 +2626,7 @@
                 ],
                 "CodeMeaning": "Right",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "right submandibular gland",
+                "3dSlicerLabel": "Submandibular gland Right",
                 "3dSlicerIntegerLabel": 147,
                 "cid": "244",
                 "CodeValue": "24028007",
@@ -2597,7 +2638,7 @@
                 ],
                 "CodeMeaning": "Left",
                 "CodingSchemeDesignator": "SCT",
-                "3dSlicerLabel": "left submandibular gland",
+                "3dSlicerLabel": "Submandibular gland Left",
                 "3dSlicerIntegerLabel": 146,
                 "cid": "244",
                 "CodeValue": "7771000",
@@ -2609,9 +2650,9 @@
             "recommendedDisplayRGBValue": [
               225,170,75
             ],
-            "CodeMeaning": "Thyroid structure",
+            "CodeMeaning": "Thyroid",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "thyroid structure",
+            "3dSlicerLabel": "Thyroid",
             "3dSlicerIntegerLabel": 148,
             "cid": "",
             "CodeValue": "69748006",
@@ -2623,9 +2664,9 @@
             "recommendedDisplayRGBValue": [
               70,160,200
             ],
-            "CodeMeaning": "Glottis structure",
+            "CodeMeaning": "Glottis",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "glottis structure",
+            "3dSlicerLabel": "Glottis structure",
             "3dSlicerIntegerLabel": 149,
             "cid": "",
             "CodeValue": "1307006",
@@ -2637,9 +2678,9 @@
             "recommendedDisplayRGBValue": [
               210,110,190
             ],
-            "CodeMeaning": "Supraglottis structure",
+            "CodeMeaning": "Supraglottis",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "supraglottis structure",
+            "3dSlicerLabel": "Supraglottis",
             "3dSlicerIntegerLabel": 150,
             "cid": "",
             "CodeValue": "119255006",
@@ -2651,14 +2692,14 @@
             "recommendedDisplayRGBValue": [
               220,80,120
             ],
-            "CodeMeaning": "Both lips",
+            "CodeMeaning": "Lip",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "both lips",
+            "3dSlicerLabel": "Lip",
             "3dSlicerIntegerLabel": 151,
             "cid": "",
-            "CodeValue": "81083006",
+            "CodeValue": "48477009",
             "contextGroupName": "",
-            "SNOMEDCTConceptID": "81083006",
+            "SNOMEDCTConceptID": "48477009",
             "paired": "U"
           },
           {
@@ -2667,7 +2708,7 @@
             ],
             "CodeMeaning": "Optic chiasm",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "optic chiasm",
+            "3dSlicerLabel": "Optic chiasm",
             "3dSlicerIntegerLabel": 152,
             "cid": "",
             "CodeValue": "244453006",
@@ -2679,57 +2720,85 @@
             "recommendedDisplayRGBValue": [
               225,185,60
             ],
-            "CodeMeaning": "Left optic nerve",
+            "CodeMeaning": "Optic nerve",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "left optic nerve",
+            "3dSlicerLabel": "Optic nerve",
             "3dSlicerIntegerLabel": 154,
             "cid": "",
-            "CodeValue": "724379002",
+            "CodeValue": "18234004",
             "contextGroupName": "",
-            "SNOMEDCTConceptID": "724379002",
-            "paired": "U"
-          },
-          {
-            "recommendedDisplayRGBValue": [
-              70,200,180
-            ],
-            "CodeMeaning": "Right optic nerve",
-            "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "right optic nerve",
-            "3dSlicerIntegerLabel": 153,
-            "cid": "",
-            "CodeValue": "724380004",
-            "contextGroupName": "",
-            "SNOMEDCTConceptID": "724380004",
-            "paired": "U"
+            "SNOMEDCTConceptID": "18234004",
+            "paired": "Y",
+            "Modifier": [
+              {
+                "recommendedDisplayRGBValue": [
+                  70,200,180
+                ],
+                "CodeMeaning": "Right",
+                "CodingSchemeDesignator": "SCT",
+                "3dSlicerLabel": "Optic nerve Right",
+                "cid": "",
+                "UMLSConceptUID": "",
+                "CodeValue": "24028007",
+                "contextGroupName": "Laterality",
+                "SNOMEDCTConceptID": "24028007"
+              },
+              {
+                "recommendedDisplayRGBValue": [
+                  225,185,60
+                ],
+                "CodeMeaning": "Left",
+                "CodingSchemeDesignator": "SCT",
+                "3dSlicerLabel": "Optic nerve Left",
+                "cid": "",
+                "UMLSConceptUID": "",
+                "CodeValue": "7771000",
+                "contextGroupName": "Laterality",
+                "SNOMEDCTConceptID": "7771000"
+              }
+            ]
           },
           {
             "recommendedDisplayRGBValue": [
               230,150,125
             ],
-            "CodeMeaning": "Left parotid gland",
+            "CodeMeaning": "Parotid gland",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "left parotid gland",
+            "3dSlicerLabel": "Parotid gland",
             "3dSlicerIntegerLabel": 156,
             "cid": "",
-            "CodeValue": "44178003",
+            "CodeValue": "45289007",
             "contextGroupName": "",
-            "SNOMEDCTConceptID": "44178003",
-            "paired": "U"
-          },
-          {
-            "recommendedDisplayRGBValue": [
-              170,205,135
-            ],
-            "CodeMeaning": "Right parotid gland",
-            "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "right parotid gland",
-            "3dSlicerIntegerLabel": 155,
-            "cid": "",
-            "CodeValue": "85706002",
-            "contextGroupName": "",
-            "SNOMEDCTConceptID": "85706002",
-            "paired": "U"
+            "SNOMEDCTConceptID": "45289007",
+            "paired": "Y",
+            "Modifier": [
+              {
+                "recommendedDisplayRGBValue": [
+                  170,205,135
+                ],
+                "CodeMeaning": "Right",
+                "CodingSchemeDesignator": "SCT",
+                "3dSlicerLabel": "Parotid gland Right",
+                "cid": "",
+                "UMLSConceptUID": "",
+                "CodeValue": "24028007",
+                "contextGroupName": "Laterality",
+                "SNOMEDCTConceptID": "24028007"
+              },
+              {
+                "recommendedDisplayRGBValue": [
+                  230,150,125
+                ],
+                "CodeMeaning": "Left",
+                "CodingSchemeDesignator": "SCT",
+                "3dSlicerLabel": "Parotid gland Left",
+                "cid": "",
+                "UMLSConceptUID": "",
+                "CodeValue": "7771000",
+                "contextGroupName": "Laterality",
+                "SNOMEDCTConceptID": "7771000"
+              }
+            ]
           },
           {
             "recommendedDisplayRGBValue": [
@@ -2737,7 +2806,7 @@
             ],
             "CodeMeaning": "Pituitary gland",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "pituitary gland",
+            "3dSlicerLabel": "Pituitary gland",
             "3dSlicerIntegerLabel": 157,
             "cid": "",
             "CodeValue": "56329008",
@@ -2751,7 +2820,7 @@
             ],
             "CodeMeaning": "Subcutaneous tissue structure",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "subcutaneous tissue structure",
+            "3dSlicerLabel": "Subcutaneous tissue structure",
             "3dSlicerIntegerLabel": 158,
             "cid": "",
             "CodeValue": "71966008",
@@ -2763,23 +2832,23 @@
             "recommendedDisplayRGBValue": [
               190, 205, 210
             ],
-            "CodeMeaning": "Abdominal cavity structure",
+            "CodeMeaning": "Abdominopelvic cavity",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "abdominal cavity",
+            "3dSlicerLabel": "Abdominopelvic cavity",
             "3dSlicerIntegerLabel": 160,
             "cid": "7154",
-            "CodeValue": "52731004",
+            "CodeValue": "818987002",
             "contextGroupName": "AbdominalSegmentationTypes",
-            "SNOMEDCTConceptID": "52731004",
+            "SNOMEDCTConceptID": "818987002",
             "paired": "U"
           },
           {
             "recommendedDisplayRGBValue": [
               195, 200, 205
             ],
-            "CodeMeaning": "Thoracic cavity structure",
+            "CodeMeaning": "Thoracic cavity",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "thoracic cavity",
+            "3dSlicerLabel": "Thoracic cavity",
             "3dSlicerIntegerLabel": 161,
             "cid": "7155",
             "CodeValue": "43799004",
@@ -2793,7 +2862,7 @@
             ],
             "CodeMeaning": "Gland structure",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "gland structure",
+            "3dSlicerLabel": "Gland structure",
             "3dSlicerIntegerLabel": 163,
             "cid": "",
             "CodeValue": "362884007",
@@ -2807,7 +2876,7 @@
             ],
             "CodeMeaning": "Pericardium",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "pericardium",
+            "3dSlicerLabel": "Pericardium",
             "3dSlicerIntegerLabel": 192,
             "cid": "7152",
             "UMLSConceptUID": "C0031050",
@@ -2822,7 +2891,7 @@
             ],
             "CodeMeaning": "Mediastinum",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "mediastinum",
+            "3dSlicerLabel": "Mediastinum",
             "3dSlicerIntegerLabel": 196,
             "cid": "4031,4040,7155",
             "UMLSConceptUID": "C0025066",
@@ -2837,7 +2906,7 @@
             ],
             "CodeMeaning": "Spinal cord",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "spinal cord",
+            "3dSlicerLabel": "Spinal cord",
             "3dSlicerIntegerLabel": 115,
             "cid": "4,7153",
             "UMLSConceptUID": "C0037925",
@@ -2861,9 +2930,9 @@
             "recommendedDisplayRGBValue": [
               235, 216, 170
             ],
-            "CodeMeaning": "Bone",
+            "CodeMeaning": "Bone structure",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "bone",
+            "3dSlicerLabel": "Bone structure",
             "3dSlicerIntegerLabel": 2,
             "cid": "7166",
             "UMLSConceptUID": "C0262950",
@@ -2877,7 +2946,7 @@
             ],
             "CodeMeaning": "Muscle",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "muscle",
+            "3dSlicerLabel": "Muscle",
             "3dSlicerIntegerLabel": 8,
             "cid": "7166",
             "UMLSConceptUID": "C0026845",
@@ -2902,7 +2971,7 @@
             ],
             "CodeMeaning": "Cerebrospinal Fluid",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "cerebro-spinal fluid",
+            "3dSlicerLabel": "Cerebrospinal fluid",
             "3dSlicerIntegerLabel": 25,
             "cid": "7153",
             "UMLSConceptUID": "C0007806",
@@ -2955,9 +3024,9 @@
             "recommendedDisplayRGBValue": [
               200, 200, 200
             ],
-            "CodeMeaning": "Prosthetic breast implant",
+            "CodeMeaning": "Breast implant",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "prosthetic breast implant",
+            "3dSlicerLabel": "Breast implant",
             "3dSlicerIntegerLabel": 8,
             "cid": "",
             "UMLSConceptUID": "",

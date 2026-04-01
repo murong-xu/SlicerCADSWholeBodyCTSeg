@@ -77,7 +77,7 @@ If you use this software and find this work useful, please cite:
 Each task represents a specific anatomical group.
 
 **Task - Core organs**:
-Spleen, Kidney R/L, Gallbladder, Liver, Stomach, Aorta, Inferior vena cava, Portal and splenic veins, Pancreas, Adrenal glands R/L, Upper/Lower lobes of left lung, Upper/Middle/Lower lobes of right lung.
+Spleen, Kidney R/L, Gallbladder, Liver, Stomach, Aorta, Inferior vena cava, Portal and splenic vein, Pancreas, Adrenal gland R/L, Upper/Lower lobe of left lung, Upper/Middle/Lower lobe of right lung.
 
 **Task - Spine complete**:
 Vertebrae C1-C7, T1-T12, L1-L5.
@@ -86,27 +86,28 @@ Vertebrae C1-C7, T1-T12, L1-L5.
 Esophagus, Trachea, Myocardium, Heart atrium R/L, Heart ventricle R/L, Pulmonary artery, Brain, Common iliac artery R/L, Common iliac vein R/L, Small intestine, Duodenum, Colon, Urinary bladder, Face.
 
 **Task - Trunk muscles**:
-Humerus R/L, Scapula R/L, Clavicle R/L, Femur R/L, Hip R/L, Sacrum, Gluteus maximus/medius/minimus muscles R/L, Deep muscle of back R/L, Iliopsoas muscle R/L.
+Humerus R/L, Scapula R/L, Clavicle R/L, Femur R/L, Hip stucture R/L, Bone structure of sacrum, Gluteus maximus/medius/minimus muscles R/L, Deep muscle of back R/L, Iliopsoas muscle R/L.
 
 **Task - Ribs complete**:
 Ribs 1-12 R/L.
 
 **Task - RT risk organs**:
-Spinal canal, Larynx, Heart, Peritoneal cavity, Sigmoid colon, Rectum, Prostate, Seminal vesicle, Mammary gland R/L, Sternum, Psoas major muscle R/L, Rectus abdominis muscle R/L.
+Spinal canal, Larynx, Heart part, Abdominal intestinal region, Sigmoid colon, Rectum, Prostate, Seminal vesicle, Mammary gland R/L, Sternum, Psoas major muscle R/L, Rectus abdominis muscle R/L.
 
 **Task - Brain tissues**:
-White matter, Gray matter, Cerebrospinal fluid, Scalp, Eyeballs, Compact bone, Spongy bone, Blood, Muscle of head.
+White matter, Gray matter, Cerebrospinal fluid, Scalp, Eyeballs, Compact bone, Spongy bone, Vascular structure of head, Rectus eye muscle structure.
 
 **Task - Head-neck organs**:
-Carotid artery R/L, Arytenoid cartilage, Mandible, Brainstem, Buccal mucosa, Oral cavity, Cochlear R/L, Cricopharyngeus, Cervical esophagus, Anterior/Posterior eyeball segment R/L, Lacrimal gland R/L, Submandibular gland R/L, Thyroid, Glottis, Supraglottis, Both lips, Optic chiasm, Optic nerve R/L, Parotid gland R/L, Pituitary gland.
+Carotid artery R/L, Arytenoid cartilage, Mandible, Brain stem, Buccal mucosa, Oral cavity, Cochlea R/L, Cricopharyngeus, Cervical esophagus, Anterior/Posterior eyeball segment R/L, Lacrimal gland R/L, Submandibular gland R/L, Thyroid, Glottis, Supraglottis, Lip, Optic chiasm, Optic nerve R/L, Parotid gland R/L, Pituitary gland.
 
 **Task - Body regions**:
-Subcutaneous tissue, Muscle, Abdominal cavity, Thoracic cavity, Bones, Gland structure, Pericardium, Prosthetic breast implant, Mediastinum, Spinal cord.
+Subcutaneous tissue, Muscle, Abdominopelvic cavity, Thoracic cavity, Bone structure, Gland structure, Pericardium, Breast implant, Mediastinum, Spinal cord.
 
 ## License and Citation
 
 - **Codebase** (the `cads` package and all source code in this repository) is licensed under the [Apache License 2.0](LICENSE).  
-- **Model weights** released in the [Releases](https://github.com/murong-xu/CADS/releases) section are licensed under [CC BY 4.0](MODEL_LICENSE).
+- **Model weights** released in the [Releases](https://github.com/murong-xu/CADS/releases) section are licensed under [CC BY-NC-SA 4.0](MODEL_LICENSE) for research-only purposes.
+A more open CC BY 4.0 version is currently under preparation and will be released in the near future.
 
 If you use any component of CADS (CADS-dataset, its curated segmentation masks, pretrained CADS-model, or the 3D Slicer extension), please cite:
 
