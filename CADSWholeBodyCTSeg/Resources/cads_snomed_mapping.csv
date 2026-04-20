@@ -105,7 +105,7 @@
 104,rib_right_12,SCT,123037004,Anatomical Structure,SCT,43993008,Twelfth rib,SCT,24028007,Right,,,,,,
 105,spinal_canal,SCT,123037004,Anatomical Structure,SCT,61853006,Spinal canal,,,,,,,,,
 106,larynx,SCT,123037004,Anatomical Structure,SCT,4596009,Larynx,,,,,,,,,
-107,heart,SCT,123037004,Anatomical Structure,SCT,119202000,Heart part,,,,,,,,,
+107,heart,SCT,123037004,Anatomical Structure,SCT,80891009,Heart,,,,,,,,,
 108,bowel_bag,SCT,123037004,Anatomical Structure,SCT,113276009,Abdominal intestinal region,,,,,,,,,
 109,sigmoid,SCT,123037004,Anatomical Structure,SCT,60184004,Sigmoid colon,,,,,,,,,
 110,rectum,SCT,123037004,Anatomical Structure,SCT,34402009,Rectum,,,,,,,,,

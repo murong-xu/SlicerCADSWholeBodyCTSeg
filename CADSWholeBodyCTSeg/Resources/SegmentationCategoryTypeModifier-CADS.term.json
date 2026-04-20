@@ -1886,15 +1886,15 @@
             "recommendedDisplayRGBValue": [
               220, 50, 80
             ],
-            "CodeMeaning": "Heart part",
+            "CodeMeaning": "Heart",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "Heart part",
+            "3dSlicerLabel": "Heart",
             "3dSlicerIntegerLabel": 180,
             "cid": "4,4031,6113,7152",
             "UMLSConceptUID": "C0018787",
-            "CodeValue": "119202000",
+            "CodeValue": "80891009",
             "contextGroupName": "AnatomicRegion,CommonAnatomicRegions,MediastinumAnatomyFindingorFeature,CardiacStructureSegmentationTypes",
-            "SNOMEDCTConceptID": "119202000",
+            "SNOMEDCTConceptID": "80891009",
             "paired": "U"
           },
           {
@@ -1903,7 +1903,7 @@
             ],
             "CodeMeaning": "Abdominal intestinal region",
             "CodingSchemeDesignator": "SCT",
-            "3dSlicerLabel": "Abdominal intestinal region",
+            "3dSlicerLabel": "Bowel space",
             "3dSlicerIntegerLabel": 220,
             "cid": "7154",
             "UMLSConceptUID": "C0018787",
